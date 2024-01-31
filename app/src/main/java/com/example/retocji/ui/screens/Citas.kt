@@ -43,15 +43,11 @@ fun citas() {
     //val datePickerState = rememberDatePickerState()
     //DatePicker(state = datePickerState)
     LazyColumn {
-        /*item {
+        item {
             CitaPersonalizada()
         }
         items(getCitasGenericas()) { cita ->
             CitaGenerica(cita)
-        }*/
-        item {
-            //prueba()
-            CitaPersonalizada()
         }
     }
 }
