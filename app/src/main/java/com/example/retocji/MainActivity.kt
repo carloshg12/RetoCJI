@@ -7,21 +7,20 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.DatePicker
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.login.LoginView
+import com.example.login.LoginViewModel
 import com.example.retocji.ui.components.NavigationBar
 import com.example.retocji.ui.components.TopBar
 import com.example.retocji.ui.components.getInfoAbout
 import com.example.retocji.ui.screens.GeneralInfo
 import com.example.retocji.ui.screens.citas
 import com.example.retocji.ui.screens.gestiones
-import com.example.retocji.ui.screens.logIn
 import com.example.retocji.ui.screens.sobreNosotros
 import com.example.retocji.ui.theme.RetoCJITheme
 
@@ -51,7 +50,7 @@ class MainActivity : ComponentActivity() {
                     ) {
                         NavHost(
                             navController = navController,
-                            startDestination = "GeneralInfo"
+                            startDestination = "LogIn"
                         ) {
                             composable("GeneralInfo") {
                                 GeneralInfo(navController)
@@ -66,7 +65,7 @@ class MainActivity : ComponentActivity() {
                                 sobreNosotros()
                             }
                             composable("LogIn") {
-                                logIn()
+                                LoginView().login(loginViewModel = LoginViewModel())
                             }
                         }
                     }
