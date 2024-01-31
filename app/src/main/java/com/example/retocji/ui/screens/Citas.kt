@@ -214,7 +214,7 @@ fun CitaPersonalizada() {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
+            horizontalArrangement = Arrangement.End,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Button(onClick = {}) {
@@ -223,9 +223,6 @@ fun CitaPersonalizada() {
         }
     }
 }
-
-
-
 
 @Composable
 fun TimePickerDialog(
@@ -282,7 +279,6 @@ fun TimePickerDialog(
         }
     }
 }
-
 
 
 @Composable
