@@ -24,6 +24,7 @@ import com.example.retocji.domain.models.Cita
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TextField
+import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,28 +32,77 @@ import androidx.compose.ui.unit.dp
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.util.Date
+import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDialog
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.rememberDatePickerState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun citas() {
+    //val datePickerState = rememberDatePickerState()
+    //DatePicker(state = datePickerState)
     LazyColumn {
-        item {
+        /*item {
             CitaPersonalizada()
         }
         items(getCitasGenericas()) { cita ->
             CitaGenerica(cita)
+        }*/
+        item {
+            //prueba()
+            CitaPersonalizada()
         }
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
+fun prueba() {
+
+    Text(text = "Seleciona tu cita ideal", modifier = Modifier.padding(bottom = 16.dp))
+
+    val datePickerState = rememberDatePickerState()
+    var showDialog by remember { mutableStateOf(false) }
+
+    Column(modifier = Modifier
+        .fillMaxWidth()
+        .padding(16.dp),
+    verticalArrangement = Arrangement.Center,
+    horizontalAlignment = Alignment.CenterHorizontally)
+    {
+
+        Button(onClick = { showDialog = true }) {
+            Text("Selecionar dia")
+        }
+        if (showDialog) {
+            DatePickerDialog(
+                onDismissRequest = {
+                    showDialog = false },
+                confirmButton = {
+                Button(
+                    onClick = { showDialog = false }) {
+                    Text("Confirmar")
+                }
+            }) {
+                DatePicker(state = datePickerState)
+            }
+        }
+
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
 fun CitaPersonalizada() {
-    var diaDeseado by remember { mutableStateOf("") }
+    val datePickerState = rememberDatePickerState()
+    var showDialog by remember { mutableStateOf(false) }
+    var diaDeseado = datePickerState.selectedDateMillis
     var horaDeseada by remember { mutableStateOf("") }
     var asesorDeseado by remember { mutableStateOf("") }
     var gestionDeseada by remember { mutableStateOf("") }
     var aseores = listOf("Marian", "Ionut")
+
 
 
     Column (
@@ -64,15 +114,34 @@ fun CitaPersonalizada() {
     {
         Text(text = "Seleciona tu cita ideal", modifier = Modifier.padding(bottom = 16.dp))
 
-        //secion para poner dia
-        Row(modifier = Modifier.padding(bottom = 16.dp)) {
-            Text(text = "Dia", modifier = Modifier.widthIn(min = 100.dp))
-            Spacer(modifier = Modifier.width(8.dp))
-            TextField(
-                value = diaDeseado,
-                onValueChange = { diaDeseado = it },
-                label = { Text("Seleciona un dia") }
-            )
+        // Sección para poner día
+        Row(
+            modifier = Modifier.padding(bottom = 16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(text = "Día", modifier = Modifier.widthIn(min = 100.dp))
+            diaDeseado?.let {
+                Text(text = SimpleDateFormat("dd/MM/yyyy").format(Date(it)))
+            }
+            Button(onClick = { showDialog = true }) {
+                Text("Elegir día")
+            }
+            if (showDialog) {
+                DatePickerDialog(
+                    onDismissRequest = { showDialog = false },
+                    confirmButton = {
+                        Button(onClick = { showDialog = false }) {
+                            Text("Confirmar")
+                        }
+                    }, dismissButton = {
+                        OutlinedButton(onClick = { showDialog = false }) {
+                            Text("Cancelar")
+                        }
+                    }
+                ) {
+                    DatePicker(state = datePickerState)
+                }
+            }
         }
 
         //secion para poner hora
