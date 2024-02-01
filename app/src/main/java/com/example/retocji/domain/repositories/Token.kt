@@ -1,4 +1,5 @@
 package com.example.retocji.domain.repositories
 
-class a {
-}
+data class Token(
+    val token:String
+)
