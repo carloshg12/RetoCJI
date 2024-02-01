@@ -1,15 +1,21 @@
 package com.example.retocji.ui.screens
 
 import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class AuthViewModel : ViewModel() {
+@HiltViewModel
+class AuthViewModel @Inject constructor(
+    private val sharedPreferencesManager: SharedPreferencesManager
+) : ViewModel() {
     private var authToken: String? = null
 
-    fun setAuthToken(token: String) {
+    suspend fun setAuthToken(token: String) {
         authToken = token
+        sharedPreferencesManager.saveAuthToken(token)
     }
 
-    fun getAuthToken(): String? {
+    suspend fun getAuthToken(): String? {
         return authToken
     }
 }

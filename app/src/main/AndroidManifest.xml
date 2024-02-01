@@ -16,6 +16,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.RetoCJI"
+        android:name=".CJISoftware"
         tools:targetApi="31">
 
         <meta-data
