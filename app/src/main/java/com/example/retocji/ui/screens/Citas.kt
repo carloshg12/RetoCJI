@@ -1,6 +1,7 @@
 
 package com.example.retocji.ui.screens
 
+import android.annotation.SuppressLint
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
@@ -63,6 +64,7 @@ fun citas() {
     }
 }
 
+@SuppressLint("UnrememberedMutableState")
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -79,7 +81,7 @@ fun CitaPersonalizada() {
     var gestionDeseada by remember { mutableStateOf("") }
     var asesores = listOf("Marian", "Ionut")
     var expandedAsesores by remember { mutableStateOf(false) }
-    var asesorDeseado by remember { mutableStateOf(asesores[0]) }
+    var asesorDeseado by remember { mutableStateOf("") }
 
 
     Column(
@@ -133,9 +135,21 @@ fun CitaPersonalizada() {
         ) {
             Text(text = "Hora Inicio", modifier = Modifier.widthIn(min = 100.dp))
             Spacer(modifier = Modifier.width(8.dp))
-            horaDeseadaInicio?.let {
-                Text(text = "$horaDeseadaInicio:$minutoDeseadoInicio", modifier = Modifier.widthIn(min = 100.dp))
+
+            //si la hora inico es 0 que no se muestre
+
+            if (horaDeseadaInicio != 0 ) {
+                //si la hora no esta entre las 8 de la mañana y las 6 de la tarde que no se muestre
+
+                if (horaDeseadaInicio ==8 || horaDeseadaInicio ==9 || horaDeseadaInicio ==10 || horaDeseadaInicio ==11 || horaDeseadaInicio ==12 || horaDeseadaInicio ==13 || horaDeseadaInicio ==14 || horaDeseadaInicio ==15 || horaDeseadaInicio ==16 || horaDeseadaInicio ==17 || horaDeseadaInicio ==18){
+                    val formattedTime = String.format("%02d:%02d", horaDeseadaInicio, minutoDeseadoInicio)
+                    Text(text = formattedTime, modifier = Modifier.widthIn(min = 100.dp))
+                }else{
+                    Text(text = "La hora no esta disponible", modifier = Modifier.widthIn(min = 100.dp))
+                }
             }
+
+
             Button(onClick = { showTimePicker = true }) {
                 Text("Elegir hora")
             }
@@ -164,8 +178,11 @@ fun CitaPersonalizada() {
         ) {
             Text(text = "Hora fin", modifier = Modifier.widthIn(min = 100.dp))
             Spacer(modifier = Modifier.width(8.dp))
-            Text(text = "$horaDeseadaFin:$minutoDeseadoFin", modifier = Modifier.widthIn(min = 100.dp))
-            Spacer(modifier = Modifier.widthIn(min = 115.dp)) // Espacio en blanco a la derecha
+            if (horaDeseadaFin != 1){
+                val formattedTime = String.format("%02d:%02d", horaDeseadaFin, minutoDeseadoFin)
+                Text(text = formattedTime, modifier = Modifier.widthIn(min = 100.dp))
+            }
+            Spacer(modifier = Modifier.widthIn(min = 115.dp))
         }
 
         Row(
@@ -193,10 +210,11 @@ fun CitaPersonalizada() {
         ) {
             Text(text = "Asesor", modifier = Modifier.widthIn(min = 100.dp))
             Spacer(modifier = Modifier.width(8.dp))
-            //ExposedDropdownMenuSample(asesores, expandedAsesores, asesorDeseado)
-        }
+            selecionAsesor(asesores, mutableStateOf(expandedAsesores), mutableStateOf(asesorDeseado))
 
-        /*Row(
+
+        }
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 16.dp),
@@ -206,7 +224,7 @@ fun CitaPersonalizada() {
             Button(onClick = {}) {
                 Text("Reservar cita")
             }
-        }*/
+        }
     }
 }
 
@@ -300,7 +318,7 @@ fun getCitasGenericas(): List<Cita> {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ExposedDropdownMenuSample(
+fun selecionAsesor(
     options: List<String>,
     expanded: MutableState<Boolean>,
     selectedOptionText: MutableState<String>
@@ -314,7 +332,7 @@ fun ExposedDropdownMenuSample(
             readOnly = true,
             value = selectedOptionText.value,
             onValueChange = {},
-            label = { Text("Seleciona un asesor") },
+            label = { Text("Selecciona un asesor") },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded.value) },
             colors = ExposedDropdownMenuDefaults.textFieldColors(),
         )
@@ -335,3 +353,5 @@ fun ExposedDropdownMenuSample(
         }
     }
 }
+
+
