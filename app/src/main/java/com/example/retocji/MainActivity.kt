@@ -1,15 +1,18 @@
 package com.example.retocji
 
 import android.annotation.SuppressLint
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -19,12 +22,14 @@ import com.example.retocji.ui.components.NavigationBar
 import com.example.retocji.ui.components.TopBar
 import com.example.retocji.ui.components.getInfoAbout
 import com.example.retocji.ui.screens.GeneralInfo
+import com.example.retocji.ui.screens.SharedPreferencesManager
 import com.example.retocji.ui.screens.citas
 import com.example.retocji.ui.screens.gestiones
 import com.example.retocji.ui.screens.sobreNosotros
 import com.example.retocji.ui.theme.RetoCJITheme
 
 class MainActivity : ComponentActivity() {
+    @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,7 +55,7 @@ class MainActivity : ComponentActivity() {
                     ) {
                         NavHost(
                             navController = navController,
-                            startDestination = "LogIn"
+                            startDestination = "GeneralInfo"
                         ) {
                             composable("GeneralInfo") {
                                 GeneralInfo(navController)
@@ -65,7 +70,9 @@ class MainActivity : ComponentActivity() {
                                 sobreNosotros()
                             }
                             composable("LogIn") {
-                                LoginView().login(loginViewModel = LoginViewModel())
+                                LoginView().login(loginViewModel = LoginViewModel(
+                                    SharedPreferencesManager(context = LocalContext.current)
+                                ))
                             }
                         }
                     }

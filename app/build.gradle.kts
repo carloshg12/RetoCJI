@@ -1,7 +1,12 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("com.google.devtools.ksp")
+    id("dagger.hilt.android.plugin")
+
 }
+
+
 
 android {
     namespace = "com.example.retocji"
@@ -40,7 +45,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.5.4"
     }
     packaging {
         resources {
@@ -48,8 +53,16 @@ android {
         }
     }
 }
+val hiltVersion = "2.50" // Asegúrate de que esta es la versión correcta
+
 
 dependencies {
+
+
+    implementation("com.google.dagger:hilt-android:$hiltVersion")
+    ksp("com.google.dagger:hilt-compiler:$hiltVersion")
+    implementation ("androidx.hilt:hilt-navigation-compose:1.1.0")
+    implementation ("androidx.datastore:datastore-preferences:1.0.0")
     implementation ("com.squareup.retrofit2:converter-scalars:2.9.0")
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")

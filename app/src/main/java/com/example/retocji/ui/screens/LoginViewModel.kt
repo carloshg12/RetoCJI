@@ -15,9 +15,10 @@ import com.example.retocji.domain.repositories.AuthRequest
 import com.example.retocji.domain.repositories.Citas
 import com.example.retocji.domain.repositories.CitasDTO
 import com.example.retocji.domain.repositories.RetrofitInstance
+import com.example.retocji.ui.screens.SharedPreferencesManager
 import kotlinx.coroutines.launch
 
-class LoginViewModel : ViewModel() {
+class LoginViewModel(private val sharedPreferencesManager: SharedPreferencesManager) : ViewModel() {
 
     private var _email = MutableLiveData("")
     val email: LiveData<String> = _email
@@ -38,6 +39,7 @@ class LoginViewModel : ViewModel() {
                 val response = RetrofitInstance.api.login(authRequest)
                 if (response.isSuccessful) {
                     _loginResult.value = (response.body()?.token ?: "Respuesta vacía").toString()
+                    sharedPreferencesManager.saveAuthToken(loginResult.toString())
                 } else {
                     _loginResult.value = "Error: respuesta no exitosa - ${response.code()}"
                 }
