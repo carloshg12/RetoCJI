@@ -44,6 +44,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.example.retocji.R
 import com.example.retocji.domain.repositories.Citas
+import com.example.retocji.domain.repositories.CitasDTO
 import com.example.retocji.domain.repositories.UsersDTO
 import java.time.LocalDateTime
 
@@ -117,40 +118,37 @@ class LoginView {
                     text = "¿Has olvidado tu contraseña?",
                 )
             }
-            val cita = Citas(
-                id = 1,
-                fecha = LocalDateTime.now(), // La fecha actual
-            horaInicio = LocalDateTime.now(), // La hora de inicio actual
-            horaFin = LocalDateTime.now().plusHours(1), // La hora de fin, una hora después
-            usuario = UsersDTO(id = 1 ,name = "Usuario Ejemplo" ,email = "pepe" ), // Un usuario de ejemplo
-            gestor = UsersDTO(id = 1, name = "Gestor Ejemplo" ,email = "pepe") // Un gestor de ejemplo
+            val cita = CitasDTO(
+
+                horaInicio = LocalDateTime.now().toString(), // La hora de inicio actual
+                horaFin = LocalDateTime.now().plusHours(1).toString(), // La hora de fin, una hora después
+                usuario = UsersDTO(
+                    id = 1,
+                    name = "Jose",
+                    email = "aluebr5363@ieselcaminas.org"
+                ), // Un usuario de ejemplo
+                gestor = UsersDTO(
+                    id = 1,
+                    name = "Jose",
+                    email = "aluebr5363@ieselcaminas.org"
+                ) // Un gestor de ejemplo
             )
 
             Button(
-                onClick = { loginViewModel.login(email,password)
-                          loginViewModel.crearCita(cita
-                          )},
+                onClick = {
+                    loginViewModel.login(email, password)
+                    loginViewModel.crearCita(
+                        cita
+                    )
+                    loginViewModel.userProfile()
+                },
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(text = "Login In")
-               
+
             }
             Text(text = loginResult.toString())
-            /*if (loginResult != "") {
-                AlertDialog(
-                    onDismissRequest = { /*TODO*/ },
-                    title = { Text("Login Successful") },
-                    text = { Text("Bien") },
-                    confirmButton = { Button(onClick = { /*TODO*/ }) { Text("OK") } }
-                )
-            } else {
-                AlertDialog(
-                    onDismissRequest = { /*TODO*/ },
-                    title = { Text("Login Failed") },
-                    text = { Text("Mal") },
-                    confirmButton = { Button(onClick = { /*TODO*/ }) { Text("OK") } }
-                )
-            }*/
+
             Spacer(modifier = Modifier.height(30.dp))
             Row(
                 verticalAlignment = Alignment.CenterVertically,

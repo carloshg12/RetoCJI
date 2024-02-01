@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.retocji.domain.repositories.AuthRequest
 import com.example.retocji.domain.repositories.Citas
+import com.example.retocji.domain.repositories.CitasDTO
 import com.example.retocji.domain.repositories.RetrofitInstance
 import kotlinx.coroutines.launch
 
@@ -47,18 +48,54 @@ class LoginViewModel : ViewModel() {
         }
     }
 
-    fun crearCita(citas: Citas) {
+    fun crearCita(citas: CitasDTO) {
         viewModelScope.launch {
-            val token = "Bearer $loginResult" // Reemplazar con tu función para obtener el token
-            val response = RetrofitInstance.api.crearCita(token, citas)
-            if (response.isSuccessful) {
-            Log.e("Exito", "Cita creada")
-            } else {
-                Log.e("Fracaso","No va")
+            try {
+                val token = "Bearer ${loginResult.value}"
+                val response = RetrofitInstance.api.crearCita(token, citas)
+                if (response.isSuccessful) {
+                    Log.e("Exito", "Cita creada")
+                } else {
+                    val code = response.code()
+                    if (code == 403) {
+                        Log.e("Fracaso", "Acceso prohibido: Token no válido")
+                        Log.e("INFO",token)
+                        // Manejar el caso de acceso prohibido aquí, por ejemplo, mostrar un mensaje al usuario
+                    } else {
+                        val errorResponse = response.errorBody()?.string()
+                        Log.e("Fracaso", errorResponse ?: "Error desconocido")
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e("Error", "Error en la creación de la cita", e)
+            }
+        }
+
+
+    }
+    fun userProfile() {
+        viewModelScope.launch {
+            try {
+                val token = "Bearer ${loginResult.value}"
+                val response = RetrofitInstance.api.userProfile(token)
+                if (response.isSuccessful) {
+                    Log.e("Exito", response.body()!!.string())
+                } else {
+                    val code = response.code()
+                    if (code == 403) {
+                        Log.e("Fracaso", "Acceso prohibido: Token no válido")
+                        Log.e("INFO", token)
+                        // Manejar el caso de acceso prohibido aquí, por ejemplo, mostrar un mensaje al usuario
+                    } else {
+                        val errorResponse = response.errorBody()?.string()
+                        Log.e("Fracaso", errorResponse ?: "Error desconocido")
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e("Error", "Error en la creación de la cita", e)
             }
         }
     }
-
 
     fun onEmailChanged(newEmail: String) {
         _email.value = newEmail
