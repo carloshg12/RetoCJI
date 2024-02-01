@@ -1,11 +1,7 @@
 
 package com.example.retocji.ui.screens
 
-import android.app.TimePickerDialog
 import android.os.Build
-import android.text.Layout
-import android.widget.DatePicker
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -13,14 +9,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -34,32 +28,26 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import java.text.SimpleDateFormat
-import java.time.LocalDate
 import java.util.Date
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TimeInput
 import androidx.compose.material3.TimePicker
-import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberTimePickerState
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import kotlinx.coroutines.launch
 import java.time.Instant
-import java.time.LocalTime
-import java.time.format.DateTimeFormatter
-import java.util.Calendar
-import java.util.Locale
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
@@ -69,9 +57,9 @@ fun citas() {
         item {
             CitaPersonalizada()
         }
-        items(getCitasGenericas()) { cita ->
+        /*items(getCitasGenericas()) { cita ->
           CitaGenerica(cita)
-        }
+        }*/
     }
 }
 
@@ -88,9 +76,11 @@ fun CitaPersonalizada() {
     var minutoDeseadoInicio = timePickerState.minute
     var horaDeseadaFin = timePickerState.hour + 1
     var minutoDeseadoFin = timePickerState.minute
-    var asesorDeseado by remember { mutableStateOf("") }
     var gestionDeseada by remember { mutableStateOf("") }
-    var aseores = listOf("Marian", "Ionut")
+    var asesores = listOf("Marian", "Ionut")
+    var expandedAsesores by remember { mutableStateOf(false) }
+    var asesorDeseado by remember { mutableStateOf(asesores[0]) }
+
 
     Column(
         modifier = Modifier
@@ -203,14 +193,10 @@ fun CitaPersonalizada() {
         ) {
             Text(text = "Asesor", modifier = Modifier.widthIn(min = 100.dp))
             Spacer(modifier = Modifier.width(8.dp))
-            TextField(
-                value = asesorDeseado,
-                onValueChange = { asesorDeseado = it },
-                label = { Text("Seleciona un asesor") }
-            )
+            //ExposedDropdownMenuSample(asesores, expandedAsesores, asesorDeseado)
         }
 
-        Row(
+        /*Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 16.dp),
@@ -220,7 +206,7 @@ fun CitaPersonalizada() {
             Button(onClick = {}) {
                 Text("Reservar cita")
             }
-        }
+        }*/
     }
 }
 
@@ -307,9 +293,45 @@ fun getCitasGenericas(): List<Cita> {
         Cita(3, "Miercoles", "10:00", "11:00", true, "Marian", "Renta"),
         Cita(4, "Jueves", "8:00", "9:00", true, "Ionut", "Renta"),
         Cita(5, "Viernes", "16:00", "17:00", true, "Marian", "Renta"),
-        Cita(6, "Domingo", "10:00", "11:00", true, "Ionut", "Divoricio"),
+        Cita(6, "Sabado", "10:00", "11:00", true, "Ionut", "Divoricio"),
         Cita(7, "Lunes", "8:00", "9:00", true, "Marian", "Gestion de impuestos")
     )
 }
 
-
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ExposedDropdownMenuSample(
+    options: List<String>,
+    expanded: MutableState<Boolean>,
+    selectedOptionText: MutableState<String>
+) {
+    ExposedDropdownMenuBox(
+        expanded = expanded.value,
+        onExpandedChange = { expanded.value = it },
+    ) {
+        TextField(
+            modifier = Modifier.menuAnchor(),
+            readOnly = true,
+            value = selectedOptionText.value,
+            onValueChange = {},
+            label = { Text("Seleciona un asesor") },
+            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded.value) },
+            colors = ExposedDropdownMenuDefaults.textFieldColors(),
+        )
+        ExposedDropdownMenu(
+            expanded = expanded.value,
+            onDismissRequest = { expanded.value = false },
+        ) {
+            options.forEach { selectionOption ->
+                DropdownMenuItem(
+                    text = { Text(selectionOption) },
+                    onClick = {
+                        selectedOptionText.value = selectionOption
+                        expanded.value = false
+                    },
+                    contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
+                )
+            }
+        }
+    }
+}
