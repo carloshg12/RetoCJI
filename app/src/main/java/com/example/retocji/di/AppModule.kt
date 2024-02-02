@@ -2,6 +2,8 @@ package com.example.retocji.di
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.example.retocji.domain.repositories.ApiService
+import com.example.retocji.domain.repositories.RetrofitInstance
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,6 +20,12 @@ object AppModule {
     @Singleton
     fun provideSharedPreferences(@ApplicationContext appContext: Context): SharedPreferences {
         return appContext.getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+    }
+
+    @Provides
+    @Singleton
+    fun provideApiService(): ApiService {
+        return RetrofitInstance.api
     }
 
 }

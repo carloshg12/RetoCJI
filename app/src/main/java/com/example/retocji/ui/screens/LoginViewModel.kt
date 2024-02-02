@@ -11,6 +11,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.retocji.domain.repositories.ApiService
 import com.example.retocji.domain.repositories.AuthRequest
 import com.example.retocji.domain.repositories.Citas
 import com.example.retocji.domain.repositories.CitasDTO
@@ -25,7 +26,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val sharedPreferencesRepository: SharedPreferencesRepository
+    private val sharedPreferencesRepository: SharedPreferencesRepository,
+    private val apiService: ApiService
 ) : ViewModel() {
     private var _email = MutableLiveData("")
     val email: LiveData<String> = _email
@@ -39,20 +41,33 @@ class LoginViewModel @Inject constructor(
     private val _loginResult = MutableLiveData<String>()
     var loginResult: LiveData<String> = _loginResult
 
-    fun login(username: String, password: String) {
+    private val _loginSuccess = MutableLiveData<Boolean>()
+    val loginSuccess: LiveData<Boolean> = _loginSuccess
+
+    fun login(username: String, password: String, onLoginComplete: (Boolean) -> Unit) {
         viewModelScope.launch {
             try {
                 val authRequest = AuthRequest(username, password)
-                val response = RetrofitInstance.api.login(authRequest)
+                val response = apiService.login(authRequest)
                 if (response.isSuccessful) {
-                    _loginResult.value = (response.body()?.token ?: "Respuesta vacía").toString()
-                    sharedPreferencesRepository.saveAuthToken(loginResult.toString())
+                    _loginSuccess.value = true // Inicio de sesión exitoso
+                    val token = response.body()?.token
+                    if (token != null) {
+                        sharedPreferencesRepository.saveAuthToken(token)
+                    } else {
+                        // Manejar el caso de respuesta vacía si es necesario
+                    }
                 } else {
+                    _loginSuccess.value = false // Respuesta no exitosa
                     _loginResult.value = "Error: respuesta no exitosa - ${response.code()}"
                 }
+                // Llamar a la función de callback con el resultado
+                onLoginComplete(_loginSuccess.value!!)
             } catch (e: Exception) {
                 Log.e("LoginError", "Error en login", e)
-                _loginResult.value = "Error: ${e.message}"
+                _loginSuccess.value = false // Error durante el inicio de sesión
+                // Llamar a la función de callback con el resultado
+                onLoginComplete(_loginSuccess.value!!)
             }
         }
     }

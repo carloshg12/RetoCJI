@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -41,7 +42,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.retocji.R
 import com.example.retocji.domain.repositories.Citas
 import com.example.retocji.domain.repositories.CitasDTO
@@ -52,15 +55,17 @@ class LoginView {
     @RequiresApi(Build.VERSION_CODES.O)
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    fun login(loginViewModel: LoginViewModel) {
+    fun login(loginViewModel: LoginViewModel,navController: NavController) {
         val loginResult by loginViewModel.loginResult.observeAsState()
+        val loginSuccess by loginViewModel.loginSuccess.observeAsState()
         val email by loginViewModel.email.observeAsState(initial = "")
         val password by loginViewModel.password.observeAsState(initial = "")
         val passwordVisibility by loginViewModel.passwordVisibility.observeAsState(initial = false)
 
         Column(
             modifier = Modifier
-                .fillMaxSize(),
+                .fillMaxSize()
+                .padding(start = 30.dp, end = 30.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {
@@ -69,13 +74,14 @@ class LoginView {
                 contentDescription = "foto",
                 modifier = Modifier.clip(CircleShape)
             )
+            Spacer(modifier = Modifier.padding(bottom = 30.dp))
             TextField(
                 value = email,
                 onValueChange = { loginViewModel.onEmailChanged(it) },
                 enabled = true,
                 placeholder = {
                     Text(
-                        text = "Email",
+                        text = "Usuario",
                         color = Color.White
                     )
                 },
@@ -88,7 +94,7 @@ class LoginView {
                 enabled = true,
                 placeholder = {
                     Text(
-                        text = "Password",
+                        text = "Contraseña",
                         color = Color.White
                     )
                 },
@@ -136,15 +142,20 @@ class LoginView {
 
             Button(
                 onClick = {
-                    loginViewModel.login(email, password)
+                    loginViewModel.login(email, password) { success ->
+                        if (success) {
+                            navController.navigate("GeneralInfo")
+                        }
+                    }
                     loginViewModel.crearCita(
                         cita
                     )
                     loginViewModel.userProfile()
+
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(text = "Login In")
+                Text(text = "Iniciar Sesión")
 
             }
             Text(text = loginResult.toString())
@@ -162,13 +173,28 @@ class LoginView {
 
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = "OR",
+                    text = "<>",
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Divider(
                     color = Color.Gray,
                     modifier = Modifier
                         .width(165.dp)
+                )
+
+            }
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center,
+            ){
+                Spacer(modifier = Modifier.height(16.dp))
+                Text(
+                    text = "¿Aún no te has registrado? Hazlo ya.",
+                    color = Color.Blue,
+                    textDecoration = TextDecoration.Underline,
+                    modifier = Modifier.clickable {
+                        navController.navigate("Registro")
+                    }
                 )
             }
         }
