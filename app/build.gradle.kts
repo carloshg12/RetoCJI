@@ -58,7 +58,7 @@ val hiltVersion = "2.50" // Asegúrate de que esta es la versión correcta
 
 dependencies {
 
-
+    implementation ("com.itextpdf:itext7-core:7.1.9")
     implementation("com.google.dagger:hilt-android:$hiltVersion")
     ksp("com.google.dagger:hilt-compiler:$hiltVersion")
     implementation ("androidx.hilt:hilt-navigation-compose:1.1.0")
