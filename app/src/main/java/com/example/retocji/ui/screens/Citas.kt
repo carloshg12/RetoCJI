@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -35,6 +36,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
+import androidx.compose.material3.DatePickerState
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -45,23 +47,43 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TimePicker
 import androidx.compose.material3.rememberTimePickerState
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import java.time.DayOfWeek
 import java.time.Instant
+import java.time.ZoneId
 
+@SuppressLint("UnrememberedMutableState")
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun citas() {
+    var expandedAsesores by remember { mutableStateOf(false) }
+    var asesorDeseado by remember { mutableStateOf("") }
+    var expandedGestiones by remember { mutableStateOf(false) }
+    var gestionDeseada by remember { mutableStateOf("") }
+    var expandedHour by remember { mutableStateOf(false) }
+    var selectedHour by remember { mutableStateOf("") }
+    var showDialog by remember { mutableStateOf(false) }
+
     LazyColumn {
         item {
-            CitaPersonalizada()
+            CitaPersonalizada(
+                expandedAsesores = mutableStateOf(expandedAsesores) ,
+                asesorDeseado = mutableStateOf(asesorDeseado),
+                expandedGestiones = mutableStateOf(expandedGestiones),
+                gestionDeseada = mutableStateOf(gestionDeseada),
+                expandedHour = mutableStateOf(expandedHour),
+                selectedHour = mutableStateOf(selectedHour),
+                asesores = listOf("Juan", "Pedro", "Luis"),
+                gestiones = listOf("Gestion 1", "Gestion 2", "Gestion 3"),
+                showDialog = mutableStateOf(showDialog),
+                datePickerState = rememberDatePickerState(),
+            )
         }
-        /*items(getCitasGenericas()) { cita ->
-          CitaGenerica(cita)
-        }*/
     }
 }
 
@@ -69,22 +91,18 @@ fun citas() {
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CitaPersonalizada() {
-    val datePickerState = rememberDatePickerState()
-    val timePickerState = rememberTimePickerState()
-    var showDialog by remember { mutableStateOf(false) }
-    var showTimePicker by remember { mutableStateOf(false) }
-    var diaDeseado = datePickerState.selectedDateMillis
-    var horaDeseadaInicio = timePickerState.hour
-    var minutoDeseadoInicio = timePickerState.minute
-    var horaDeseadaFin = timePickerState.hour + 1
-    var minutoDeseadoFin = timePickerState.minute
-    var gestionDeseada by remember { mutableStateOf("") }
-    var asesores = listOf("Marian", "Ionut")
-    var expandedAsesores by remember { mutableStateOf(false) }
-    var asesorDeseado by remember { mutableStateOf("") }
-
-
+fun CitaPersonalizada(
+    expandedAsesores: MutableState<Boolean>,
+    asesorDeseado: MutableState<String>,
+    expandedGestiones: MutableState<Boolean>,
+    gestionDeseada: MutableState<String>,
+    expandedHour: MutableState<Boolean>,
+    selectedHour: MutableState<String>,
+    asesores: List<String> = listOf(),
+    gestiones: List<String> = listOf(),
+    showDialog: MutableState<Boolean> ,
+    datePickerState: DatePickerState = rememberDatePickerState()
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -92,6 +110,62 @@ fun CitaPersonalizada() {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
+        var diaDeseado by remember { mutableStateOf(datePickerState.selectedDateMillis) }
+        LaunchedEffect(datePickerState.selectedDateMillis) {
+            diaDeseado = datePickerState.selectedDateMillis
+        }
+        var showAlert by remember { mutableStateOf(true) }
+
+
+        if (showAlert) {
+            AlertDialog(
+                onDismissRequest = { showAlert = false },
+                title = { Text("Advertencia") },
+                text = { Text("Por favor, selecciona un asesor primero.") },
+                confirmButton = {
+                    Button(onClick = { showAlert = false }) {
+                        Text("OK")
+                    }
+                }
+            )
+        }
+
+        //selecion asesor
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(text = "Asesor", modifier = Modifier.widthIn(min = 100.dp))
+            Spacer(modifier = Modifier.width(8.dp))
+            selecionAsesor(
+                asesores,
+                expandedAsesores,
+                asesorDeseado)
+        }
+
+
+
+
+
+        //selecion gestor
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(text = "Gestion", modifier = Modifier.widthIn(min = 100.dp))
+            Spacer(modifier = Modifier.width(8.dp))
+            selecionGestion(gestiones, expandedGestiones, gestionDeseada, asesorDeseado)
+        }
+
+
+        //selecion dia
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -103,30 +177,35 @@ fun CitaPersonalizada() {
             diaDeseado?.let {
                 Text(text = SimpleDateFormat("dd/MM/yyyy").format(Date(it)))
             }
-            Button(onClick = { showDialog = true }) {
+            Button(onClick = { if (asesorDeseado.value.isNotEmpty()) showDialog.value = true }) {
                 Text("Elegir día")
             }
-            if (showDialog) {
+            if (showDialog.value) {
                 DatePickerDialog(
-                    onDismissRequest = { showDialog = false },
+                    onDismissRequest = { showDialog.value = false },
                     confirmButton = {
-                        Button(onClick = { showDialog = false }) {
+                        Button(onClick = { showDialog.value = false }) {
                             Text("Confirmar")
                         }
                     }, dismissButton = {
-                        OutlinedButton(onClick = { showDialog = false }) {
+                        OutlinedButton(onClick = { showDialog.value = false }) {
                             Text("Cancelar")
                         }
                     }
                 ) {
                     DatePicker(
                         state = datePickerState,
-                        dateValidator = { timestamp -> timestamp > Instant.now().toEpochMilli() },
+                        dateValidator = { timestamp ->
+                            val selectedDate = Instant.ofEpochMilli(timestamp).atZone(ZoneId.systemDefault()).toLocalDate()
+                            val dayOfWeek = selectedDate.dayOfWeek
+                            timestamp > Instant.now().toEpochMilli() && dayOfWeek != DayOfWeek.SATURDAY && dayOfWeek != DayOfWeek.SUNDAY
+                        },
                     )
                 }
             }
         }
 
+        // Sección para poner hora inicio
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -136,39 +215,7 @@ fun CitaPersonalizada() {
         ) {
             Text(text = "Hora Inicio", modifier = Modifier.widthIn(min = 100.dp))
             Spacer(modifier = Modifier.width(8.dp))
-
-            //si la hora inico es 0 que no se muestre
-
-            if (horaDeseadaInicio != 0 ) {
-                //si la hora no esta entre las 8 de la mañana y las 6 de la tarde que no se muestre
-
-                if (horaDeseadaInicio ==8 || horaDeseadaInicio ==9 || horaDeseadaInicio ==10 || horaDeseadaInicio ==11 || horaDeseadaInicio ==13 || horaDeseadaInicio ==14 || horaDeseadaInicio ==15 || horaDeseadaInicio ==16 || horaDeseadaInicio ==17 || horaDeseadaInicio ==18){
-                    val formattedTime = String.format("%02d:%02d", horaDeseadaInicio, minutoDeseadoInicio)
-                    Text(text = formattedTime, modifier = Modifier.widthIn(min = 100.dp))
-                }else{
-                    Box(modifier = Modifier.width(100.dp).height(100.dp)){
-                        Text(text = "La hora no esta disponible")
-                    }
-                }
-            }
-
-
-            Button(onClick = { showTimePicker = true }) {
-                Text("Elegir hora")
-            }
-            if (showTimePicker) {
-                TimePickerDialog(
-                    onCancel = { showTimePicker = false },
-                    onConfirm = {
-                        showTimePicker = false
-                    },
-                    content = {
-                        TimePicker(
-                            state = timePickerState,
-                        )
-                    }
-                )
-            }
+            seleccionHoras(expandedHour, selectedHour,asesorDeseado)
         }
 
         // Sección para poner hora fin
@@ -179,44 +226,15 @@ fun CitaPersonalizada() {
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(text = "Hora fin", modifier = Modifier.widthIn(min = 100.dp))
+            Text(text = "Hora Fin", modifier = Modifier.widthIn(min = 100.dp))
             Spacer(modifier = Modifier.width(8.dp))
-            if (horaDeseadaFin != 1){
-                val formattedTime = String.format("%02d:%02d", horaDeseadaFin, minutoDeseadoFin)
-                Text(text = formattedTime, modifier = Modifier.widthIn(min = 100.dp))
+
+            if (selectedHour.value.isNotEmpty()) {
+                val horaFin = selectedHour.value.split(":")[0].toInt() + 1
+                Text(text = String.format("%02d:00", horaFin))
             }
-            Spacer(modifier = Modifier.widthIn(min = 115.dp))
         }
 
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(text = "Gestion", modifier = Modifier.widthIn(min = 100.dp))
-            Spacer(modifier = Modifier.width(8.dp))
-            TextField(
-                value = gestionDeseada,
-                onValueChange = { gestionDeseada = it },
-                label = { Text("Especifica que servicio desdeas") }
-            )
-        }
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(text = "Asesor", modifier = Modifier.widthIn(min = 100.dp))
-            Spacer(modifier = Modifier.width(8.dp))
-            selecionAsesor(asesores, mutableStateOf(expandedAsesores), mutableStateOf(asesorDeseado))
-
-
-        }
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -231,61 +249,6 @@ fun CitaPersonalizada() {
     }
 }
 
-@Composable
-fun TimePickerDialog(
-    title: String = "Select Time",
-    onCancel: () -> Unit,
-    onConfirm: () -> Unit,
-    toggle: @Composable () -> Unit = {},
-    content: @Composable () -> Unit,
-) {
-    Dialog(
-        onDismissRequest = onCancel,
-        properties = DialogProperties(
-            usePlatformDefaultWidth = false
-        ),
-    ) {
-        Surface(
-            shape = MaterialTheme.shapes.extraLarge,
-            tonalElevation = 6.dp,
-            modifier = Modifier
-                .width(IntrinsicSize.Min)
-                .height(IntrinsicSize.Min)
-                .background(
-                    shape = MaterialTheme.shapes.extraLarge,
-                    color = MaterialTheme.colorScheme.surface
-                ),
-        ) {
-            Column(
-                modifier = Modifier.padding(24.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 20.dp),
-                    text = title,
-                    style = MaterialTheme.typography.labelMedium
-                )
-                content()
-                Row(
-                    modifier = Modifier
-                        .height(40.dp)
-                        .fillMaxWidth()
-                ) {
-                    toggle()
-                    Spacer(modifier = Modifier.weight(1f))
-                    TextButton(
-                        onClick = onCancel
-                    ) { Text("Cancel") }
-                    TextButton(
-                        onClick = onConfirm
-                    ) { Text("OK") }
-                }
-            }
-        }
-    }
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -326,37 +289,81 @@ fun selecionAsesor(
 }
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CitaGenerica(cita: Cita) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+fun selecionGestion(
+    options: List<String>,
+    expanded: MutableState<Boolean>,
+    selectedOptionText: MutableState<String>,
+    asesorDeseado: MutableState<String>
+) {
+    ExposedDropdownMenuBox(
+        expanded = expanded.value && asesorDeseado.value.isNotEmpty(),
+        onExpandedChange = { if (asesorDeseado.value.isNotEmpty()) expanded.value = it },
     ) {
-        Text(text = "Dia: ${cita.dia}")
-        Text(text = "Hora: ${cita.inicio} - ${cita.fin}")
-        Text(text = "Asesor: ${cita.asesor}")
-        Text(text = "Gestion: ${cita.gestion}")
-        Button(onClick = {}) {
-            Text("Reservar cita")
+        TextField(
+            modifier = Modifier.menuAnchor(),
+            readOnly = true,
+            value = selectedOptionText.value,
+            onValueChange = {},
+            label = { Text("Selecciona una gestion") },
+            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded.value) },
+            colors = ExposedDropdownMenuDefaults.textFieldColors(),
+        )
+        ExposedDropdownMenu(
+            expanded = expanded.value && asesorDeseado.value.isNotEmpty(),
+            onDismissRequest = { expanded.value = false },
+        ) {
+            options.forEach { selectionOption ->
+                DropdownMenuItem(
+                    text = { Text(selectionOption) },
+                    onClick = {
+                        selectedOptionText.value = selectionOption
+                        expanded.value = false
+                    },
+                    contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
+                )
+            }
         }
     }
 }
 
-fun getCitasGenericas(): List<Cita> {
-    return listOf(
-        Cita(1, "Lunes", "8:00", "9:00", true, "Marian", "Gestion de impuestos"),
-        Cita(2, "Martes", "16:00", "17:00", true, "Ionut", "Divoricio"),
-        Cita(3, "Miercoles", "10:00", "11:00", true, "Marian", "Renta"),
-        Cita(4, "Jueves", "8:00", "9:00", true, "Ionut", "Renta"),
-        Cita(5, "Viernes", "16:00", "17:00", true, "Marian", "Renta"),
-        Cita(6, "Sabado", "10:00", "11:00", true, "Ionut", "Divoricio"),
-        Cita(7, "Lunes", "8:00", "9:00", true, "Marian", "Gestion de impuestos")
-    )
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun seleccionHoras(
+    expanded: MutableState<Boolean>,
+    selectedHour: MutableState<String>,
+    asesorDeseado: MutableState<String>
+) {
+    val hoursList = (8..18).map { String.format("%02d:00", it) }
+
+    ExposedDropdownMenuBox(
+        expanded = expanded.value && asesorDeseado.value.isNotEmpty(),
+        onExpandedChange = { if (asesorDeseado.value.isNotEmpty()) expanded.value = it },
+    ) {
+        TextField(
+            modifier = Modifier.menuAnchor(),
+            readOnly = true,
+            value = selectedHour.value,
+            onValueChange = {},
+            label = { Text("Selecciona una hora") },
+            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded.value) },
+            colors = ExposedDropdownMenuDefaults.textFieldColors(),
+        )
+        ExposedDropdownMenu(
+            expanded = expanded.value && asesorDeseado.value.isNotEmpty(),
+            onDismissRequest = { expanded.value = false },
+        ) {
+            hoursList.forEach { hour ->
+                DropdownMenuItem(
+                    text = { Text(hour) },
+                    onClick = {
+                        selectedHour.value = hour
+                        expanded.value = false
+                    },
+                    contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
+                )
+            }
+        }
+    }
 }
-
-
-
-

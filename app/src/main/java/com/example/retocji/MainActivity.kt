@@ -52,7 +52,7 @@ class MainActivity : ComponentActivity() {
 
                         NavHost(
                             navController = navController,
-                            startDestination = "LogIn"
+                            startDestination = "Citas"
                         ) {
                             composable("GeneralInfo") {
                                 val citasViewModel: CitasViewModel = hiltViewModel()
