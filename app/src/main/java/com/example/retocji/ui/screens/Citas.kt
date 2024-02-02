@@ -6,6 +6,7 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
@@ -141,11 +142,13 @@ fun CitaPersonalizada() {
             if (horaDeseadaInicio != 0 ) {
                 //si la hora no esta entre las 8 de la mañana y las 6 de la tarde que no se muestre
 
-                if (horaDeseadaInicio ==8 || horaDeseadaInicio ==9 || horaDeseadaInicio ==10 || horaDeseadaInicio ==11 || horaDeseadaInicio ==12 || horaDeseadaInicio ==13 || horaDeseadaInicio ==14 || horaDeseadaInicio ==15 || horaDeseadaInicio ==16 || horaDeseadaInicio ==17 || horaDeseadaInicio ==18){
+                if (horaDeseadaInicio ==8 || horaDeseadaInicio ==9 || horaDeseadaInicio ==10 || horaDeseadaInicio ==11 || horaDeseadaInicio ==13 || horaDeseadaInicio ==14 || horaDeseadaInicio ==15 || horaDeseadaInicio ==16 || horaDeseadaInicio ==17 || horaDeseadaInicio ==18){
                     val formattedTime = String.format("%02d:%02d", horaDeseadaInicio, minutoDeseadoInicio)
                     Text(text = formattedTime, modifier = Modifier.widthIn(min = 100.dp))
                 }else{
-                    Text(text = "La hora no esta disponible", modifier = Modifier.widthIn(min = 100.dp))
+                    Box(modifier = Modifier.width(100.dp).height(100.dp)){
+                        Text(text = "La hora no esta disponible")
+                    }
                 }
             }
 
@@ -284,38 +287,6 @@ fun TimePickerDialog(
     }
 }
 
-
-@Composable
-fun CitaGenerica(cita: Cita) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(text = "Dia: ${cita.dia}")
-        Text(text = "Hora: ${cita.inicio} - ${cita.fin}")
-        Text(text = "Asesor: ${cita.asesor}")
-        Text(text = "Gestion: ${cita.gestion}")
-        Button(onClick = {}) {
-            Text("Reservar cita")
-        }
-    }
-}
-
-fun getCitasGenericas(): List<Cita> {
-    return listOf(
-        Cita(1, "Lunes", "8:00", "9:00", true, "Marian", "Gestion de impuestos"),
-        Cita(2, "Martes", "16:00", "17:00", true, "Ionut", "Divoricio"),
-        Cita(3, "Miercoles", "10:00", "11:00", true, "Marian", "Renta"),
-        Cita(4, "Jueves", "8:00", "9:00", true, "Ionut", "Renta"),
-        Cita(5, "Viernes", "16:00", "17:00", true, "Marian", "Renta"),
-        Cita(6, "Sabado", "10:00", "11:00", true, "Ionut", "Divoricio"),
-        Cita(7, "Lunes", "8:00", "9:00", true, "Marian", "Gestion de impuestos")
-    )
-}
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun selecionAsesor(
@@ -353,5 +324,39 @@ fun selecionAsesor(
         }
     }
 }
+
+
+@Composable
+fun CitaGenerica(cita: Cita) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(text = "Dia: ${cita.dia}")
+        Text(text = "Hora: ${cita.inicio} - ${cita.fin}")
+        Text(text = "Asesor: ${cita.asesor}")
+        Text(text = "Gestion: ${cita.gestion}")
+        Button(onClick = {}) {
+            Text("Reservar cita")
+        }
+    }
+}
+
+fun getCitasGenericas(): List<Cita> {
+    return listOf(
+        Cita(1, "Lunes", "8:00", "9:00", true, "Marian", "Gestion de impuestos"),
+        Cita(2, "Martes", "16:00", "17:00", true, "Ionut", "Divoricio"),
+        Cita(3, "Miercoles", "10:00", "11:00", true, "Marian", "Renta"),
+        Cita(4, "Jueves", "8:00", "9:00", true, "Ionut", "Renta"),
+        Cita(5, "Viernes", "16:00", "17:00", true, "Marian", "Renta"),
+        Cita(6, "Sabado", "10:00", "11:00", true, "Ionut", "Divoricio"),
+        Cita(7, "Lunes", "8:00", "9:00", true, "Marian", "Gestion de impuestos")
+    )
+}
+
+
 
 
