@@ -168,7 +168,7 @@ class LoginView {
                 Divider(
                     color = Color.Gray,
                     modifier = Modifier
-                        .width(165.dp)
+                        .width(135.dp)
                 )
 
                 Spacer(modifier = Modifier.width(8.dp))
@@ -179,7 +179,7 @@ class LoginView {
                 Divider(
                     color = Color.Gray,
                     modifier = Modifier
-                        .width(165.dp)
+                        .width(135.dp)
                 )
 
             }
@@ -187,14 +187,16 @@ class LoginView {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center,
             ){
-                Spacer(modifier = Modifier.height(16.dp))
+
                 Text(
                     text = "¿Aún no te has registrado? Hazlo ya.",
                     color = Color.Blue,
                     textDecoration = TextDecoration.Underline,
                     modifier = Modifier.clickable {
                         navController.navigate("Registro")
+
                     }
+                        .padding(top=16.dp)
                 )
             }
         }

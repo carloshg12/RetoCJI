@@ -37,11 +37,11 @@ fun Registro(navController: NavController, viewModel: RegistroViewModel) {
     val username by viewModel.username.observeAsState("")
     val password by viewModel.password.observeAsState("")
     val email by viewModel.email.observeAsState("")
-    var buttonClicked by remember{ mutableStateOf(false) }
+    var buttonClicked by remember { mutableStateOf(false) }
 
 
-    val registroExitoso by viewModel.registroExitoso.observeAsState(false)
-
+    val registroExitoso by viewModel.registroExitoso.observeAsState()
+    val mensajeError by viewModel.mensajeError.observeAsState()
 
 
     // Diseño del formulario
@@ -93,16 +93,21 @@ fun Registro(navController: NavController, viewModel: RegistroViewModel) {
             }
 
 
-            if (registroExitoso) {
+            if (registroExitoso == true) {
                 LaunchedEffect(Unit) {
                     navController.navigate("GeneralInfo")
                     viewModel.onRegistroChanged(false)
                     buttonClicked = false
+
+
                 }
-                Text(text = "¡Registrado!",color=Color.Green)
-            } else if (buttonClicked) {
-                Text("ERROR")
+                Text(text = "¡Registrado!", color = Color.Green)
+            } else if (registroExitoso != null) {
+
+                    Text(text = mensajeError!!, color = Color.Red)
+
             }
+
 
         }
     }

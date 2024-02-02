@@ -139,6 +139,7 @@ class LoginViewModel @Inject constructor(
         return Patterns.EMAIL_ADDRESS.matcher(_email.value).matches() && _password.value!!.length >= 6
     }
 
+
     fun viewIcon(): ImageVector  {
         return if (_passwordVisibility.value == true) Icons.Filled.Visibility else Icons.Filled.VisibilityOff
     }
