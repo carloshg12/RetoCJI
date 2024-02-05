@@ -1,12 +1,8 @@
-package com.example.retocji.ui.screens
+package com.example.retocji.ui.viewmodels.logIn
 
 import android.util.Log
 import android.util.Patterns
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -14,6 +10,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.retocji.domain.repositories.ApiService
 import com.example.retocji.domain.repositories.AuthRequest
 import com.example.retocji.domain.repositories.RegisterUserDTO
+import com.example.retocji.ui.screens.logIn.SharedPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -55,7 +52,7 @@ class RegistroViewModel @Inject constructor(
                         _registroExitoso.value = true
                         _mensajeError.value = ""
                         Log.d("RegistroViewModel", "Registro exitoso: $responseBodyString")
-                    }else{
+                    } else {
                         _registroExitoso.value = false
                         _mensajeError.value = responseBodyString
                         Log.d("RegistroViewModel", "Registro fallido: $responseBodyString")
@@ -63,7 +60,7 @@ class RegistroViewModel @Inject constructor(
                     }
                 } else {
                     _registroExitoso.value = false
-                    _mensajeError.value = response.errorBody()?.string()  ?: "Error desconocido"
+                    _mensajeError.value = response.errorBody()?.string() ?: "Error desconocido"
                     val errorBody = response.errorBody()?.string()
                     Log.e(
                         "RegistroViewModel",
@@ -109,6 +106,7 @@ class RegistroViewModel @Inject constructor(
     fun onRegistroChanged(registro: Boolean) {
         _registroExitoso.value = registro
     }
+
     fun onUserChanged(newUsername: String) {
         _username.value = newUsername
     }
@@ -127,6 +125,7 @@ class RegistroViewModel @Inject constructor(
         return Patterns.EMAIL_ADDRESS.matcher(_email.value)
             .matches() && _password.value!!.length >= 6
     }
+
     fun validateEmail(): Boolean {
         return Patterns.EMAIL_ADDRESS.matcher(_email.value).matches()
     }
@@ -134,8 +133,4 @@ class RegistroViewModel @Inject constructor(
     fun changeColor(firstColor: Color, secondColor: Color): Color {
         return if (validateFields()) firstColor else secondColor
     }
-
 }
-
-
-

@@ -1,4 +1,4 @@
-package com.example.login
+package com.example.retocji.ui.viewmodels.logIn
 
 import android.util.Log
 import android.util.Patterns
@@ -13,12 +13,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.retocji.domain.repositories.ApiService
 import com.example.retocji.domain.repositories.AuthRequest
-import com.example.retocji.domain.repositories.Citas
 import com.example.retocji.domain.repositories.CitasDTO
 import com.example.retocji.domain.repositories.RetrofitInstance
-import com.example.retocji.ui.screens.AuthViewModel
-import com.example.retocji.ui.screens.SharedPreferencesManager
-import com.example.retocji.ui.screens.SharedPreferencesRepository
+import com.example.retocji.ui.screens.logIn.SharedPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 
 import kotlinx.coroutines.launch
@@ -83,7 +80,7 @@ class LoginViewModel @Inject constructor(
                     val code = response.code()
                     if (code == 403) {
                         Log.e("Fracaso", "Acceso prohibido: Token no válido")
-                        Log.e("INFO",token)
+                        Log.e("INFO", token)
                         // Manejar el caso de acceso prohibido aquí, por ejemplo, mostrar un mensaje al usuario
                     } else {
                         val errorResponse = response.errorBody()?.string()
@@ -97,6 +94,7 @@ class LoginViewModel @Inject constructor(
 
 
     }
+
     fun userProfile() {
         viewModelScope.launch {
             try {
@@ -136,11 +134,12 @@ class LoginViewModel @Inject constructor(
     }
 
     fun validateFields(): Boolean {
-        return Patterns.EMAIL_ADDRESS.matcher(_email.value).matches() && _password.value!!.length >= 6
+        return Patterns.EMAIL_ADDRESS.matcher(_email.value)
+            .matches() && _password.value!!.length >= 6
     }
 
 
-    fun viewIcon(): ImageVector  {
+    fun viewIcon(): ImageVector {
         return if (_passwordVisibility.value == true) Icons.Filled.Visibility else Icons.Filled.VisibilityOff
     }
 

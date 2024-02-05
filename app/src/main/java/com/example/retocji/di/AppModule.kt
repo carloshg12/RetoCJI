@@ -39,10 +39,12 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun providePDFRepository(pdfGenerator: PDFGenerator): PDFRepository = PDFRepositoryImpl(pdfGenerator)
+    fun providePDFRepository(pdfGenerator: PDFGenerator): PDFRepository =
+        PDFRepositoryImpl(pdfGenerator)
 
     @Singleton
     @Provides
-    fun provideGenerarPDFUseCase(pdfRepository: PDFRepository): GenerarPDFUseCase = GenerarPDFUseCase(pdfRepository)
+    fun provideGenerarPDFUseCase(pdfRepository: PDFRepository): GenerarPDFUseCase =
+        GenerarPDFUseCase(pdfRepository)
 
 }

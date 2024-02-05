@@ -1,4 +1,4 @@
-package com.example.retocji.ui.screens
+package com.example.retocji.ui.screens.logIn
 
 import android.content.SharedPreferences
 import javax.inject.Inject
@@ -13,5 +13,4 @@ class SharedPreferencesRepository @Inject constructor(private val sharedPreferen
         return sharedPreferences.getString("auth_token", null)
     }
 
-    // Agrega más funciones según sea necesario para manejar diferentes preferencias
 }

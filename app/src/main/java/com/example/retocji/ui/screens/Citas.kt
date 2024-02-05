@@ -1,18 +1,13 @@
-
 package com.example.retocji.ui.screens
 
 import android.annotation.SuppressLint
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
@@ -24,7 +19,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import com.example.retocji.domain.models.Cita
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TextField
@@ -37,21 +31,12 @@ import java.util.Date
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.DatePickerState
-import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Surface
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.TimePicker
-import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 import java.time.DayOfWeek
 import java.time.Instant
 import java.time.ZoneId
@@ -72,7 +57,7 @@ fun citas() {
     LazyColumn {
         item {
             CitaPersonalizada(
-                expandedAsesores = mutableStateOf(expandedAsesores) ,
+                expandedAsesores = mutableStateOf(expandedAsesores),
                 asesorDeseado = mutableStateOf(asesorDeseado),
                 expandedGestiones = mutableStateOf(expandedGestiones),
                 gestionDeseada = mutableStateOf(gestionDeseada),
@@ -100,7 +85,7 @@ fun CitaPersonalizada(
     selectedHour: MutableState<String>,
     asesores: List<String> = listOf(),
     gestiones: List<String> = listOf(),
-    showDialog: MutableState<Boolean> ,
+    showDialog: MutableState<Boolean>,
     datePickerState: DatePickerState = rememberDatePickerState()
 ) {
     Column(
@@ -144,11 +129,9 @@ fun CitaPersonalizada(
             selecionAsesor(
                 asesores,
                 expandedAsesores,
-                asesorDeseado)
+                asesorDeseado
+            )
         }
-
-
-
 
 
         //selecion gestor
@@ -196,9 +179,12 @@ fun CitaPersonalizada(
                     DatePicker(
                         state = datePickerState,
                         dateValidator = { timestamp ->
-                            val selectedDate = Instant.ofEpochMilli(timestamp).atZone(ZoneId.systemDefault()).toLocalDate()
+                            val selectedDate =
+                                Instant.ofEpochMilli(timestamp).atZone(ZoneId.systemDefault())
+                                    .toLocalDate()
                             val dayOfWeek = selectedDate.dayOfWeek
-                            timestamp > Instant.now().toEpochMilli() && dayOfWeek != DayOfWeek.SATURDAY && dayOfWeek != DayOfWeek.SUNDAY
+                            timestamp > Instant.now()
+                                .toEpochMilli() && dayOfWeek != DayOfWeek.SATURDAY && dayOfWeek != DayOfWeek.SUNDAY
                         },
                     )
                 }
@@ -215,7 +201,7 @@ fun CitaPersonalizada(
         ) {
             Text(text = "Hora Inicio", modifier = Modifier.widthIn(min = 100.dp))
             Spacer(modifier = Modifier.width(8.dp))
-            seleccionHoras(expandedHour, selectedHour,asesorDeseado)
+            seleccionHoras(expandedHour, selectedHour, asesorDeseado)
         }
 
         // Sección para poner hora fin

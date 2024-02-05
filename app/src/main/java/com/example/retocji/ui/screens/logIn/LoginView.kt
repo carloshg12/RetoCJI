@@ -1,9 +1,8 @@
-package com.example.login
+package com.example.retocji.ui.screens.logIn
 
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -16,10 +15,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
@@ -27,13 +22,9 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -46,16 +37,16 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.retocji.R
-import com.example.retocji.domain.repositories.Citas
 import com.example.retocji.domain.repositories.CitasDTO
 import com.example.retocji.domain.repositories.UsersDTO
+import com.example.retocji.ui.viewmodels.logIn.LoginViewModel
 import java.time.LocalDateTime
 
 class LoginView {
     @RequiresApi(Build.VERSION_CODES.O)
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    fun login(loginViewModel: LoginViewModel,navController: NavController) {
+    fun login(loginViewModel: LoginViewModel, navController: NavController) {
         val loginResult by loginViewModel.loginResult.observeAsState()
         val loginSuccess by loginViewModel.loginSuccess.observeAsState()
         val email by loginViewModel.email.observeAsState(initial = "")
@@ -127,7 +118,8 @@ class LoginView {
             val cita = CitasDTO(
 
                 horaInicio = LocalDateTime.now().toString(), // La hora de inicio actual
-                horaFin = LocalDateTime.now().plusHours(1).toString(), // La hora de fin, una hora después
+                horaFin = LocalDateTime.now().plusHours(1)
+                    .toString(), // La hora de fin, una hora después
                 usuario = UsersDTO(
                     id = 1,
                     name = "Jose",
@@ -186,17 +178,18 @@ class LoginView {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center,
-            ){
+            ) {
 
                 Text(
                     text = "¿Aún no te has registrado? Hazlo ya.",
                     color = Color.Blue,
                     textDecoration = TextDecoration.Underline,
-                    modifier = Modifier.clickable {
-                        navController.navigate("Registro")
+                    modifier = Modifier
+                        .clickable {
+                            navController.navigate("Registro")
 
-                    }
-                        .padding(top=16.dp)
+                        }
+                        .padding(top = 16.dp)
                 )
             }
         }

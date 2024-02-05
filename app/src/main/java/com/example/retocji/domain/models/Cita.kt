@@ -7,5 +7,5 @@ data class Cita(
     val fin: String?,
     var disponible: Boolean?,
     val asesor: String?,
-    val gestion:String?
+    val gestion: String?
 )

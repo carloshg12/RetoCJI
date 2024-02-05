@@ -3,8 +3,6 @@ package com.example.retocji.domain.repositories
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.Body
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
@@ -14,12 +12,13 @@ interface ApiService {
     suspend fun login(@Body authRequest: AuthRequest): Response<Token>
 
     @POST("citas/crear")
-    suspend fun crearCita(@Header("Authorization") token: String,
-                          @Body citas : CitasDTO
-    ) : Response<ResponseBody>
+    suspend fun crearCita(
+        @Header("Authorization") token: String,
+        @Body citas: CitasDTO
+    ): Response<ResponseBody>
 
     @GET("auth/user/userProfile")
-    suspend fun userProfile(@Header("Authorization") token:String) :Response<ResponseBody>
+    suspend fun userProfile(@Header("Authorization") token: String): Response<ResponseBody>
 
 
     @POST("/auth/addNewUser")
