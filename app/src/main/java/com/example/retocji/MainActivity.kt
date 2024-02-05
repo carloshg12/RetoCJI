@@ -36,20 +36,20 @@ class MainActivity : ComponentActivity() {
             RetoCJITheme {
                 val navController = rememberNavController()
                 val viewModel: GestionesViewModel = hiltViewModel()
-
+                val citasViewModel: CitasViewModel = hiltViewModel()
                 NavHost(
                     navController = navController,
-                    startDestination = "GeneralInfo"
+                    startDestination = "LogIn"
                 ) {
                     composable("GeneralInfo") {
-                        val citasViewModel: CitasViewModel = hiltViewModel()
+
                         scaffold(navController = navController) {
                             GeneralInfo(navController, citasViewModel)
                         }
                     }
                     composable("Citas") {
                         scaffold(navController = navController) {
-                            citas()
+                            citas(citasViewModel,navController)
                         }
                     }
                     composable("Gestiones") {
@@ -58,7 +58,10 @@ class MainActivity : ComponentActivity() {
                         }
                     }
                     composable("SobreNosotros") {
-                        informacion()
+                        scaffold(navController = navController) {
+                            informacion()
+                        }
+
                     }
                     composable("LogIn") {
 

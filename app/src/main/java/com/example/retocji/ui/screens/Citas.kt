@@ -37,6 +37,10 @@ import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.navigation.NavController
+import com.example.retocji.ui.viewmodels.CitasViewModel
+import com.example.retocji.ui.viewmodels.logIn.LoginViewModel
 import java.time.DayOfWeek
 import java.time.Instant
 import java.time.ZoneId
@@ -45,7 +49,7 @@ import java.time.ZoneId
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun citas() {
+fun citas(citasViewModel: CitasViewModel, navController: NavController) {
     var expandedAsesores by remember { mutableStateOf(false) }
     var asesorDeseado by remember { mutableStateOf("") }
     var expandedGestiones by remember { mutableStateOf(false) }
@@ -53,6 +57,10 @@ fun citas() {
     var expandedHour by remember { mutableStateOf(false) }
     var selectedHour by remember { mutableStateOf("") }
     var showDialog by remember { mutableStateOf(false) }
+
+    val asesores by citasViewModel.gestoresLiveData.observeAsState(initial = emptyList())
+
+
 
     LazyColumn {
         item {
@@ -63,7 +71,7 @@ fun citas() {
                 gestionDeseada = mutableStateOf(gestionDeseada),
                 expandedHour = mutableStateOf(expandedHour),
                 selectedHour = mutableStateOf(selectedHour),
-                asesores = listOf("Juan", "Pedro", "Luis"),
+                asesores = asesores,
                 gestiones = listOf("Gestion 1", "Gestion 2", "Gestion 3"),
                 showDialog = mutableStateOf(showDialog),
                 datePickerState = rememberDatePickerState(),
