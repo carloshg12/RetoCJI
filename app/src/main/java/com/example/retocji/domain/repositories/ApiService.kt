@@ -24,4 +24,7 @@ interface ApiService {
     @POST("/auth/addNewUser")
     suspend fun addNewUser(@Body registerUserDTO: RegisterUserDTO): Response<ResponseBody>
 
+    @GET("/auth/user/gestores")
+    suspend fun getGestores(@Header("Authorization") token: String): Response<List<String>>
+
 }
