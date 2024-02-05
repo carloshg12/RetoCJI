@@ -15,7 +15,7 @@ import com.example.retocji.ui.screens.logIn.LoginView
 import com.example.retocji.ui.viewmodels.logIn.LoginViewModel
 import com.example.retocji.ui.components.scaffold
 import com.example.retocji.ui.viewmodels.CitasViewModel
-import com.example.retocji.ui.screens.GeneralInfo
+import com.example.retocji.ui.screens.Bienvenida
 import com.example.retocji.ui.screens.logIn.Registro
 import com.example.retocji.ui.viewmodels.logIn.RegistroViewModel
 import com.example.retocji.ui.screens.citas
@@ -44,7 +44,7 @@ class MainActivity : ComponentActivity() {
                     composable("GeneralInfo") {
                         val citasViewModel: CitasViewModel = hiltViewModel()
                         scaffold(navController = navController) {
-                            GeneralInfo(navController, citasViewModel)
+                            Bienvenida(navController, citasViewModel)
                         }
                     }
                     composable("Citas") {
@@ -63,7 +63,6 @@ class MainActivity : ComponentActivity() {
                     composable("LogIn") {
 
                         val loginViewModel: LoginViewModel = hiltViewModel()
-
                         LoginView().login(loginViewModel, navController)
 
                     }
