@@ -58,7 +58,10 @@ class MainActivity : ComponentActivity() {
                         }
                     }
                     composable("SobreNosotros") {
-                        informacion()
+                        scaffold(navController =navController) {
+                            informacion()
+                        }
+
                     }
                     composable("LogIn") {
 
