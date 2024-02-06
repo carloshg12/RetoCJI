@@ -20,7 +20,7 @@ import com.example.retocji.ui.screens.logIn.Registro
 import com.example.retocji.ui.viewmodels.logIn.RegistroViewModel
 import com.example.retocji.ui.screens.citas
 import com.example.retocji.ui.screens.GestionesScreen
-import com.example.retocji.ui.screens.informacion
+import com.example.retocji.ui.screens.Informacion
 import com.example.retocji.ui.theme.RetoCJITheme
 import com.example.retocji.ui.viewmodels.GestionesViewModel
 import com.example.retocji.ui.viewmodels.UserNameViewModel
@@ -63,7 +63,7 @@ class MainActivity : ComponentActivity() {
                     }
                     composable("SobreNosotros") {
                         scaffold(navController = navController) {
-                            informacion()
+                            Informacion()
                         }
 
                     }
