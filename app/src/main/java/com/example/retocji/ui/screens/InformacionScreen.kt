@@ -9,6 +9,7 @@ import com.example.retocji.ui.components.informacion.*
 
 @Composable
 fun Informacion() {
+
     Scaffold { padding ->
         Column(
             modifier = Modifier

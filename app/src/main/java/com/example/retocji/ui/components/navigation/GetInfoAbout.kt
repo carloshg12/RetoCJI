@@ -6,11 +6,11 @@ import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
 
-fun getInfoAbout(): List<Navigation_Data> {
+fun getInfoAbout(): List<NavigationData> {
     return listOf(
-        Navigation_Data(Icons.Filled.Home, "Bienvenido", "GeneralInfo"),
-        Navigation_Data(Icons.Filled.CalendarToday, "Citas", "Citas"),
-        Navigation_Data(Icons.Filled.BusinessCenter, "Gestiones", "Gestiones"),
-        Navigation_Data(Icons.Filled.Info, "Información", "SobreNosotros"),
+        NavigationData(Icons.Filled.Home, "Bienvenido", "GeneralInfo"),
+        NavigationData(Icons.Filled.CalendarToday, "Citas", "Citas"),
+        NavigationData(Icons.Filled.BusinessCenter, "Gestiones", "Gestiones"),
+        NavigationData(Icons.Filled.Info, "Información", "SobreNosotros"),
     )
 }

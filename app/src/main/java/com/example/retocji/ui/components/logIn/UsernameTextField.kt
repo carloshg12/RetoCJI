@@ -7,11 +7,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 @Composable
-fun EmailTextFieldComponent(email: String, onEmailChanged: (String) -> Unit) {
+fun UsernameTextFieldComponent(username: String, onUsernameChanged: (String) -> Unit) {
     OutlinedTextField(
-        value = email,
-        onValueChange = onEmailChanged,
-        label = { Text("Usuario") },
+        value = username,
+        onValueChange = onUsernameChanged,
+        label = { Text("Nombre de usuario") },
         singleLine = true,
         modifier = Modifier.fillMaxWidth()
     )

@@ -2,11 +2,10 @@ package com.example.retocji.ui.components.navigation
 
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavController
 
 @Composable
-fun NavigationBar(navController: NavController, items: List<Navigation_Data>) {
+fun NavigationBar(navController: NavController, items: List<NavigationData>) {
     val currentRoute = navController.currentBackStackEntry?.destination?.route
 
     NavigationBar {

@@ -15,7 +15,7 @@ import com.example.retocji.data.sources.remote.ApiService
 import com.example.retocji.domain.models.AuthRequest
 import com.example.retocji.domain.models.citas.CitasDTO
 import com.example.retocji.data.sources.remote.RetrofitInstance
-import com.example.retocji.ui.screens.logIn.SharedPreferencesRepository
+import com.example.retocji.domain.repositories.SharedPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 
 import kotlinx.coroutines.launch
