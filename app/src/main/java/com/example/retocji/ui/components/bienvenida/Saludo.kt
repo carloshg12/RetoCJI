@@ -20,7 +20,7 @@ fun Saludo(userNameViewModel: UserNameViewModel = hiltViewModel()) {
         modifier = Modifier.padding(2.dp)
     ) {
         Text(
-            text = "Bienvenid@, $nombreUsuario",
+            text = "Bienvenid@ $nombreUsuario",
             style = MaterialTheme.typography.displayMedium.copy(
                 fontWeight = FontWeight.Bold,
                 fontSize = 26.sp,

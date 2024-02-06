@@ -39,6 +39,6 @@ interface ApiService {
 
 
     @GET("/auth/user/name")
-    suspend fun getUserName(@Header("Authorization") token: String): Response<String>
+    suspend fun getUserName(@Header("Authorization") authHeader: String, @Query("token") token: String): Response<ResponseBody>
 
 }
