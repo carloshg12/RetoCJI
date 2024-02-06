@@ -1,4 +1,4 @@
-package com.example.retocji.ui.screens.components
+package com.example.retocji.ui.components.gestiones
 
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items

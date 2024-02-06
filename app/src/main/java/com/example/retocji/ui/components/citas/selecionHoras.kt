@@ -1,5 +1,4 @@
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -9,15 +8,8 @@ import androidx.compose.material.icons.filled.ArrowDropUp
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import com.example.retocji.domain.repositories.CitasDTO
-import java.time.Instant
-import java.time.LocalDate
-import java.time.LocalTime
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
 
 @RequiresApi(Build.VERSION_CODES.O)
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun seleccionHoras(
     selectedHour: MutableState<String>,
@@ -26,8 +18,6 @@ fun seleccionHoras(
     horas: List<String>?
 ) {
     var expanded by remember { mutableStateOf(false) }
-    // Asumiendo que 'horas' ya contiene las horas disponibles,
-    // y que 'selectedHour.value' es la hora actualmente seleccionada.
 
     Column {
         TextField(

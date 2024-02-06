@@ -9,7 +9,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ArrowForward
+import androidx.compose.material.icons.automirrored.outlined.ArrowForward
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -25,14 +25,14 @@ fun SolicitarCita(navController: NavController) {
 
     Text(
         text = "Citas",
-        style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.ExtraBold), // Estilo de texto más grande y en negrita
-        color = MaterialTheme.colorScheme.primary // Color más vibrante
+        style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.ExtraBold),
+        color = MaterialTheme.colorScheme.primary
     )
     Text(
         text = "Solicita una cita para nuestros servicios de asesoría y consultoría.",
-        style = MaterialTheme.typography.bodyLarge, // Texto más grande para mejor legibilidad
+        style = MaterialTheme.typography.bodyLarge,
         color = MaterialTheme.colorScheme.onSurfaceVariant,
-        modifier = Modifier.padding(top = 12.dp, bottom = 24.dp) // Aumento del espaciado
+        modifier = Modifier.padding(top = 12.dp, bottom = 24.dp)
     )
 
     Button(
@@ -49,7 +49,7 @@ fun SolicitarCita(navController: NavController) {
                 style = MaterialTheme.typography.bodyLarge.copy(color = Color.White, fontSize = 18.sp)
             )
             Icon(
-                imageVector = Icons.Outlined.ArrowForward,
+                imageVector = Icons.AutoMirrored.Outlined.ArrowForward,
                 contentDescription = "Forward",
                 tint = Color.White
             )

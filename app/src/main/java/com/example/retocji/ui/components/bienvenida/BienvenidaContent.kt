@@ -10,7 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.retocji.domain.models.Noticia
-import com.example.retocji.ui.viewmodels.CitasViewModel
 import com.example.retocji.ui.viewmodels.UserNameViewModel
 import com.google.accompanist.pager.PagerState
 
