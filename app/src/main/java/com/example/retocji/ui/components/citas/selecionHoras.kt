@@ -2,6 +2,9 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.ArrowDropUp
@@ -17,33 +20,18 @@ fun seleccionHoras(
     asesorDeseado: String,
     horas: List<String>?
 ) {
-    var expanded by remember { mutableStateOf(false) }
-
-    Column {
-        TextField(
-            value = selectedHour.value,
-            onValueChange = {},
-            readOnly = true,
-            trailingIcon = {
-                Icon(
-                    imageVector = if (expanded) Icons.Filled.ArrowDropUp else Icons.Filled.ArrowDropDown,
-                    contentDescription = null,
-                    Modifier.clickable { expanded = !expanded }
-                )
-            },
-            label = { Text("Selecciona una hora") }
-        )
-        DropdownMenu(
-            expanded = expanded,
-            onDismissRequest = { expanded = false }
-        ) {
-            horas?.forEach { hora ->
-                DropdownMenuItem(onClick = {
-                    selectedHour.value = hora
-                    onHourSelected(hora)
-                    expanded = false
-                }, text = { Text(text = hora)})
-            }
+    LazyColumn {
+        items(horas ?: emptyList()) { hora ->
+            Text(
+                text = hora,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable {
+                        selectedHour.value = hora
+                        onHourSelected(hora)
+                    }
+            )
+            Divider() // Opcional: Agrega una línea divisoria entre elementos
         }
     }
 }
