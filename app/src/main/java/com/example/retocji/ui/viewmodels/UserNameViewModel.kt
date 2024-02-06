@@ -1,5 +1,6 @@
 package com.example.retocji.ui.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -28,9 +29,11 @@ class UserNameViewModel @Inject constructor(
             val token = sharedPreferencesRepository.getAuthToken()
             if (token != null) {
                 try {
-                    val response = apiService.getUserName("Bearer $token")
+                    val response = apiService.getUserName("Bearer $token",token)
                     if (response.isSuccessful) {
-                        _userName.value = response.body() ?: "Nombre de usuario no encontrado"
+                        val responseBodyString = response.body()?.string() ?: "Respuesta vacía"
+                        _userName.value = responseBodyString
+                        Log.e("USER",_userName.value!!)
                     } else {
                         _userName.value = "Error al obtener el nombre de usuario: ${response.errorBody()?.string()}"
                     }
