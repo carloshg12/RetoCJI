@@ -1,4 +1,4 @@
-package com.example.retocji.ui.screens.components
+package com.example.retocji.ui.components.gestiones
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.clickable

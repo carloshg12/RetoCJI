@@ -14,7 +14,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 @Composable
 fun Saludo(userNameViewModel: UserNameViewModel = hiltViewModel()) {
 
-    val nombreUsuario by userNameViewModel.getUserName().observeAsState("Cargando...")
+    val nombreUsuario by userNameViewModel.userName.observeAsState("Cargando...")
 
     Column(
         modifier = Modifier.padding(2.dp)

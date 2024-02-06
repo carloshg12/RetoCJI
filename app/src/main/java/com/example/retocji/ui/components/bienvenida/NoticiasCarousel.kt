@@ -31,44 +31,44 @@ fun NoticiasCarousel(noticiasEjemplo: List<Noticia>, pagerState: PagerState) {
         state = pagerState,
         modifier = Modifier
             .fillMaxWidth()
-            .height(300.dp) // Altura total de la tarjeta
+            .height(300.dp)
     ) { page ->
         val noticia = noticiasEjemplo[page]
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(300.dp), // Altura total de la tarjeta
-            elevation = CardDefaults.cardElevation(defaultElevation = 8.dp) // Elevación aumentada para más profundidad
+                .height(300.dp),
+            elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
         ) {
             Column {
                 Image(
                     painter = painterResource(id = noticia.imagenId),
                     contentDescription = "Imagen de noticia",
                     modifier = Modifier
-                        .weight(0.5f) // Asigna un peso para ocupar una parte proporcional de la altura de la tarjeta
-                        .fillMaxWidth(), // La imagen ocupará todo el ancho disponible
-                    contentScale = ContentScale.Crop // Asegura que la imagen cubra todo el espacio disponible
+                        .weight(0.5f)
+                        .fillMaxWidth(),
+                    contentScale = ContentScale.Crop
                 )
                 Column(
                     modifier = Modifier
-                        .weight(0.5f) // Asigna un peso para que el texto ocupe la parte restante de la altura
-                        .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.85f)) // Fondo con transparencia
-                        .fillMaxWidth() // El texto ocupará todo el ancho disponible
-                        .padding(16.dp), // Aumento del relleno para el texto
+                        .weight(0.5f)
+                        .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.85f))
+                        .fillMaxWidth()
+                        .padding(16.dp),
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.Start
                 ) {
                     Text(
                         text = noticia.titulo,
-                        style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold), // Texto más grande y en negrita
+                        style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
                         color = MaterialTheme.colorScheme.onSurface,
-                        modifier = Modifier.padding(bottom = 8.dp) // Espaciado aumentado entre el título y el resumen
+                        modifier = Modifier.padding(bottom = 8.dp)
                     )
                     Text(
                         text = noticia.resumen,
-                        style = MaterialTheme.typography.bodyLarge, // Texto más grande para mejor legibilidad
+                        style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(bottom = 8.dp) // Espaciado aumentado al final del resumen
+                        modifier = Modifier.padding(bottom = 8.dp)
                     )
                 }
             }
@@ -77,12 +77,12 @@ fun NoticiasCarousel(noticiasEjemplo: List<Noticia>, pagerState: PagerState) {
 
     Box(
         modifier = Modifier
-            .fillMaxWidth() // Asegura que el Box ocupe todo el ancho disponible
-            .padding(16.dp) // Agrega un padding alrededor del indicador para posicionarlo correctamente
+            .fillMaxWidth()
+            .padding(16.dp)
     ) {
         HorizontalPagerIndicator(
             pagerState = pagerState,
-            modifier = Modifier.align(Alignment.Center), // Centra el indicador horizontalmente dentro del Box
+            modifier = Modifier.align(Alignment.Center),
             activeColor = MaterialTheme.colorScheme.primary,
             inactiveColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
         )

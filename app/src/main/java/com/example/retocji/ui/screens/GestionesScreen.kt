@@ -7,7 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.retocji.ui.components.gestiones.BotonImprimirInformacion
 import com.example.retocji.ui.components.gestiones.CarritoCitas
-import com.example.retocji.ui.screens.components.ListaCitas
+import com.example.retocji.ui.components.gestiones.ListaCitas
 import com.example.retocji.ui.viewmodels.GestionesViewModel
 import androidx.compose.ui.graphics.Color
 
