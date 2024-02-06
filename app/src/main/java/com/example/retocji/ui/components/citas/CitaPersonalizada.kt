@@ -30,6 +30,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.retocji.domain.repositories.CitasDTO
+import com.example.retocji.ui.viewmodels.CitasViewModel
+import seleccionHoras
 import java.text.SimpleDateFormat
 import java.time.DayOfWeek
 import java.time.Instant
@@ -41,17 +44,21 @@ import java.util.Date
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     fun CitaPersonalizada(
-        expandedAsesores: MutableState<Boolean>,
-        asesorDeseado: MutableState<String>,
-        expandedGestiones: MutableState<Boolean>,
-        gestionDeseada: MutableState<String>,
-        expandedHour: MutableState<Boolean>,
-        selectedHour: MutableState<String>,
-        asesores: List<String> = listOf(),
-        gestiones: List<String> = listOf(),
-        showDialog: MutableState<Boolean>,
-        datePickerState: DatePickerState = rememberDatePickerState()
-    ) {
+    expandedAsesores: MutableState<Boolean>,
+    asesorDeseado: String,
+    expandedGestiones: MutableState<Boolean>,
+    gestionDeseada: MutableState<String>,
+    expandedHour: MutableState<Boolean>,
+    selectedHour: MutableState<String>,
+    asesores: List<String> = listOf(),
+    gestiones: List<String> = listOf(),
+    showDialog: MutableState<Boolean>,
+    datePickerState: DatePickerState = rememberDatePickerState(),
+    citas: List<CitasDTO>,
+    citasViewModel: CitasViewModel,
+    horas: List<String>?
+) {
+
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -88,13 +95,14 @@ import java.util.Date
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
+
                 Text(text = "Asesor", modifier = Modifier.widthIn(min = 100.dp))
                 Spacer(modifier = Modifier.width(8.dp))
                 selecionAsesor(
-                    asesores,
-                    expandedAsesores,
-                    asesorDeseado
+                    options = asesores,
+                    onAsesorSelected = citasViewModel::setAsesorDeseado
                 )
+
             }
 
 
@@ -108,7 +116,10 @@ import java.util.Date
             ) {
                 Text(text = "Gestion", modifier = Modifier.widthIn(min = 100.dp))
                 Spacer(modifier = Modifier.width(8.dp))
-                selecionGestion(gestiones, expandedGestiones, gestionDeseada, asesorDeseado)
+                selecionGestion(gestiones,
+                    onGestionSelected = {gestion ->
+                    gestionDeseada.value = gestion
+                } ,  asesorDeseado)
             }
 
 
@@ -124,14 +135,19 @@ import java.util.Date
                 diaDeseado?.let {
                     Text(text = SimpleDateFormat("dd/MM/yyyy").format(Date(it)))
                 }
-                Button(onClick = { if (asesorDeseado.value.isNotEmpty()) showDialog.value = true }) {
+                Button(onClick = { if (asesorDeseado.isNotEmpty()) showDialog.value = true }) {
                     Text("Elegir día")
                 }
                 if (showDialog.value) {
                     DatePickerDialog(
                         onDismissRequest = { showDialog.value = false },
                         confirmButton = {
-                            Button(onClick = { showDialog.value = false }) {
+                            Button(onClick = {
+                                citasViewModel.setFechaSeleccionada(Instant.ofEpochMilli(
+                                    datePickerState.selectedDateMillis!!
+                                ).atZone(ZoneId.systemDefault()).toLocalDate())
+                                showDialog.value = false
+                            }) {
                                 Text("Confirmar")
                             }
                         }, dismissButton = {
@@ -165,7 +181,17 @@ import java.util.Date
             ) {
                 Text(text = "Hora Inicio", modifier = Modifier.widthIn(min = 100.dp))
                 Spacer(modifier = Modifier.width(8.dp))
-                seleccionHoras(expandedHour, selectedHour, asesorDeseado)
+                seleccionHoras(
+                    //expanded = expandedHour,
+                    selectedHour = selectedHour,
+                    onHourSelected = { hour ->
+                        selectedHour.value = hour
+                    },
+                    asesorDeseado = asesorDeseado,
+                    //citas = citas,
+                    //diaDeseado = diaDeseado,
+                    horas
+                )
             }
 
             // Sección para poner hora fin

@@ -1,51 +1,62 @@
-package com.example.retocji.ui.components.citas
-
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.ExposedDropdownMenuDefaults
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
+import android.os.Build
+import android.util.Log
+import androidx.annotation.RequiresApi
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.ArrowDropUp
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import com.example.retocji.domain.repositories.CitasDTO
+import java.time.Instant
+import java.time.LocalDate
+import java.time.LocalTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun seleccionHoras(
-    expanded: MutableState<Boolean>,
     selectedHour: MutableState<String>,
-    asesorDeseado: MutableState<String>
+    onHourSelected: (String) -> Unit,
+    asesorDeseado: String,
+    horas: List<String>?
 ) {
-    val hoursList = (8..18).map { String.format("%02d:00", it) }
+    var expanded by remember { mutableStateOf(false) }
+    // Asumiendo que 'horas' ya contiene las horas disponibles,
+    // y que 'selectedHour.value' es la hora actualmente seleccionada.
 
-    ExposedDropdownMenuBox(
-        expanded = expanded.value && asesorDeseado.value.isNotEmpty(),
-        onExpandedChange = { if (asesorDeseado.value.isNotEmpty()) expanded.value = it },
-    ) {
+    Column {
         TextField(
-            modifier = Modifier.menuAnchor(),
-            readOnly = true,
             value = selectedHour.value,
             onValueChange = {},
-            label = { Text("Selecciona una hora") },
-            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded.value) },
-            colors = ExposedDropdownMenuDefaults.textFieldColors(),
-        )
-        ExposedDropdownMenu(
-            expanded = expanded.value && asesorDeseado.value.isNotEmpty(),
-            onDismissRequest = { expanded.value = false },
-        ) {
-            hoursList.forEach { hour ->
-                DropdownMenuItem(
-                    text = { Text(hour) },
-                    onClick = {
-                        selectedHour.value = hour
-                        expanded.value = false
-                    },
-                    contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
+            readOnly = true,
+            trailingIcon = {
+                Icon(
+                    imageVector = if (expanded) Icons.Filled.ArrowDropUp else Icons.Filled.ArrowDropDown,
+                    contentDescription = null,
+                    Modifier.clickable { expanded = !expanded }
                 )
+            },
+            label = { Text("Selecciona una hora") }
+        )
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false }
+        ) {
+            horas?.forEach { hora ->
+                DropdownMenuItem(onClick = {
+                    selectedHour.value = hora
+                    onHourSelected(hora)
+                    expanded = false
+                }, text = { Text(text = hora)})
             }
         }
     }
 }
+
+
+
