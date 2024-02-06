@@ -37,8 +37,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.retocji.R
-import com.example.retocji.domain.repositories.CitasDTO
-import com.example.retocji.domain.repositories.UsersDTO
+import com.example.retocji.ui.viewmodels.CitasViewModel
 import com.example.retocji.ui.viewmodels.logIn.LoginViewModel
 import java.time.LocalDateTime
 
@@ -46,7 +45,11 @@ class LoginView {
     @RequiresApi(Build.VERSION_CODES.O)
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    fun login(loginViewModel: LoginViewModel, navController: NavController) {
+    fun login(
+        loginViewModel: LoginViewModel,
+        citasViewModel: CitasViewModel,
+        navController: NavController
+    ) {
         val loginResult by loginViewModel.loginResult.observeAsState()
         val loginSuccess by loginViewModel.loginSuccess.observeAsState()
         val email by loginViewModel.email.observeAsState(initial = "")
@@ -115,34 +118,17 @@ class LoginView {
                     text = "¿Has olvidado tu contraseña?",
                 )
             }
-            val cita = CitasDTO(
 
-                horaInicio = LocalDateTime.now().toString(), // La hora de inicio actual
-                horaFin = LocalDateTime.now().plusHours(1)
-                    .toString(), // La hora de fin, una hora después
-                usuario = UsersDTO(
-                    id = 1,
-                    name = "Jose",
-                    email = "aluebr5363@ieselcaminas.org"
-                ), // Un usuario de ejemplo
-                gestor = UsersDTO(
-                    id = 1,
-                    name = "Jose",
-                    email = "aluebr5363@ieselcaminas.org"
-                ) // Un gestor de ejemplo
-            )
 
             Button(
                 onClick = {
                     loginViewModel.login(email, password) { success ->
                         if (success) {
                             navController.navigate("GeneralInfo")
+                            citasViewModel.obtenerGestores()
                         }
                     }
-                    loginViewModel.crearCita(
-                        cita
-                    )
-                    loginViewModel.userProfile()
+
 
                 },
                 modifier = Modifier.fillMaxWidth()

@@ -37,12 +37,13 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 val viewModel: GestionesViewModel = hiltViewModel()
                 val citasViewModel: CitasViewModel = hiltViewModel()
+                val loginViewModel: LoginViewModel = hiltViewModel()
+
                 NavHost(
                     navController = navController,
                     startDestination = "LogIn"
                 ) {
                     composable("GeneralInfo") {
-
                         scaffold(navController = navController) {
                             Bienvenida(navController, citasViewModel)
                         }
@@ -64,9 +65,7 @@ class MainActivity : ComponentActivity() {
 
                     }
                     composable("LogIn") {
-
-                        val loginViewModel: LoginViewModel = hiltViewModel()
-                        LoginView().login(loginViewModel, navController)
+                        LoginView().login(loginViewModel,citasViewModel, navController)
 
                     }
                     composable("Registro") {
