@@ -11,12 +11,13 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.retocji.domain.models.Noticia
 import com.example.retocji.ui.viewmodels.CitasViewModel
+import com.example.retocji.ui.viewmodels.UserNameViewModel
 import com.google.accompanist.pager.PagerState
 
 @Composable
 fun BienvenidaContent(
     navController: NavController,
-    citasViewModel: CitasViewModel,
+    userNameViewModel: UserNameViewModel,
     noticiasEjemplo: List<Noticia>,
     pagerState: PagerState
 ) {
@@ -25,7 +26,7 @@ fun BienvenidaContent(
             .fillMaxSize()
             .padding(24.dp)
     ) {
-        Saludo(citasViewModel)
+        Saludo(userNameViewModel)
         Spacer(modifier = Modifier.height(24.dp))
         SolicitarCita(navController)
         Spacer(modifier = Modifier.height(24.dp))

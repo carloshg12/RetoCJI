@@ -27,4 +27,7 @@ interface ApiService {
     @GET("/auth/user/gestores")
     suspend fun getGestores(@Header("Authorization") token: String): Response<List<String>>
 
+    @GET("/auth/user/name")
+    suspend fun getUserName(@Header("Authorization") token: String): Response<String>
+
 }

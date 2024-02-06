@@ -1,24 +1,26 @@
 package com.example.retocji.ui.components.bienvenida
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.unit.sp
-import com.example.retocji.ui.viewmodels.CitasViewModel
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.*
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.example.retocji.ui.viewmodels.UserNameViewModel
+import androidx.hilt.navigation.compose.hiltViewModel
+
 @Composable
-fun Saludo(citasViewModel: CitasViewModel) {
+fun Saludo(userNameViewModel: UserNameViewModel = hiltViewModel()) {
+
+    val nombreUsuario by userNameViewModel.getUserName().observeAsState("Cargando...")
+
     Column(
         modifier = Modifier.padding(2.dp)
     ) {
         Text(
-            text = "Bienvenid@, ${citasViewModel.obtenerTokenDesdeSharedPreferences()}",
+            text = "Bienvenid@, $nombreUsuario",
             style = MaterialTheme.typography.displayMedium.copy(
                 fontWeight = FontWeight.Bold,
                 fontSize = 26.sp,

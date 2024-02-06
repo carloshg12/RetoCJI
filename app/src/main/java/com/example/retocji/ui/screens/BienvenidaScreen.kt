@@ -10,10 +10,11 @@ import com.example.retocji.R
 import com.example.retocji.domain.models.Noticia
 import com.example.retocji.ui.components.bienvenida.BienvenidaContent
 import com.example.retocji.ui.viewmodels.CitasViewModel
+import com.example.retocji.ui.viewmodels.UserNameViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun Bienvenida(navController: NavController, citasViewModel: CitasViewModel) {
+fun Bienvenida(navController: NavController, userNameViewModel: UserNameViewModel) {
     val pagerState = rememberPagerState()
 
     val noticiasEjemplo = listOf(
@@ -30,7 +31,7 @@ fun Bienvenida(navController: NavController, citasViewModel: CitasViewModel) {
     )
 
     Scaffold (){
-        BienvenidaContent(navController, citasViewModel, noticiasEjemplo, pagerState)
+        BienvenidaContent(navController, userNameViewModel, noticiasEjemplo, pagerState)
     }
 
 }

@@ -23,6 +23,7 @@ import com.example.retocji.ui.screens.GestionesScreen
 import com.example.retocji.ui.screens.informacion
 import com.example.retocji.ui.theme.RetoCJITheme
 import com.example.retocji.ui.viewmodels.GestionesViewModel
+import com.example.retocji.ui.viewmodels.UserNameViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -37,14 +38,14 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 val viewModel: GestionesViewModel = hiltViewModel()
                 val citasViewModel: CitasViewModel = hiltViewModel()
+                val userNameViewModel : UserNameViewModel = hiltViewModel()
                 NavHost(
                     navController = navController,
                     startDestination = "LogIn"
                 ) {
                     composable("GeneralInfo") {
-
                         scaffold(navController = navController) {
-                            Bienvenida(navController, citasViewModel)
+                            Bienvenida(navController, userNameViewModel)
                         }
                     }
                     composable("Citas") {
