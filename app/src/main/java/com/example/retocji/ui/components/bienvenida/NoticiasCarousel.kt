@@ -13,7 +13,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.layout.ContentScale
 import com.google.accompanist.pager.*
-import com.example.retocji.domain.models.Noticia
+import com.example.retocji.domain.models.bienvenida.Noticia
 import kotlinx.coroutines.delay
 
 @Composable

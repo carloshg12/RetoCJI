@@ -30,7 +30,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.retocji.domain.repositories.CitasDTO
+import com.example.retocji.domain.models.citas.CitasDTO
 import com.example.retocji.ui.viewmodels.CitasViewModel
 import seleccionHoras
 import java.text.SimpleDateFormat

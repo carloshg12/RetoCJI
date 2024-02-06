@@ -6,8 +6,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.retocji.domain.repositories.ApiService
-import com.example.retocji.domain.repositories.TipoCitaDTO
+import com.example.retocji.data.sources.remote.ApiService
+import com.example.retocji.domain.models.gestiones.TipoCitaDTO
 import com.example.retocji.domain.usescases.GenerarPDFUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch

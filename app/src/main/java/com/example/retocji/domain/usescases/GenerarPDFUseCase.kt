@@ -1,7 +1,7 @@
 package com.example.retocji.domain.usescases
 
 import android.content.Context
-import com.example.retocji.data.repositories.PDFRepository
+import com.example.retocji.domain.repositories.PDFRepository
 import javax.inject.Inject
 
 class GenerarPDFUseCase @Inject constructor(private val pdfRepository: PDFRepository) {

@@ -24,7 +24,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.retocji.domain.repositories.RegisterUserDTO
+import com.example.retocji.domain.models.logIn.RegisterUserDTO
 import com.example.retocji.ui.viewmodels.logIn.RegistroViewModel
 
 @Composable

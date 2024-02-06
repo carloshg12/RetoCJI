@@ -1,4 +1,4 @@
-package com.example.retocji.domain.repositories
+package com.example.retocji.data.sources.remote
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

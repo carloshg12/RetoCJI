@@ -1,4 +1,4 @@
-package com.example.retocji.data.datasource.local
+package com.example.retocji.data.sources.local
 
 import android.content.Context
 import android.content.ContentValues

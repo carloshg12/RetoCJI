@@ -7,9 +7,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.retocji.domain.repositories.ApiService
-import com.example.retocji.domain.repositories.AuthRequest
-import com.example.retocji.domain.repositories.RegisterUserDTO
+import com.example.retocji.data.sources.remote.ApiService
+import com.example.retocji.domain.models.AuthRequest
+import com.example.retocji.domain.models.logIn.RegisterUserDTO
 import com.example.retocji.ui.screens.logIn.SharedPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch

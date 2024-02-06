@@ -1,4 +1,4 @@
-package com.example.retocji.data.repositories
+package com.example.retocji.domain.repositories
 
 import android.content.Context
 
