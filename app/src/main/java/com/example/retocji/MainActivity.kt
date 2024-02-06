@@ -13,7 +13,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.retocji.ui.screens.logIn.LoginView
 import com.example.retocji.ui.viewmodels.logIn.LoginViewModel
-import com.example.retocji.ui.components.scaffold
+import com.example.retocji.ui.components.Scaffold
 import com.example.retocji.ui.viewmodels.CitasViewModel
 import com.example.retocji.ui.screens.Bienvenida
 import com.example.retocji.ui.screens.logIn.Registro
@@ -47,28 +47,28 @@ class MainActivity : ComponentActivity() {
                 ) {
                     composable("GeneralInfo") {
 
-                        scaffold(navController = navController) {
+                        Scaffold(navController = navController) {
                             Bienvenida(navController, userNameViewModel)
                         }
                     }
                     composable("Citas") {
-                        scaffold(navController = navController) {
+                        Scaffold(navController = navController) {
                             citas(citasViewModel,navController)
                         }
                     }
                     composable("Gestiones") {
-                        scaffold(navController = navController) {
+                        Scaffold(navController = navController) {
                             GestionesScreen(viewModel)
                         }
                     }
                     composable("SobreNosotros") {
-                        scaffold(navController = navController) {
+                        Scaffold(navController = navController) {
                             Informacion()
                         }
 
                     }
                     composable("LogIn") {
-                        LoginView().login(loginViewModel,citasViewModel, navController)
+                        LoginView(loginViewModel,citasViewModel, navController)
 
                     }
                     composable("Registro") {

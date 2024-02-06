@@ -5,7 +5,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.example.retocji.ui.components.informacion.*
 
 @Composable
@@ -14,7 +13,7 @@ fun Informacion() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(24.dp)
+                .padding(top = 2.dp , bottom = 12.dp , start = 24.dp, end = 24.dp)
         ) {
             Encabezado("Sobre Nosotros")
             Spacer(modifier = Modifier.height(12.dp))
