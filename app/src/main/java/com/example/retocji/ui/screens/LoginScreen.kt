@@ -1,4 +1,4 @@
-package com.example.retocji.ui.screens.logIn
+package com.example.retocji.ui.screens
 
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.*
@@ -12,14 +12,13 @@ import com.example.retocji.ui.viewmodels.logIn.LoginViewModel
 import android.os.Build
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.unit.dp
-import com.example.retocji.ui.components.logIn.EmailTextFieldComponent
 import com.example.retocji.ui.components.logIn.LogoComponent
 import com.example.retocji.ui.components.logIn.PasswordTextFieldComponent
 import com.example.retocji.ui.components.logIn.RegistrationPromptComponent
 import com.example.retocji.ui.components.logIn.SignInButtonComponent
+import com.example.retocji.ui.components.logIn.UsernameTextFieldComponent
 
 @RequiresApi(Build.VERSION_CODES.O)
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginView(
     loginViewModel: LoginViewModel,
@@ -42,7 +41,7 @@ fun LoginView(
 
         Spacer(modifier = Modifier.height(30.dp))
 
-        EmailTextFieldComponent(email = email, onEmailChanged = { loginViewModel.onEmailChanged(it) })
+        UsernameTextFieldComponent(username = email, onUsernameChanged = loginViewModel::onEmailChanged)
 
         Spacer(modifier = Modifier.height(16.dp))
 

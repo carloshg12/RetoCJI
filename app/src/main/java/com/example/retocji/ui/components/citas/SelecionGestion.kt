@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun selecionGestion(
+fun SelecionGestion(
     options: List<String>,
     onGestionSelected: (String) -> Unit, // Agregado para manejar la selección
     asesorDeseado: String

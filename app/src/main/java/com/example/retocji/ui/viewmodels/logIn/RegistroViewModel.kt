@@ -10,7 +10,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.retocji.data.sources.remote.ApiService
 import com.example.retocji.domain.models.AuthRequest
 import com.example.retocji.domain.models.logIn.RegisterUserDTO
-import com.example.retocji.ui.screens.logIn.SharedPreferencesRepository
+import com.example.retocji.domain.repositories.SharedPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

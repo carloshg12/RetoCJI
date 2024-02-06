@@ -23,10 +23,10 @@ fun BienvenidaContent(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(24.dp)
+            .padding(top = 2.dp , bottom = 12.dp , start = 24.dp, end = 24.dp)
     ) {
         Saludo(userNameViewModel)
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(12.dp))
         SolicitarCita(navController)
         Spacer(modifier = Modifier.height(24.dp))
         NoticiasCarousel(noticiasEjemplo, pagerState)

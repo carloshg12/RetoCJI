@@ -38,7 +38,7 @@ fun NoticiasCarousel(noticiasEjemplo: List<Noticia>, pagerState: PagerState) {
             modifier = Modifier
                 .fillMaxWidth()
                 .height(300.dp),
-            elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
         ) {
             Column {
                 Image(

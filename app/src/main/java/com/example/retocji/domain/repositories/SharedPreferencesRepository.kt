@@ -1,4 +1,4 @@
-package com.example.retocji.ui.screens.logIn
+package com.example.retocji.domain.repositories
 
 import android.content.SharedPreferences
 import javax.inject.Inject

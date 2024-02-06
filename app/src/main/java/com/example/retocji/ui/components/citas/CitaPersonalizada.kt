@@ -32,7 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.retocji.domain.models.citas.CitasDTO
 import com.example.retocji.ui.viewmodels.CitasViewModel
-import seleccionHoras
+import SeleccionHoras
 import java.text.SimpleDateFormat
 import java.time.DayOfWeek
 import java.time.Instant
@@ -98,7 +98,7 @@ import java.util.Date
 
                 Text(text = "Asesor", modifier = Modifier.widthIn(min = 100.dp))
                 Spacer(modifier = Modifier.width(8.dp))
-                selecionAsesor(
+                SelecionAsesor(
                     options = asesores,
                     onAsesorSelected = citasViewModel::setAsesorDeseado
                 )
@@ -116,7 +116,7 @@ import java.util.Date
             ) {
                 Text(text = "Gestion", modifier = Modifier.widthIn(min = 100.dp))
                 Spacer(modifier = Modifier.width(8.dp))
-                selecionGestion(gestiones,
+                SelecionGestion(gestiones,
                     onGestionSelected = {gestion ->
                     gestionDeseada.value = gestion
                 } ,  asesorDeseado)
@@ -181,7 +181,7 @@ import java.util.Date
             ) {
                 Text(text = "Hora Inicio", modifier = Modifier.widthIn(min = 100.dp))
                 Spacer(modifier = Modifier.width(8.dp))
-                seleccionHoras(
+                SeleccionHoras(
                     //expanded = expandedHour,
                     selectedHour = selectedHour,
                     onHourSelected = { hour ->
