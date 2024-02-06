@@ -11,7 +11,7 @@ import com.example.retocji.ui.components.navigation.NavigationBar
 import com.example.retocji.ui.components.navigation.getInfoAbout
 
 @Composable
-fun scaffold(navController: NavController, content: @Composable () -> Unit) {
+fun Scaffold(navController: NavController, content: @Composable () -> Unit) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -20,14 +20,11 @@ fun scaffold(navController: NavController, content: @Composable () -> Unit) {
         bottomBar = {
             NavigationBar(navController, getInfoAbout())
         }
-    ) {
+    ) { paddingValues ->
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(
-                    top = it.calculateTopPadding(),
-                    bottom = it.calculateBottomPadding()
-                )
+                .padding(paddingValues)
         ) {
             content()
         }

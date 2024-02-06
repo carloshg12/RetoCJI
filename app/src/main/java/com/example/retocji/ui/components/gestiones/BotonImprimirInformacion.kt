@@ -6,7 +6,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.retocji.ui.viewmodels.GestionesViewModel
 
 @Composable
@@ -16,13 +18,15 @@ fun BotonImprimirInformacion(
 ) {
     val context = LocalContext.current
     Button(
-        onClick = {
-            gestionesViewModel.generarPDF(context, citasSeleccionadas)
-        },
+        onClick = { gestionesViewModel.generarPDF(context, citasSeleccionadas) },
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
     ) {
-        Text("Imprimir Información")
+        Text(
+            "Imprimir Información",
+            fontSize = 16.sp, // Ajusta el tamaño de fuente si es necesario
+            fontWeight = FontWeight.Medium
+        )
     }
 }

@@ -53,15 +53,13 @@ fun ItemCita(
                 Spacer(Modifier.height(8.dp))
                 Text(
                     text = cita.second,
-                    fontSize = 16.sp,
-                    modifier = Modifier.fillMaxWidth()
+                    fontSize = 16.sp
                 )
                 Spacer(Modifier.height(4.dp))
                 Text(
                     text = cita.third,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
-                    modifier = Modifier.fillMaxWidth(),
                     color = Color(0xFF007F0E)
                 )
                 Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
@@ -69,7 +67,11 @@ fun ItemCita(
                         if (cita !in citasSeleccionadas) citasSeleccionadas.add(cita)
                         else citasSeleccionadas.remove(cita)
                     }) {
-                        Text(if (cita !in citasSeleccionadas) "Añadir" else "Eliminar")
+                        Text(
+                            if (cita !in citasSeleccionadas) "Añadir" else "Eliminar",
+                            fontSize = 16.sp, // Ajusta el tamaño de fuente si es necesario
+                            fontWeight = FontWeight.Medium
+                        )
                         Icon(
                             imageVector = if (cita !in citasSeleccionadas) Icons.Filled.Add else Icons.Filled.Remove,
                             contentDescription = if (cita !in citasSeleccionadas) "Añadir" else "Eliminar"

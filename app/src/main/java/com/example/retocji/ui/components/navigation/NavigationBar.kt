@@ -1,31 +1,34 @@
 package com.example.retocji.ui.components.navigation
 
-import androidx.compose.material.BottomNavigation
-import androidx.compose.material.BottomNavigationItem
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavController
 
 @Composable
 fun NavigationBar(navController: NavController, items: List<Navigation_Data>) {
     val currentRoute = navController.currentBackStackEntry?.destination?.route
 
-    BottomNavigation(backgroundColor = Color.LightGray) {
+    NavigationBar {
         items.forEach { item ->
-            BottomNavigationItem(
-                selectedContentColor = Color.White,
-                unselectedContentColor = Color.Gray,
+            NavigationBarItem(
+                icon = { Icon(item.icon, contentDescription = item.text) },
+                label = { Text(item.text) },
                 selected = currentRoute == item.route,
-                icon = {
-                    androidx.compose.material.Icon(
-                        imageVector = item.icon,
-                        contentDescription = item.text
-                    )
-                },
-                label = { androidx.compose.material.Text(text = item.text) },
                 onClick = {
-                    navController.navigate(item.route)
-                }
+                    if (currentRoute != item.route) {
+                        navController.navigate(item.route) {
+                            popUpTo(navController.graph.startDestinationId)
+                            launchSingleTop = true
+                        }
+                    }
+                },
+                colors = NavigationBarItemDefaults.colors(
+                    selectedIconColor = MaterialTheme.colorScheme.primary,
+                    unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    selectedTextColor = MaterialTheme.colorScheme.primary,
+                    unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant
+                )
             )
         }
     }
