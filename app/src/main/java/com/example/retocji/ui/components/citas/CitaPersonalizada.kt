@@ -190,7 +190,8 @@ import java.util.Date
                     asesorDeseado = asesorDeseado,
                     //citas = citas,
                     //diaDeseado = diaDeseado,
-                    horas
+                    horas,
+                    citasViewModel
                 )
             }
 
@@ -218,7 +219,10 @@ import java.util.Date
                 horizontalArrangement = Arrangement.End,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Button(onClick = {}) {
+                Button(onClick = {
+
+                    citasViewModel.crearCita(asesorDeseado,diaDeseado.toString(),selectedHour.value)
+                }) {
                     Text("Reservar cita")
                 }
             }

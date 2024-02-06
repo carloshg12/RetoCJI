@@ -32,7 +32,7 @@ fun citas(
     var expandedGestiones by remember { mutableStateOf(false) }
     var gestionDeseada by remember { mutableStateOf("") }
     var expandedHour by remember { mutableStateOf(false) }
-    var selectedHour by remember { mutableStateOf("") }
+    //var selectedHour by remember { mutableStateOf("") }
     var showDialog by remember { mutableStateOf(false) }
 
     val asesorDeseado by citasViewModel.asesorDeseado.collectAsState()
@@ -42,13 +42,13 @@ fun citas(
     val gestiones by citasViewModel.nombresTipoCitas.collectAsState()
 
     val citas by citasViewModel.citasPorGestorYDia.observeAsState(initial = emptyList())
-
+    val selectedHour by citasViewModel.selectedHour.collectAsState()
 
 
     Log.e("ASESOR", asesorDeseado)
     Log.e("Gestiones", gestiones.toString())
     Log.e("Horas", horas.toString())
-
+    Log.e("Selected Hour",selectedHour)
 
     Log.e("Citas", citas.toString())
 
