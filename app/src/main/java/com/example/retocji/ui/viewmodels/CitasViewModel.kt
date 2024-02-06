@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.retocji.data.sources.remote.ApiService
 import com.example.retocji.domain.models.citas.CitasDTO
+import com.example.retocji.domain.models.logIn.UsersDTO
 import com.example.retocji.ui.screens.logIn.SharedPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -49,6 +50,7 @@ class CitasViewModel @Inject constructor(
                 val response = apiService.getCitasPorGestorYDia(asesor, fecha)
                 if (response.isSuccessful) {
                     val citas = response.body() ?: emptyList()
+                    Log.e("CitasGestor",citas.toString())
                     val nuevasHorasDisponibles = calcularHorasDisponibles(citas)
                     _horasDisponibles.value = nuevasHorasDisponibles
                 } else {
@@ -59,12 +61,52 @@ class CitasViewModel @Inject constructor(
             }
         }
     }
+    fun crearCita(asesor: String, fecha: String, horaInicio: String, horaFin: String, otroDato: String) {
+        viewModelScope.launch {
+            try {
+                val nuevaCita = CitasDTO(
+                    horaInicio = horaInicio,
+                    horaFin = horaFin,
+                    usuario = UsersDTO(id = 1, name = "Carlos", email = "carlosch@ieselcaminas.org"),
+                    gestor = UsersDTO(id = 1, name = "Carlos", email = "carlosch@ieselcaminas.org"),
+                    // Agrega aquí otros campos necesarios para la nueva cita
+                )
+
+                val response = apiService.crearCita(asesor, nuevaCita)
+                if (response.isSuccessful) {
+                    // Cita creada con éxito, puedes manejar la respuesta si es necesario
+                    // Por ejemplo, mostrar un mensaje de éxito o actualizar la lista de citas
+                    Log.d("CitasViewModel", "Cita creada con éxito")
+                } else {
+                    // Manejar el caso de error, por ejemplo, mostrar un mensaje de error
+                    Log.e("CitasViewModel", "Error al crear la cita: ${response.errorBody()?.string()}")
+                }
+            } catch (e: Exception) {
+                // Manejar excepciones, por ejemplo, mostrar un mensaje de error genérico
+                Log.e("CitasViewModel", "Excepción al crear la cita", e)
+            }
+        }
+    }
     private fun calcularHorasDisponibles(citas: List<CitasDTO>): List<String> {
 
-        // Implementa la lógica para calcular las horas disponibles aquí.
-        // Esto es solo un ejemplo y necesitarás adaptarlo a tus necesidades específicas.
-        return listOf("08:00", "09:00" /*, más horas disponibles */)
+        val horasPredeterminadas = listOf("10:00", "11:00", "12:00", "13:00", "14:00", "16:00", "17:00", "18:00", "19:00", "20:00")
+
+
+        val horasDisponibles = horasPredeterminadas.toMutableList()
+
+
+        for (cita in citas) {
+            val horaCita = cita.horaInicio.substring(11, 16) // Obtener solo "HH:mm" de "2024-02-09T16:00:00"
+            Log.e("Hora Inicio", horaCita)
+            if (horasDisponibles.remove(horaCita)) {
+                Log.e("Hora Eliminada", horaCita)
+            }
+        }
+
+
+        return horasDisponibles
     }
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     private val _fechaSeleccionada = MutableStateFlow(LocalDate.now())
