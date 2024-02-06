@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import com.google.accompanist.pager.*
 import androidx.navigation.NavController
 import com.example.retocji.R
-import com.example.retocji.domain.models.Noticia
+import com.example.retocji.domain.models.bienvenida.Noticia
 import com.example.retocji.ui.components.bienvenida.BienvenidaContent
 import com.example.retocji.ui.viewmodels.UserNameViewModel
 

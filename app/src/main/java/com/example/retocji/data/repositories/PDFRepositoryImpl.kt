@@ -1,7 +1,8 @@
 package com.example.retocji.data.repositories
 
 import android.content.Context
-import com.example.retocji.data.datasource.local.PDFGenerator
+import com.example.retocji.data.sources.local.PDFGenerator
+import com.example.retocji.domain.repositories.PDFRepository
 import javax.inject.Inject
 
 class PDFRepositoryImpl @Inject constructor(private val pdfGenerator: PDFGenerator) :

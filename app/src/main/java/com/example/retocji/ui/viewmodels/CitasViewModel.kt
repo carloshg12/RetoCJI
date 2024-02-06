@@ -7,19 +7,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.retocji.domain.repositories.ApiService
-import com.example.retocji.domain.repositories.CitasDTO
-import com.example.retocji.domain.repositories.TipoCitaDTO
+import com.example.retocji.data.sources.remote.ApiService
+import com.example.retocji.domain.models.citas.CitasDTO
 import com.example.retocji.ui.screens.logIn.SharedPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import okhttp3.ResponseBody
-import retrofit2.Response
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 @HiltViewModel

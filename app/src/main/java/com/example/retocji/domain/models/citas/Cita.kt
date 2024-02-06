@@ -1,4 +1,4 @@
-package com.example.retocji.domain.models
+package com.example.retocji.domain.models.citas
 
 data class Cita(
     val id: Int,

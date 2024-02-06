@@ -1,5 +1,10 @@
-package com.example.retocji.domain.repositories
+package com.example.retocji.data.sources.remote
 
+import com.example.retocji.domain.models.AuthRequest
+import com.example.retocji.domain.models.citas.CitasDTO
+import com.example.retocji.domain.models.logIn.RegisterUserDTO
+import com.example.retocji.domain.models.gestiones.TipoCitaDTO
+import com.example.retocji.domain.models.Token
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.Body

@@ -2,11 +2,11 @@ package com.example.retocji.di
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.example.retocji.data.datasource.local.PDFGenerator
-import com.example.retocji.data.repositories.PDFRepository
+import com.example.retocji.data.sources.local.PDFGenerator
+import com.example.retocji.domain.repositories.PDFRepository
 import com.example.retocji.data.repositories.PDFRepositoryImpl
-import com.example.retocji.domain.repositories.ApiService
-import com.example.retocji.domain.repositories.RetrofitInstance
+import com.example.retocji.data.sources.remote.ApiService
+import com.example.retocji.data.sources.remote.RetrofitInstance
 import com.example.retocji.domain.usescases.GenerarPDFUseCase
 import dagger.Module
 import dagger.Provides

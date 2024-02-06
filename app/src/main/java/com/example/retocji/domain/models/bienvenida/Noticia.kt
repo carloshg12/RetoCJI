@@ -1,4 +1,4 @@
-package com.example.retocji.domain.models
+package com.example.retocji.domain.models.bienvenida
 
 data class Noticia(
     val titulo: String,

@@ -1,4 +1,4 @@
-package com.example.retocji.domain.repositories
+package com.example.retocji.domain.models
 
 data class AuthRequest(
     val username: String,

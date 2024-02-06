@@ -1,4 +1,6 @@
-package com.example.retocji.domain.repositories
+package com.example.retocji.domain.models.citas
+
+import com.example.retocji.domain.models.logIn.UsersDTO
 
 data class CitasDTO(
     val horaInicio: String,
