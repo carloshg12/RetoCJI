@@ -1,6 +1,7 @@
 package com.example.retocji.ui.screens
 
 import android.annotation.SuppressLint
+import android.app.Application
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
@@ -69,7 +70,8 @@ fun citas(
                 datePickerState = rememberDatePickerState(),
                 citas = citas,
                 citasViewModel,
-                horas
+                horas,
+                application = Application()
             )
     }
 }

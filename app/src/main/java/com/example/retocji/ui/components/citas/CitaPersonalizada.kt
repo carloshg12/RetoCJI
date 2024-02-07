@@ -1,6 +1,7 @@
 package com.example.retocji.ui.components.citas
 
 import android.annotation.SuppressLint
+import android.app.Application
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
@@ -29,14 +30,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.example.retocji.domain.models.citas.CitasDTO
+import com.example.retocji.ui.components.GoogleCalendar.addCalendarEvent
+import com.example.retocji.ui.components.GoogleCalendar.launchGoogleCalendarToAddEvent
 import com.example.retocji.ui.viewmodels.CitasViewModel
 import seleccionHoras
 import java.text.SimpleDateFormat
 import java.time.DayOfWeek
 import java.time.Instant
 import java.time.ZoneId
+import java.util.Calendar
 import java.util.Date
 
 @SuppressLint("UnrememberedMutableState")
@@ -56,7 +61,8 @@ import java.util.Date
     datePickerState: DatePickerState = rememberDatePickerState(),
     citas: List<CitasDTO>,
     citasViewModel: CitasViewModel,
-    horas: List<String>?
+    horas: List<String>?,
+    application: Application
 ) {
 
         Column(
@@ -218,9 +224,27 @@ import java.util.Date
                 horizontalArrangement = Arrangement.End,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Button(onClick = {}) {
-                    Text("Reservar cita")
+                Button(onClick = {
+                    // Aquí llamarías a la función para reservar la cita primero y luego lanzar Google Calendar
+                    val beginTime = Calendar.getInstance().apply {
+                        set(2024, Calendar.FEBRUARY, 7, 10, 0) // Ejemplo: 7 de Febrero de 2024 a las 10:00 AM
+                    }
+                    val endTime = (beginTime.clone() as Calendar).apply {
+                        add(Calendar.HOUR_OF_DAY, 1) // Duración de 1 hora
+                    }
+
+                    launchGoogleCalendarToAddEvent(
+                        title = "Consulta con Asesor",
+                        location = "Oficina Central",
+                        description = "Consulta reservada a través de la aplicación",
+                        beginTime = beginTime.timeInMillis,
+                        endTime = endTime.timeInMillis,
+                        context = application
+                    )
+                }) {
+                    Text("Reservar Cita")
                 }
+
             }
         }
     }
