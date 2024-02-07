@@ -2,10 +2,7 @@ package com.example.retocji.ui.components.citas
 
 import SeleccionHoras
 import android.annotation.SuppressLint
-import android.content.ActivityNotFoundException
-import android.content.Intent
 import android.os.Build
-import android.provider.CalendarContract
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -35,8 +32,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat.startActivity
 import com.example.retocji.domain.models.citas.CitasDTO
+import com.example.retocji.ui.components.GoogleCalendar.agreagarCitaCalendario
 import com.example.retocji.ui.viewmodels.CitasViewModel
 import java.text.SimpleDateFormat
 import java.time.DayOfWeek
@@ -233,28 +230,19 @@ import java.util.Date
                 Button(onClick = {
 
                     val beginTime = Calendar.getInstance()
-                    beginTime[2024, 0, 7, 17] = 30
+                    beginTime[2024, 0, diaDeseado?.toInt()!!, 17] = 30
 
                     val endTime = Calendar.getInstance()
                     endTime[2024, 0, 7, 18] = 30
 
-                    val intent: Intent = Intent(Intent.ACTION_INSERT)
-                        .setData(CalendarContract.Events.CONTENT_URI)
-                        .putExtra(
-                            CalendarContract.EXTRA_EVENT_BEGIN_TIME,
-                            beginTime.timeInMillis
-                        )
-                        .putExtra(
-                            CalendarContract.EXTRA_EVENT_END_TIME,
-                            endTime.timeInMillis
-                        )
-                        .putExtra(CalendarContract.Events.TITLE, "Cita")
-                        .putExtra(CalendarContract.Events.DESCRIPTION, "Cita I&M Asesores")
-                        .putExtra(CalendarContract.Events.EVENT_LOCATION, "Oficina I&M Asesores")
-                        .putExtra(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_BUSY)
-
-
-                    startActivity(context,intent,null)
+                    agreagarCitaCalendario(
+                        "Cita  $asesorDeseado" ,
+                        "Oficina I&M Asesores",
+                        "Cita I&M Asesores",
+                       beginTime.timeInMillis,
+                       endTime.timeInMillis,
+                        context
+                    )
 
                     //citasViewModel.crearCita(asesorDeseado,diaDeseado.toString(),selectedHour.value)
                 }) {

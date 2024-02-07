@@ -41,7 +41,7 @@ class MainActivity : ComponentActivity() {
                 val userNameViewModel : UserNameViewModel = hiltViewModel()
                 NavHost(
                     navController = navController,
-                    startDestination = "GeneralInfo"
+                    startDestination = "Citas"
                 ) {
                     composable("GeneralInfo") {
 
