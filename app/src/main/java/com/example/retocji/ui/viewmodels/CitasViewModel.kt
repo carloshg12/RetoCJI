@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.retocji.data.sources.remote.ApiService
 import com.example.retocji.domain.models.citas.CitasDTO
+import com.example.retocji.domain.models.gestiones.TipoCitaDTO
 import com.example.retocji.domain.models.logIn.UsersDTO
 import com.example.retocji.domain.repositories.SharedPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -56,11 +57,11 @@ class CitasViewModel @Inject constructor(
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun actualizarHorasDisponibles(name: String, dia: String) {
-        // Aquí deberías implementar la lógica para calcular las horas disponibles
-        // basándote en el asesor seleccionado y la fecha seleccionada. Por ejemplo:
-        val asesor = _asesorDeseado.value
-        val fecha = _fechaSeleccionada.value.toString() // Asegúrate de formatearlo como necesario
 
+        val asesor = _asesorDeseado.value
+        val fecha = _fechaSeleccionada.value.toString()
+        Log.e("asesorCita",asesor)
+        Log.e("fechaCita",fecha)
         viewModelScope.launch {
             try {
                 val response = apiService.getCitasPorGestorYDia(asesor, fecha)
@@ -90,27 +91,24 @@ class CitasViewModel @Inject constructor(
                 }
                 Log.e("Username", apiUserName)
 
-                // Parsear la fecha y la hora
                 val fechaParseada = LocalDate.parse(fecha)
                 val horaParseada = LocalTime.parse(horaInicio)
 
-                // Combinar la fecha y la hora en un objeto LocalDateTime
                 val fechaHoraInicio = fechaParseada.atTime(horaParseada)
 
-                // Calcular la hora de fin (hora de inicio + 1 hora)
                 val fechaHoraFin = fechaHoraInicio.plusHours(1)
 
-                // Formatear la fecha y la hora al formato deseado
-                val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
+                val formatter = DateTimeFormatter.ofPattern("yyyy-dd-MM'T'HH:mm:ss")
                 val fechaHoraInicioFormateada = fechaHoraInicio.format(formatter)
                 val fechaHoraFinFormateada = fechaHoraFin.format(formatter)
 
-                // Crear la nueva cita con las fechas y horas formateadas
+
                 val nuevaCita = CitasDTO(
                     horaInicio = fechaHoraInicioFormateada,
                     horaFin = fechaHoraFinFormateada,
                     usuario = UsersDTO(name = apiUserName, email = ""),
-                    gestor = UsersDTO(name = "Carlos", email = "")
+                    gestor = UsersDTO(name = "Carlos", email = ""),
+                    tipoCita = TipoCitaDTO("Asesoría",0,0f)
                 )
 
                 // Realizar la llamada a la API para crear la cita
