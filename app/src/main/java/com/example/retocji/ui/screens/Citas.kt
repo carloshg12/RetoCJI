@@ -6,7 +6,6 @@ import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
@@ -25,7 +24,7 @@ import com.example.retocji.ui.viewmodels.CitasViewModel
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun citas(
+fun Citas(
     citasViewModel: CitasViewModel,
     navController: NavController
 ) {
@@ -33,7 +32,7 @@ fun citas(
     var expandedGestiones by remember { mutableStateOf(false) }
     var gestionDeseada by remember { mutableStateOf("") }
     var expandedHour by remember { mutableStateOf(false) }
-    var selectedHour by remember { mutableStateOf("") }
+    //var selectedHour by remember { mutableStateOf("") }
     var showDialog by remember { mutableStateOf(false) }
 
     val asesorDeseado by citasViewModel.asesorDeseado.collectAsState()
@@ -43,13 +42,13 @@ fun citas(
     val gestiones by citasViewModel.nombresTipoCitas.collectAsState()
 
     val citas by citasViewModel.citasPorGestorYDia.observeAsState(initial = emptyList())
-
+    val selectedHour by citasViewModel.selectedHour.collectAsState()
 
 
     Log.e("ASESOR", asesorDeseado)
     Log.e("Gestiones", gestiones.toString())
     Log.e("Horas", horas.toString())
-
+    Log.e("Selected Hour",selectedHour)
 
     Log.e("Citas", citas.toString())
 

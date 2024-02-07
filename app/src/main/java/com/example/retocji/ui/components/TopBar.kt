@@ -1,7 +1,7 @@
 package com.example.retocji.ui.components
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ArrowBack
+import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -27,7 +27,7 @@ fun TopBar(navController: NavController, tittle: String) {
             IconButton(onClick = {
                 navController.navigateUp()
             }) {
-                Icon(imageVector = Icons.Outlined.ArrowBack, contentDescription = "Back")
+                Icon(imageVector = Icons.AutoMirrored.Outlined.ArrowBack, contentDescription = "Back")
             }
         },
         actions = {

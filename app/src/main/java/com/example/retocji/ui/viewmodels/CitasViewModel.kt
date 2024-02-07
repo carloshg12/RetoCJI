@@ -10,13 +10,15 @@ import androidx.lifecycle.viewModelScope
 import com.example.retocji.data.sources.remote.ApiService
 import com.example.retocji.domain.models.citas.CitasDTO
 import com.example.retocji.domain.models.logIn.UsersDTO
-import com.example.retocji.ui.screens.logIn.SharedPreferencesRepository
+import com.example.retocji.domain.repositories.SharedPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
 import javax.inject.Inject
 
 @HiltViewModel
@@ -37,6 +39,14 @@ class CitasViewModel @Inject constructor(
     val nombresTipoCitas: StateFlow<List<String>> = _nombresTipoCitas.asStateFlow()
     private val _asesorDeseado = MutableStateFlow("")
     val asesorDeseado = _asesorDeseado.asStateFlow()
+
+    private val _selectedHour = MutableStateFlow("")
+    val selectedHour: StateFlow<String> = _selectedHour.asStateFlow()
+
+
+    fun setSelectedHour(hour: String) {
+        _selectedHour.value = hour
+    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun actualizarHorasDisponibles(name: String, dia: String) {
@@ -61,18 +71,32 @@ class CitasViewModel @Inject constructor(
             }
         }
     }
-    fun crearCita(asesor: String, fecha: String, horaInicio: String, horaFin: String, otroDato: String) {
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun crearCita(asesor: String, fecha: String, horaInicio: String) {
         viewModelScope.launch {
+            val token = sharedPreferencesRepository.getAuthToken()
+            val horaMinutos = horaInicio.split(":")
+            val hora = horaMinutos[0].toInt()
+            val minutos = horaMinutos[1].toInt()
+
+            // Obtén la fecha actual (puedes ajustarla según tus necesidades)
+            val fechaActual = LocalDateTime.now()
+
+            // Crea un objeto LocalTime con la hora y minutos
+            val localTime = LocalTime.of(hora, minutos)
             try {
+                val horaFin = localTime
                 val nuevaCita = CitasDTO(
-                    horaInicio = horaInicio,
-                    horaFin = horaFin,
+                    horaInicio = horaFin.toString(),
+                    horaFin = horaFin.toString(),
                     usuario = UsersDTO(id = 1, name = "Carlos", email = "carlosch@ieselcaminas.org"),
                     gestor = UsersDTO(id = 1, name = "Carlos", email = "carlosch@ieselcaminas.org"),
-                    // Agrega aquí otros campos necesarios para la nueva cita
-                )
 
-                val response = apiService.crearCita(asesor, nuevaCita)
+                )
+                Log.e("horaFin",horaFin.toString())
+                Log.e("crearCita",nuevaCita.toString())
+
+                val response = apiService.crearCita("Bearer $token", nuevaCita)
                 if (response.isSuccessful) {
                     // Cita creada con éxito, puedes manejar la respuesta si es necesario
                     // Por ejemplo, mostrar un mensaje de éxito o actualizar la lista de citas
