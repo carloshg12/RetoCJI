@@ -80,7 +80,6 @@ class CitasViewModel @Inject constructor(
     @RequiresApi(Build.VERSION_CODES.O)
     fun crearCita(gestor: String, fecha: String, horaInicio: String) {
         viewModelScope.launch {
-            val date = "2024-02-07"
             try {
                 val token = sharedPreferencesRepository.getAuthToken()
                 var apiUserName: String = ""
@@ -92,21 +91,25 @@ class CitasViewModel @Inject constructor(
                 Log.e("Username", apiUserName)
 
                 // Parsear la fecha y la hora
-                val fechaParseada = LocalDate.parse(date)
+                val fechaParseada = LocalDate.parse(fecha)
                 val horaParseada = LocalTime.parse(horaInicio)
 
                 // Combinar la fecha y la hora en un objeto LocalDateTime
-                val fechaHora = fechaParseada.atTime(horaParseada)
+                val fechaHoraInicio = fechaParseada.atTime(horaParseada)
+
+                // Calcular la hora de fin (hora de inicio + 1 hora)
+                val fechaHoraFin = fechaHoraInicio.plusHours(1)
 
                 // Formatear la fecha y la hora al formato deseado
                 val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
-                val fechaHoraFormateada = fechaHora.format(formatter)
+                val fechaHoraInicioFormateada = fechaHoraInicio.format(formatter)
+                val fechaHoraFinFormateada = fechaHoraFin.format(formatter)
 
-                // Crear la nueva cita con la fecha y hora formateadas
+                // Crear la nueva cita con las fechas y horas formateadas
                 val nuevaCita = CitasDTO(
-                    horaInicio = fechaHoraFormateada,
-                    horaFin = fechaHoraFormateada, // Puedes ajustar esto según sea necesario
-                    usuario = UsersDTO(name = "Carlos", email = ""),
+                    horaInicio = fechaHoraInicioFormateada,
+                    horaFin = fechaHoraFinFormateada,
+                    usuario = UsersDTO(name = apiUserName, email = ""),
                     gestor = UsersDTO(name = "Carlos", email = "")
                 )
 
@@ -125,6 +128,7 @@ class CitasViewModel @Inject constructor(
             }
         }
     }
+
 
     private fun calcularHorasDisponibles(citas: List<CitasDTO>): List<String> {
 
