@@ -52,6 +52,10 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+    packagingOptions {
+        exclude("META-INF/DEPENDENCIES")
+        exclude("META-INF/INDEX.LIST")
+    }
 }
 val hiltVersion = "2.50" // Asegúrate de que esta es la versión correcta
 
@@ -104,5 +108,30 @@ dependencies {
     implementation("com.google.accompanist:accompanist-pager-indicators:0.32.0")
     implementation ("com.squareup.retrofit2:retrofit:2.9.0")
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+
+    //Google Calendar
+    /*
+    //dependecies
+    implementation("com.google.apis:google-api-services-drive:v3-rev20240123-2.0.0")
+    implementation("com.google.apis:google-api-services-sheets:v4-rev20230815-2.0.0")
+    implementation("com.google.auth:google-auth-library-oauth2-http:1.22.0")
+    implementation("com.google.oauth-client:google-oauth-client-jetty:1.35.0")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.10")
+    //dependents
+    implementation("ru.raysmith:google:1.0.0")
+    implementation("com.google.oauth-client:google-oauth-client-assembly:1.35.0")
+    //
+     */
+    //Funcionan
+    implementation("com.google.api-client:google-api-client:2.3.0")
+    implementation("com.google.oauth-client:google-oauth-client-jetty:1.35.0")
+    implementation("com.google.apis:google-api-services-calendar:v3-rev407-1.18.0-rc")
+    implementation("com.google.android.gms:play-services-auth:19.0.0")
+    implementation("com.google.api-client:google-api-client-jackson2:1.20.0")
+    implementation("com.google.api-client:google-api-client-android:1.32.1")
+    implementation ("com.google.code.gson:gson:2.8.8")
+    implementation ("com.google.api-client:google-api-client-android:1.32.1")
+    implementation ("com.google.http-client:google-http-client-android:1.40.1")
+
 
 }

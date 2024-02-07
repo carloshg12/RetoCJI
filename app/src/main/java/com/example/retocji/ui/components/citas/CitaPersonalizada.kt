@@ -1,7 +1,11 @@
 package com.example.retocji.ui.components.citas
 
+import SeleccionHoras
 import android.annotation.SuppressLint
+import android.content.ActivityNotFoundException
+import android.content.Intent
 import android.os.Build
+import android.provider.CalendarContract
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -29,15 +33,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat.startActivity
 import com.example.retocji.domain.models.citas.CitasDTO
 import com.example.retocji.ui.viewmodels.CitasViewModel
-import SeleccionHoras
 import java.text.SimpleDateFormat
 import java.time.DayOfWeek
 import java.time.Instant
 import java.time.ZoneId
+import java.util.Calendar
 import java.util.Date
+
 
 @SuppressLint("UnrememberedMutableState")
     @RequiresApi(Build.VERSION_CODES.O)
@@ -56,7 +63,7 @@ import java.util.Date
     datePickerState: DatePickerState = rememberDatePickerState(),
     citas: List<CitasDTO>,
     citasViewModel: CitasViewModel,
-    horas: List<String>?
+    horas: List<String>?,
 ) {
 
         Column(
@@ -212,6 +219,10 @@ import java.util.Date
                 }
             }
 
+
+            val context = LocalContext.current
+
+
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -221,7 +232,31 @@ import java.util.Date
             ) {
                 Button(onClick = {
 
-                    citasViewModel.crearCita(asesorDeseado,diaDeseado.toString(),selectedHour.value)
+                    val beginTime = Calendar.getInstance()
+                    beginTime[2024, 0, 7, 17] = 30
+
+                    val endTime = Calendar.getInstance()
+                    endTime[2024, 0, 7, 18] = 30
+
+                    val intent: Intent = Intent(Intent.ACTION_INSERT)
+                        .setData(CalendarContract.Events.CONTENT_URI)
+                        .putExtra(
+                            CalendarContract.EXTRA_EVENT_BEGIN_TIME,
+                            beginTime.timeInMillis
+                        )
+                        .putExtra(
+                            CalendarContract.EXTRA_EVENT_END_TIME,
+                            endTime.timeInMillis
+                        )
+                        .putExtra(CalendarContract.Events.TITLE, "Cita")
+                        .putExtra(CalendarContract.Events.DESCRIPTION, "Cita I&M Asesores")
+                        .putExtra(CalendarContract.Events.EVENT_LOCATION, "Oficina I&M Asesores")
+                        .putExtra(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_BUSY)
+
+
+                    startActivity(context,intent,null)
+
+                    //citasViewModel.crearCita(asesorDeseado,diaDeseado.toString(),selectedHour.value)
                 }) {
                     Text("Reservar cita")
                 }

@@ -10,6 +10,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.currentCompositionLocalContext
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -69,8 +70,6 @@ fun Citas(
                 datePickerState = rememberDatePickerState(),
                 citas = citas,
                 citasViewModel,
-                horas,
-                application = Application()
-            )
+                horas,)
     }
 }
