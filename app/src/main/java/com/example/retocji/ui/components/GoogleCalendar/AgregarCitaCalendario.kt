@@ -25,7 +25,7 @@ fun agreagarCitaCalendario(
         .putExtra(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_BUSY)
 
 
-    ContextCompat.startActivity(context, intent, null)
+        ContextCompat.startActivity(context, intent, null)
 
 
 }
