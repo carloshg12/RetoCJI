@@ -3,10 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("com.google.devtools.ksp")
     id("dagger.hilt.android.plugin")
-
 }
-
-
 
 android {
     namespace = "com.example.retocji"
@@ -96,7 +93,7 @@ dependencies {
     implementation ("io.coil-kt:coil-compose:2.5.0")
     implementation("com.google.android.gms:play-services-auth:20.7.0")
     implementation("com.google.accompanist:accompanist-pager:0.32.0")
-    implementation("androidx.compose.runtime:runtime-livedata:1.6.0")
+    implementation("androidx.compose.runtime:runtime-livedata:1.6.1")
     implementation("com.google.firebase:firebase-firestore-ktx:24.10.1")
     implementation("com.google.firebase:firebase-storage-ktx:20.3.0")
     implementation("androidx.compose.material:material:1.6.0")
