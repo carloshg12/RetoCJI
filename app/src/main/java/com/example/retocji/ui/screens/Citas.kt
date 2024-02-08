@@ -28,11 +28,6 @@ fun Citas(
     citasViewModel: CitasViewModel,
     navController: NavController
 ) {
-    var expandedAsesores by remember { mutableStateOf(false) }
-    var expandedGestiones by remember { mutableStateOf(false) }
-    //var gestionDeseada by remember { mutableStateOf("") }
-    var expandedHour by remember { mutableStateOf(false) }
-    //var selectedHour by remember { mutableStateOf("") }
     var showDialog by remember { mutableStateOf(false) }
 
     val asesorDeseado by citasViewModel.asesorDeseado.collectAsState()
@@ -41,30 +36,18 @@ fun Citas(
     val asesores by citasViewModel.gestoresLiveData.observeAsState(initial = emptyList())
     val gestiones by citasViewModel.nombresTipoCitas.collectAsState()
 
-    val citas by citasViewModel.citasPorGestorYDia.observeAsState(initial = emptyList())
     val selectedHour by citasViewModel.selectedHour.collectAsState()
-
-    val gestionDeseada by citasViewModel.tipoCita.collectAsState()
-
-
-
-
 
 
     Column {
 
             CitaPersonalizada(
-                expandedAsesores = mutableStateOf(expandedAsesores),
                 asesorDeseado = asesorDeseado,
-                expandedGestiones = mutableStateOf(expandedGestiones),
-                gestionDeseada = gestionDeseada,
-                expandedHour = mutableStateOf(expandedHour),
                 selectedHour = mutableStateOf(selectedHour),
                 asesores = asesores,
                 gestiones = gestiones,
                 showDialog = mutableStateOf(showDialog),
                 datePickerState = rememberDatePickerState(),
-                citas = citas,
                 citasViewModel,
                 horas,)
     }

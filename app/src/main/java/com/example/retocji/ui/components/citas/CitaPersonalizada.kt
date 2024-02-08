@@ -34,6 +34,7 @@ import com.example.retocji.domain.models.citas.CitasDTO
 import com.example.retocji.ui.viewmodels.CitasViewModel
 import SeleccionHoras
 import android.util.Log
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -55,17 +56,12 @@ import java.util.concurrent.TimeUnit
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CitaPersonalizada(
-    expandedAsesores: MutableState<Boolean>,
     asesorDeseado: String,
-    expandedGestiones: MutableState<Boolean>,
-    gestionDeseada: String,
-    expandedHour: MutableState<Boolean>,
     selectedHour: MutableState<String>,
     asesores: List<String> = listOf(),
     gestiones: List<String> = listOf(),
     showDialog: MutableState<Boolean>,
     datePickerState: DatePickerState = rememberDatePickerState(),
-    citas: List<CitasDTO>,
     citasViewModel: CitasViewModel,
     horas: List<String>?
 ) {
@@ -77,7 +73,7 @@ fun CitaPersonalizada(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp),
+            .padding(24.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -86,19 +82,22 @@ fun CitaPersonalizada(
         LaunchedEffect(datePickerState.selectedDateMillis) {
             diaDeseado = datePickerState.selectedDateMillis
         }
-        var showAlert by remember { mutableStateOf(true) }
+        var showAlert by remember { mutableStateOf(false) } // Default value set to false to prevent the alert dialog from showing immediately
 
-
+        // Conditional AlertDialog appearance
         if (showAlert) {
             AlertDialog(
                 onDismissRequest = { showAlert = false },
-                title = { Text("Advertencia") },
-                text = { Text("Por favor, selecciona un asesor primero.") },
+                title = { Text("Advertencia", style = MaterialTheme.typography.headlineSmall) },
+                text = { Text("Por favor, selecciona un asesor primero.", style = MaterialTheme.typography.bodyMedium) },
                 confirmButton = {
-                    Button(onClick = { showAlert = false }) {
-                        Text("OK")
+                    Button(onClick = { showAlert = false }, modifier = Modifier.fillMaxWidth()) {
+                        Text("OK", style = MaterialTheme.typography.labelLarge)
                     }
-                }
+                },
+                containerColor = MaterialTheme.colorScheme.background,
+                titleContentColor = MaterialTheme.colorScheme.onBackground,
+                textContentColor = MaterialTheme.colorScheme.onBackground,
             )
         }
 
@@ -241,7 +240,9 @@ fun CitaPersonalizada(
             verticalAlignment = Alignment.CenterVertically
         ) {
             val context = LocalContext.current
-            Button(onClick = {
+            Button(shape = MaterialTheme.shapes.medium,
+                modifier = Modifier.fillMaxWidth(),
+                onClick = {
                 if (asesorDeseado.isEmpty() || selectedHour.value.isEmpty() || selectedDate.isEmpty()) {
                     validateFields = "false"
                 } else {
@@ -279,18 +280,18 @@ fun CitaPersonalizada(
 
         }
 
-        if(validateFields == "false") {
-            Text(text = "Hay campos vacíos",color=Color.Red)
-
-            LaunchedEffect(validateFields) {
-                delay(5000)
-                validateFields = ""
-            }
+        if (validateFields == "false") {
+            Text(
+                text = "Hay campos vacíos",
+                color = MaterialTheme.colorScheme.error,
+                style = MaterialTheme.typography.bodyLarge
+            )
         } else if (!responseMessage.isNullOrBlank()) {
-
-            Text(text = responseMessage!!,
-                color = if (responseMessage.equals("Cita creada exitosamente"))
-                    Color.Green else Color.Red )
+            Text(
+                text = responseMessage!!,
+                color = if (responseMessage == "Cita creada exitosamente") MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error,
+                style = MaterialTheme.typography.bodyLarge
+            )
             citasViewModel.actualizarHorasDisponibles()
             LaunchedEffect(responseMessage) {
                 delay(5000)
