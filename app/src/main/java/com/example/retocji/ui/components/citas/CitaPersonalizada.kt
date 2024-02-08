@@ -35,9 +35,12 @@ import com.example.retocji.ui.viewmodels.CitasViewModel
 import SeleccionHoras
 import android.util.Log
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.graphics.Color
+import kotlinx.coroutines.delay
 import java.text.SimpleDateFormat
 import java.time.DayOfWeek
 import java.time.Instant
+import java.time.LocalDate
 import java.time.ZoneId
 import java.util.Date
 
@@ -49,7 +52,7 @@ fun CitaPersonalizada(
     expandedAsesores: MutableState<Boolean>,
     asesorDeseado: String,
     expandedGestiones: MutableState<Boolean>,
-    gestionDeseada: MutableState<String>,
+    gestionDeseada: String,
     expandedHour: MutableState<Boolean>,
     selectedHour: MutableState<String>,
     asesores: List<String> = listOf(),
@@ -61,6 +64,9 @@ fun CitaPersonalizada(
     horas: List<String>?
 ) {
     val selectedDate by citasViewModel.selectedDate.collectAsState()
+    var validateFields by remember { mutableStateOf("") }
+    val responseMessage by citasViewModel.responseMessage.collectAsState()
+
 
     Column(
         modifier = Modifier
@@ -121,7 +127,8 @@ fun CitaPersonalizada(
             Spacer(modifier = Modifier.width(8.dp))
             SelecionGestion(gestiones,
                 onGestionSelected = { gestion ->
-                    gestionDeseada.value = gestion
+                    //gestionDeseada.value = gestion
+                    citasViewModel.setGestionDeseada(gestion)
                 }, asesorDeseado)
         }
 
@@ -167,12 +174,12 @@ fun CitaPersonalizada(
                     DatePicker(
                         state = datePickerState,
                         dateValidator = { timestamp ->
-                            val selectedDate =
-                                Instant.ofEpochMilli(timestamp).atZone(ZoneId.systemDefault())
-                                    .toLocalDate()
+                            val selectedDate = Instant.ofEpochMilli(timestamp).atZone(ZoneId.systemDefault()).toLocalDate()
+                            val today = LocalDate.now(ZoneId.systemDefault())
                             val dayOfWeek = selectedDate.dayOfWeek
-                            timestamp > Instant.now()
-                                .toEpochMilli() && dayOfWeek != DayOfWeek.SATURDAY && dayOfWeek != DayOfWeek.SUNDAY
+
+                            // Permite seleccionar el día actual y los días futuros, excluyendo sábados y domingos.
+                            (selectedDate.isEqual(today) || selectedDate.isAfter(today)) && dayOfWeek != DayOfWeek.SATURDAY && dayOfWeek != DayOfWeek.SUNDAY
                         },
                     )
                 }
@@ -228,12 +235,37 @@ fun CitaPersonalizada(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Button(onClick = {
-
-                citasViewModel.crearCita(asesorDeseado, selectedDate, selectedHour.value)
-                Log.e("Dia deseado",selectedDate)
+                if (asesorDeseado.isEmpty() || selectedHour.value.isEmpty() || selectedDate.isEmpty()) {
+                    validateFields = "false"
+                } else {
+                    citasViewModel.crearCita(asesorDeseado, selectedDate, selectedHour.value)
+                    validateFields = "true"
+                }
             }) {
                 Text("Reservar cita")
             }
+
         }
+
+        if(validateFields == "false") {
+            Text(text = "Hay campos vacíos",color=Color.Red)
+
+            LaunchedEffect(validateFields) {
+                delay(5000)
+                validateFields = ""
+            }
+        } else if (!responseMessage.isNullOrBlank()) {
+
+            Text(text = responseMessage!!,
+                color = if (responseMessage.equals("Cita creada exitosamente"))
+            Color.Green else Color.Red )
+
+            LaunchedEffect(responseMessage) {
+                delay(5000)
+                citasViewModel.clearResponseMessage()
+            }
+        }
+
+
     }
 }

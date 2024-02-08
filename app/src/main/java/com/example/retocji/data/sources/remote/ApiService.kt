@@ -17,6 +17,9 @@ interface ApiService {
     @POST("auth/generateToken")
     suspend fun login(@Body authRequest: AuthRequest): Response<Token>
 
+    @GET("auth/validateToken")
+    suspend fun validateToken(@Query("token") token: String): Response<ResponseBody>
+
     @POST("citas/crear")
     suspend fun crearCita(
         @Header("Authorization") token: String,

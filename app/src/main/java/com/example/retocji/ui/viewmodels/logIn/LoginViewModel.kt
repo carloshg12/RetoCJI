@@ -41,6 +41,7 @@ class LoginViewModel @Inject constructor(
     private val _loginSuccess = MutableLiveData<Boolean>()
     val loginSuccess: LiveData<Boolean> = _loginSuccess
 
+
     fun login(username: String, password: String, onLoginComplete: (Boolean) -> Unit) {
         viewModelScope.launch {
             try {
@@ -70,31 +71,7 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun crearCita(citas: CitasDTO) {
-        viewModelScope.launch {
-            try {
-                val token = "Bearer ${loginResult.value}"
-                val response = RetrofitInstance.api.crearCita(token, citas)
-                if (response.isSuccessful) {
-                    Log.e("Exito", "Cita creada")
-                } else {
-                    val code = response.code()
-                    if (code == 403) {
-                        Log.e("Fracaso", "Acceso prohibido: Token no válido")
-                        Log.e("INFO", token)
-                        // Manejar el caso de acceso prohibido aquí, por ejemplo, mostrar un mensaje al usuario
-                    } else {
-                        val errorResponse = response.errorBody()?.string()
-                        Log.e("Fracaso", errorResponse ?: "Error desconocido")
-                    }
-                }
-            } catch (e: Exception) {
-                Log.e("Error", "Error en la creación de la cita", e)
-            }
-        }
 
-
-    }
 
     fun userProfile() {
         viewModelScope.launch {

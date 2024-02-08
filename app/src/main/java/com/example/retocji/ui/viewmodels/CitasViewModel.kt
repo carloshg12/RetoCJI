@@ -3,6 +3,7 @@ package com.example.retocji.ui.viewmodels
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
+import androidx.compose.runtime.MutableState
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -18,7 +19,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
@@ -48,8 +48,21 @@ class CitasViewModel @Inject constructor(
     private val _selectedDate= MutableStateFlow("")
     val selectedDate: StateFlow<String> = _selectedDate.asStateFlow()
 
+    private val _tipoCita= MutableStateFlow("")
+    val tipoCita: StateFlow<String> = _tipoCita.asStateFlow()
+
+    private val _responseMessage = MutableStateFlow<String?>(null)
+    val responseMessage: StateFlow<String?> = _responseMessage.asStateFlow()
+
+
+
+
     fun setSelectedDate(date: String) {
         _selectedDate.value = date
+    }
+
+    init {
+        obtenerGestores()
     }
     fun setSelectedHour(hour: String) {
         _selectedHour.value = hour
@@ -60,8 +73,7 @@ class CitasViewModel @Inject constructor(
 
         val asesor = _asesorDeseado.value
         val fecha = _fechaSeleccionada.value.toString()
-        Log.e("asesorCita",asesor)
-        Log.e("fechaCita",fecha)
+
         viewModelScope.launch {
             try {
                 val response = apiService.getCitasPorGestorYDia(asesor, fecha)
@@ -79,7 +91,11 @@ class CitasViewModel @Inject constructor(
         }
     }
     @RequiresApi(Build.VERSION_CODES.O)
-    fun crearCita(gestor: String, fecha: String, horaInicio: String) {
+    fun crearCita(
+        gestor: String,
+        fecha: String,
+        horaInicio: String,
+    ) {
         viewModelScope.launch {
             try {
                 val token = sharedPreferencesRepository.getAuthToken()
@@ -107,22 +123,24 @@ class CitasViewModel @Inject constructor(
                     horaInicio = fechaHoraInicioFormateada,
                     horaFin = fechaHoraFinFormateada,
                     usuario = UsersDTO(name = apiUserName, email = ""),
-                    gestor = UsersDTO(name = "Carlos", email = ""),
-                    tipoCita = TipoCitaDTO("Asesoría",0,0f)
+                    gestor = UsersDTO(name = gestor, email = ""),
+                    tipoCita = TipoCitaDTO(tipoCita.value,0,0f)
                 )
-
+                Log.e("Tipo Cita",tipoCita.value)
                 // Realizar la llamada a la API para crear la cita
                 val response = apiService.crearCita("Bearer $token", nuevaCita)
                 if (response.isSuccessful) {
-                    // Manejar la respuesta si es necesaria
-                    Log.d("CitasViewModel", "Cita creada con éxito")
+                    // Si la respuesta es exitosa, capturamos el mensaje directamente del cuerpo.
+                    val responseBodyString = response.body()?.string()
+                    _responseMessage.value = responseBodyString ?: "Cita creada con éxito"
                 } else {
-                    // Manejar el caso de error
-                    Log.e("CitasViewModel", "Error al crear la cita: ${response.errorBody()?.string()}")
+                    // En caso de error, intentamos obtener el mensaje de error del cuerpo.
+                    val errorBody = response.errorBody()?.string()
+                    _responseMessage.value = "Error al crear la cita: $errorBody"
                 }
             } catch (e: Exception) {
-                // Manejar las excepciones
-                Log.e("CitasViewModel", "Excepción al crear la cita", e)
+                // Manejar las excepciones generales.
+                _responseMessage.value = "Excepción al crear la cita: ${e.message}"
             }
         }
     }
@@ -162,6 +180,9 @@ class CitasViewModel @Inject constructor(
 
     }
 
+    fun setGestionDeseada(tipoCita: String) {
+        _tipoCita.value = tipoCita
+    }
     fun setAsesorDeseado(asesor: String) {
         _asesorDeseado.value = asesor
         obtenerTipoCitas()
@@ -235,6 +256,10 @@ class CitasViewModel @Inject constructor(
                 Log.e("CitasViewModel", "Excepción al obtener citas por gestor y día", e)
             }
         }
+    }
+
+    fun clearResponseMessage() {
+        _responseMessage.value = null
     }
 
 

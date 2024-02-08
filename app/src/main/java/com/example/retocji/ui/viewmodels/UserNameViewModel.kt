@@ -20,11 +20,30 @@ class UserNameViewModel @Inject constructor(
     private val _userName = MutableLiveData<String>("Cargando...")
     val userName: LiveData<String> = _userName
 
+    private val _isTokenValid: MutableLiveData<Boolean> = MutableLiveData()
+    val isTokenValid: LiveData<Boolean> = _isTokenValid
     init {
         getUserName()
     }
 
-    private fun getUserName() {
+    fun validateToken() {
+        viewModelScope.launch {
+            val token = sharedPreferencesRepository.getAuthToken()
+            Log.e("TOKEN",token.toString())
+            val response = apiService.validateToken(token.toString())
+            if (response.isSuccessful) {
+                Log.d("ValidateToken", "Response successful: ${response.body()?.toString()}")
+                _isTokenValid.postValue(true)
+            } else {
+                // En caso de error, intentamos obtener el cuerpo del error
+                val errorBody = response.errorBody()?.string()
+                Log.e("ValidateToken", "Error response: $errorBody")
+                _isTokenValid.postValue(false)
+            }
+        }
+    }
+
+     fun getUserName() {
         viewModelScope.launch {
             val token = sharedPreferencesRepository.getAuthToken()
             if (token != null) {
@@ -44,6 +63,9 @@ class UserNameViewModel @Inject constructor(
                 _userName.value = "Token no encontrado"
             }
         }
+    }
+    fun setUserName(username:String){
+        _userName.postValue(username)
     }
 }
 
