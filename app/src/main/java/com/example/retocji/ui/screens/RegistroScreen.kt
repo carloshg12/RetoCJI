@@ -45,7 +45,6 @@ fun Registro(
                         viewModel.onRegistroChanged(false)
                         userNameViewModel.setUserName(username)
                         viewModel.login(username, password)
-                        citasViewModel.obtenerGestores()
                     }
                     Text(text = "¡Registrado con éxito!", color = Color.Green)
                 }

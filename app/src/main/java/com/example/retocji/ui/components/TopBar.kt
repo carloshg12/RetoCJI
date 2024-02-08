@@ -67,8 +67,7 @@ fun TopBar(navController: NavController, title: String,userNameViewModel: UserNa
     userNameViewModel.cantidadCitas()
 
     TopAppBar(
-        /*colors =  TopAppBarDefaults.topAppBarColors(
-            containerColor = Color.Black),*/
+
         title = { Text(text = title) },
         navigationIcon = if (currentDestination?.route != "GeneralInfo") {
             {

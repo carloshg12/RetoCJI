@@ -69,7 +69,7 @@ class CitasViewModel @Inject constructor(
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun actualizarHorasDisponibles(name: String, dia: String) {
+    fun actualizarHorasDisponibles() {
 
         val asesor = _asesorDeseado.value
         val fecha = _fechaSeleccionada.value.toString()
@@ -176,13 +176,15 @@ class CitasViewModel @Inject constructor(
     @RequiresApi(Build.VERSION_CODES.O)
     fun setFechaSeleccionada(fecha: LocalDate) {
         _fechaSeleccionada.value = fecha
-        actualizarHorasDisponibles(asesorDeseado.value, fecha.toString())
+        actualizarHorasDisponibles()
 
     }
 
     fun setGestionDeseada(tipoCita: String) {
         _tipoCita.value = tipoCita
     }
+
+
     fun setAsesorDeseado(asesor: String) {
         _asesorDeseado.value = asesor
         obtenerTipoCitas()
