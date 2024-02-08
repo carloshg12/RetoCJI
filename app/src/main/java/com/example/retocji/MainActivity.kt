@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -21,11 +22,13 @@ import com.example.retocji.ui.viewmodels.logIn.RegistroViewModel
 import com.example.retocji.ui.screens.Citas
 import com.example.retocji.ui.screens.GestionesScreen
 import com.example.retocji.ui.screens.Informacion
+import com.example.retocji.ui.screens.SplashScreen
 import com.example.retocji.ui.screens.logIn.Registro
 import com.example.retocji.ui.theme.RetoCJITheme
 import com.example.retocji.ui.viewmodels.GestionesViewModel
 import com.example.retocji.ui.viewmodels.UserNameViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -50,13 +53,17 @@ class MainActivity : ComponentActivity() {
 
                 NavHost(
                     navController = navController,
-                    startDestination = if(isTokenValid == false) "LogIn" else "GeneralInfo"
+                    startDestination = "SplashScreen"
+                    //startDestination = if(isTokenValid == false) "LogIn" else "GeneralInfo"
                 ) {
                     composable("GeneralInfo") {
 
                         Scaffold(navController = navController,userNameViewModel,citasViewModel) {
                             Bienvenida(navController, userNameViewModel)
                         }
+                    }
+                    composable("SplashScreen") {
+                        SplashScreen(navController,userNameViewModel)
                     }
                     composable("Citas") {
                         Scaffold(navController = navController, userNameViewModel, citasViewModel) {
