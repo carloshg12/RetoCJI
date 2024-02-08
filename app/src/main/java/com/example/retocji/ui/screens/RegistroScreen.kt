@@ -13,6 +13,7 @@ import com.example.retocji.ui.components.logIn.PasswordTextFieldComponent
 import com.example.retocji.ui.components.logIn.UsernameTextFieldComponent
 import com.example.retocji.ui.components.registro.RegisterButtonComponent
 import com.example.retocji.ui.components.registro.EmailTextFieldComponent
+import com.example.retocji.ui.viewmodels.CitasViewModel
 import com.example.retocji.ui.viewmodels.UserNameViewModel
 import com.example.retocji.ui.viewmodels.logIn.RegistroViewModel
 
@@ -20,7 +21,8 @@ import com.example.retocji.ui.viewmodels.logIn.RegistroViewModel
 fun Registro(
     navController: NavController,
     viewModel: RegistroViewModel,
-    userNameViewModel: UserNameViewModel
+    userNameViewModel: UserNameViewModel,
+    citasViewModel: CitasViewModel
 ) {
     val username by viewModel.username.observeAsState("")
     val password by viewModel.password.observeAsState("")
@@ -42,6 +44,8 @@ fun Registro(
                         navController.navigate("GeneralInfo")
                         viewModel.onRegistroChanged(false)
                         userNameViewModel.setUserName(username)
+                        viewModel.login(username, password)
+                        citasViewModel.obtenerGestores()
                     }
                     Text(text = "¡Registrado con éxito!", color = Color.Green)
                 }

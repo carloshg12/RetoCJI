@@ -196,7 +196,6 @@ class CitasViewModel @Inject constructor(
     fun obtenerGestores() {
         viewModelScope.launch {
             try {
-                // Suponiendo que tu SharedPreferencesRepository maneja la posibilidad de un token nulo correctamente
                 val token = obtenerTokenDesdeSharedPreferences() ?: return@launch
                 val response = apiService.getGestores("Bearer $token")
                 if (response.isSuccessful) {

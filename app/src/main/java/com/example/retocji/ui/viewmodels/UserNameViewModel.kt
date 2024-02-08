@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.retocji.data.sources.remote.ApiService
+import com.example.retocji.domain.models.citas.CitasDTO
 import com.example.retocji.domain.repositories.SharedPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -22,14 +23,70 @@ class UserNameViewModel @Inject constructor(
 
     private val _isTokenValid: MutableLiveData<Boolean> = MutableLiveData()
     val isTokenValid: LiveData<Boolean> = _isTokenValid
+
+    private val _citasUsuario: MutableLiveData<List<CitasDTO>> = MutableLiveData()
+    val citasUsuario: LiveData<List<CitasDTO>> = _citasUsuario
+
+    private val _cantidadCitas: MutableLiveData<Int?> = MutableLiveData()
+    val cantidadCitas: MutableLiveData<Int?> = _cantidadCitas
+
     init {
         getUserName()
+
+    }
+
+    fun citasPorUsuario() {
+        viewModelScope.launch {
+
+            try {
+                val userNameValue = _userName.value ?: ""
+                val response = apiService.obtenerCitasPorUsuario(userNameValue)
+                if (response.isSuccessful) {
+                    _citasUsuario.postValue(response.body())
+                } else {
+                    Log.e(
+                        "UserNameViewModel",
+                        "Error al obtener citas por usuario: ${response.errorBody()?.string()}"
+                    )
+                    _citasUsuario.postValue(emptyList())
+                }
+            } catch (e: Exception) {
+                Log.e("UserNameViewModel", "Excepción al obtener citas por usuario: ${e.message}")
+                _citasUsuario.postValue(emptyList())
+            }
+        }
+
+    }
+    fun cantidadCitas() {
+        viewModelScope.launch {
+            try {
+                val userNameValue = _userName.value ?: ""
+                Log.e("userNameValue", _userName.value.toString())
+                val response = apiService.obtenerCantidadCitas(userNameValue)
+                if (response.isSuccessful) {
+                    val cantidad = response.body()
+                    _cantidadCitas.postValue(cantidad)
+                    Log.e("Cantidad",cantidad.toString())
+                    Log.e("CantidadCitas", _cantidadCitas.value.toString())
+                } else {
+                    Log.e(
+                        "UserNameViewModel",
+                        "Error al obtener citas por usuario: ${response.errorBody()?.string()}"
+                    )
+                    _cantidadCitas.postValue(0)
+                }
+            } catch (e: Exception) {
+                Log.e("UserNameViewModel", "Excepción al obtener citas por usuario: ${e.message}")
+                _cantidadCitas.postValue(0)
+            }
+        }
+
     }
 
     fun validateToken() {
         viewModelScope.launch {
             val token = sharedPreferencesRepository.getAuthToken()
-            Log.e("TOKEN",token.toString())
+            Log.e("TOKEN", token.toString())
             val response = apiService.validateToken(token.toString())
             if (response.isSuccessful) {
                 Log.d("ValidateToken", "Response successful: ${response.body()?.toString()}")
@@ -43,18 +100,20 @@ class UserNameViewModel @Inject constructor(
         }
     }
 
-     fun getUserName() {
+    fun getUserName() {
         viewModelScope.launch {
             val token = sharedPreferencesRepository.getAuthToken()
             if (token != null) {
                 try {
-                    val response = apiService.getUserName("Bearer $token",token)
+                    val response = apiService.getUserName("Bearer $token", token)
                     if (response.isSuccessful) {
                         val responseBodyString = response.body()?.string() ?: "Respuesta vacía"
                         _userName.value = responseBodyString
-                        Log.e("USER",_userName.value!!)
+                        Log.e("USER", _userName.value!!)
                     } else {
-                        _userName.value = "Error al obtener el nombre de usuario: ${response.errorBody()?.string()}"
+                        _userName.value = "Error al obtener el nombre de usuario: ${
+                            response.errorBody()?.string()
+                        }"
                     }
                 } catch (e: Exception) {
                     _userName.value = "Error de conexión: ${e.message}"
@@ -64,8 +123,13 @@ class UserNameViewModel @Inject constructor(
             }
         }
     }
-    fun setUserName(username:String){
+
+    fun setUserName(username: String) {
         _userName.postValue(username)
+    }
+
+    fun exit() {
+        sharedPreferencesRepository.saveAuthToken("")
     }
 }
 
