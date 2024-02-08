@@ -35,12 +35,9 @@ import androidx.compose.ui.unit.dp
 import com.example.retocji.domain.models.citas.CitasDTO
 import com.example.retocji.ui.components.GoogleCalendar.agreagarCitaCalendario
 import com.example.retocji.ui.viewmodels.CitasViewModel
-<<<<<<<<< Temporary merge branch 1
 import SeleccionHoras
 import android.util.Log
 import androidx.compose.runtime.collectAsState
-=========
->>>>>>>>> Temporary merge branch 2
 import java.text.SimpleDateFormat
 import java.time.DayOfWeek
 import java.time.Instant
@@ -171,7 +168,6 @@ fun CitaPersonalizada(
                             Text("Cancelar")
                         }
                     }
-<<<<<<<<< Temporary merge branch 1
                 ) {
                     DatePicker(
                         state = datePickerState,
@@ -184,7 +180,6 @@ fun CitaPersonalizada(
                                 .toEpochMilli() && dayOfWeek != DayOfWeek.SATURDAY && dayOfWeek != DayOfWeek.SUNDAY
                         },
                     )
-=========
                 }
             }
 
@@ -260,7 +255,6 @@ fun CitaPersonalizada(
                     //citasViewModel.crearCita(asesorDeseado,diaDeseado.toString(),selectedHour.value)
                 }) {
                     Text("Reservar cita")
->>>>>>>>> Temporary merge branch 2
                 }
             }
         }
