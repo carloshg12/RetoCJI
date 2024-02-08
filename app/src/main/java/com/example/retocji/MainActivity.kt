@@ -54,22 +54,22 @@ class MainActivity : ComponentActivity() {
                 ) {
                     composable("GeneralInfo") {
 
-                        Scaffold(navController = navController,userNameViewModel) {
+                        Scaffold(navController = navController,userNameViewModel,citasViewModel) {
                             Bienvenida(navController, userNameViewModel)
                         }
                     }
                     composable("Citas") {
-                        Scaffold(navController = navController,userNameViewModel) {
+                        Scaffold(navController = navController, userNameViewModel, citasViewModel) {
                             Citas(citasViewModel,navController)
                         }
                     }
                     composable("Gestiones") {
-                        Scaffold(navController = navController,userNameViewModel) {
+                        Scaffold(navController = navController, userNameViewModel, citasViewModel) {
                             GestionesScreen(viewModel)
                         }
                     }
                     composable("SobreNosotros") {
-                        Scaffold(navController = navController,userNameViewModel) {
+                        Scaffold(navController = navController, userNameViewModel, citasViewModel) {
                             Informacion()
                         }
 

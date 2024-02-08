@@ -259,7 +259,7 @@ fun CitaPersonalizada(
             Text(text = responseMessage!!,
                 color = if (responseMessage.equals("Cita creada exitosamente"))
             Color.Green else Color.Red )
-
+            citasViewModel.actualizarHorasDisponibles()
             LaunchedEffect(responseMessage) {
                 delay(5000)
                 citasViewModel.clearResponseMessage()
