@@ -3,12 +3,14 @@ package com.example.retocji.ui.viewmodels
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
+import androidx.compose.runtime.MutableState
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.retocji.data.sources.remote.ApiService
 import com.example.retocji.domain.models.citas.CitasDTO
+import com.example.retocji.domain.models.gestiones.TipoCitaDTO
 import com.example.retocji.domain.models.logIn.UsersDTO
 import com.example.retocji.domain.repositories.SharedPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,8 +19,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 @HiltViewModel
@@ -43,17 +45,34 @@ class CitasViewModel @Inject constructor(
     private val _selectedHour = MutableStateFlow("")
     val selectedHour: StateFlow<String> = _selectedHour.asStateFlow()
 
+    private val _selectedDate= MutableStateFlow("")
+    val selectedDate: StateFlow<String> = _selectedDate.asStateFlow()
 
+    private val _tipoCita= MutableStateFlow("")
+    val tipoCita: StateFlow<String> = _tipoCita.asStateFlow()
+
+    private val _responseMessage = MutableStateFlow<String?>(null)
+    val responseMessage: StateFlow<String?> = _responseMessage.asStateFlow()
+
+
+
+
+    fun setSelectedDate(date: String) {
+        _selectedDate.value = date
+    }
+
+    init {
+        obtenerGestores()
+    }
     fun setSelectedHour(hour: String) {
         _selectedHour.value = hour
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun actualizarHorasDisponibles(name: String, dia: String) {
-        // Aquí deberías implementar la lógica para calcular las horas disponibles
-        // basándote en el asesor seleccionado y la fecha seleccionada. Por ejemplo:
+
         val asesor = _asesorDeseado.value
-        val fecha = _fechaSeleccionada.value.toString() // Asegúrate de formatearlo como necesario
+        val fecha = _fechaSeleccionada.value.toString()
 
         viewModelScope.launch {
             try {
@@ -72,45 +91,61 @@ class CitasViewModel @Inject constructor(
         }
     }
     @RequiresApi(Build.VERSION_CODES.O)
-    fun crearCita(asesor: String, fecha: String, horaInicio: String) {
+    fun crearCita(
+        gestor: String,
+        fecha: String,
+        horaInicio: String,
+    ) {
         viewModelScope.launch {
-            val token = sharedPreferencesRepository.getAuthToken()
-            val horaMinutos = horaInicio.split(":")
-            val hora = horaMinutos[0].toInt()
-            val minutos = horaMinutos[1].toInt()
-
-            // Obtén la fecha actual (puedes ajustarla según tus necesidades)
-            val fechaActual = LocalDateTime.now()
-
-            // Crea un objeto LocalTime con la hora y minutos
-            val localTime = LocalTime.of(hora, minutos)
             try {
-                val horaFin = localTime
+                val token = sharedPreferencesRepository.getAuthToken()
+                var apiUserName: String = ""
+                val responseUser = apiService.getUserName("Bearer $token", token ?: "")
+                if (responseUser.isSuccessful) {
+                    val responseBody = responseUser.body()
+                    apiUserName = responseBody?.string() ?: ""
+                }
+                Log.e("Username", apiUserName)
+
+                val fechaParseada = LocalDate.parse(fecha)
+                val horaParseada = LocalTime.parse(horaInicio)
+
+                val fechaHoraInicio = fechaParseada.atTime(horaParseada)
+
+                val fechaHoraFin = fechaHoraInicio.plusHours(1)
+
+                val formatter = DateTimeFormatter.ofPattern("yyyy-dd-MM'T'HH:mm:ss")
+                val fechaHoraInicioFormateada = fechaHoraInicio.format(formatter)
+                val fechaHoraFinFormateada = fechaHoraFin.format(formatter)
+
+
                 val nuevaCita = CitasDTO(
-                    horaInicio = horaFin.toString(),
-                    horaFin = horaFin.toString(),
-                    usuario = UsersDTO(id = 1, name = "Carlos", email = "carlosch@ieselcaminas.org"),
-                    gestor = UsersDTO(id = 1, name = "Carlos", email = "carlosch@ieselcaminas.org"),
-
+                    horaInicio = fechaHoraInicioFormateada,
+                    horaFin = fechaHoraFinFormateada,
+                    usuario = UsersDTO(name = apiUserName, email = ""),
+                    gestor = UsersDTO(name = gestor, email = ""),
+                    tipoCita = TipoCitaDTO(tipoCita.value,0,0f)
                 )
-                Log.e("horaFin",horaFin.toString())
-                Log.e("crearCita",nuevaCita.toString())
-
+                Log.e("Tipo Cita",tipoCita.value)
+                // Realizar la llamada a la API para crear la cita
                 val response = apiService.crearCita("Bearer $token", nuevaCita)
                 if (response.isSuccessful) {
-                    // Cita creada con éxito, puedes manejar la respuesta si es necesario
-                    // Por ejemplo, mostrar un mensaje de éxito o actualizar la lista de citas
-                    Log.d("CitasViewModel", "Cita creada con éxito")
+                    // Si la respuesta es exitosa, capturamos el mensaje directamente del cuerpo.
+                    val responseBodyString = response.body()?.string()
+                    _responseMessage.value = responseBodyString ?: "Cita creada con éxito"
                 } else {
-                    // Manejar el caso de error, por ejemplo, mostrar un mensaje de error
-                    Log.e("CitasViewModel", "Error al crear la cita: ${response.errorBody()?.string()}")
+                    // En caso de error, intentamos obtener el mensaje de error del cuerpo.
+                    val errorBody = response.errorBody()?.string()
+                    _responseMessage.value = "Error al crear la cita: $errorBody"
                 }
             } catch (e: Exception) {
-                // Manejar excepciones, por ejemplo, mostrar un mensaje de error genérico
-                Log.e("CitasViewModel", "Excepción al crear la cita", e)
+                // Manejar las excepciones generales.
+                _responseMessage.value = "Excepción al crear la cita: ${e.message}"
             }
         }
     }
+
+
     private fun calcularHorasDisponibles(citas: List<CitasDTO>): List<String> {
 
         val horasPredeterminadas = listOf("10:00", "11:00", "12:00", "13:00", "14:00", "16:00", "17:00", "18:00", "19:00", "20:00")
@@ -145,6 +180,9 @@ class CitasViewModel @Inject constructor(
 
     }
 
+    fun setGestionDeseada(tipoCita: String) {
+        _tipoCita.value = tipoCita
+    }
     fun setAsesorDeseado(asesor: String) {
         _asesorDeseado.value = asesor
         obtenerTipoCitas()
@@ -158,7 +196,6 @@ class CitasViewModel @Inject constructor(
     fun obtenerGestores() {
         viewModelScope.launch {
             try {
-                // Suponiendo que tu SharedPreferencesRepository maneja la posibilidad de un token nulo correctamente
                 val token = obtenerTokenDesdeSharedPreferences() ?: return@launch
                 val response = apiService.getGestores("Bearer $token")
                 if (response.isSuccessful) {
@@ -218,6 +255,10 @@ class CitasViewModel @Inject constructor(
                 Log.e("CitasViewModel", "Excepción al obtener citas por gestor y día", e)
             }
         }
+    }
+
+    fun clearResponseMessage() {
+        _responseMessage.value = null
     }
 
 

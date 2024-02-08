@@ -12,10 +12,14 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Query
+import java.util.Optional
 
 interface ApiService {
     @POST("auth/generateToken")
     suspend fun login(@Body authRequest: AuthRequest): Response<Token>
+
+    @GET("auth/validateToken")
+    suspend fun validateToken(@Query("token") token: String): Response<ResponseBody>
 
     @POST("citas/crear")
     suspend fun crearCita(
@@ -46,4 +50,9 @@ interface ApiService {
     @GET("/auth/user/name")
     suspend fun getUserName(@Header("Authorization") authHeader: String, @Query("token") token: String): Response<ResponseBody>
 
+    @GET("/citas/citasusuario")
+    suspend fun obtenerCitasPorUsuario(@Query("user") user:String) :Response<List<CitasDTO>>
+
+    @GET("/citas/cantidad")
+    suspend fun obtenerCantidadCitas(@Query("userName") user:String) :Response<Int>
 }

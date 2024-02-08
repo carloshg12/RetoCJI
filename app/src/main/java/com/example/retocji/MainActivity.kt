@@ -6,6 +6,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -33,45 +35,51 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             RetoCJITheme {
+
+                val userNameViewModel : UserNameViewModel = hiltViewModel()
+                val isTokenValid by userNameViewModel.isTokenValid.observeAsState()
+                userNameViewModel.validateToken()
                 val navController = rememberNavController()
                 val viewModel: GestionesViewModel = hiltViewModel()
                 val citasViewModel: CitasViewModel = hiltViewModel()
                 val loginViewModel: LoginViewModel = hiltViewModel()
+                val registroViewModel: RegistroViewModel = hiltViewModel()
 
-                val userNameViewModel : UserNameViewModel = hiltViewModel()
+
+
+
                 NavHost(
                     navController = navController,
-                    startDestination = "Citas"
+                    startDestination = if(isTokenValid == false) "LogIn" else "GeneralInfo"
                 ) {
                     composable("GeneralInfo") {
 
-                        Scaffold(navController = navController) {
+                        Scaffold(navController = navController,userNameViewModel) {
                             Bienvenida(navController, userNameViewModel)
                         }
                     }
                     composable("Citas") {
-                        Scaffold(navController = navController) {
+                        Scaffold(navController = navController,userNameViewModel) {
                             Citas(citasViewModel,navController)
                         }
                     }
                     composable("Gestiones") {
-                        Scaffold(navController = navController) {
+                        Scaffold(navController = navController,userNameViewModel) {
                             GestionesScreen(viewModel)
                         }
                     }
                     composable("SobreNosotros") {
-                        Scaffold(navController = navController) {
+                        Scaffold(navController = navController,userNameViewModel) {
                             Informacion()
                         }
 
                     }
                     composable("LogIn") {
-                        LoginView(loginViewModel,citasViewModel, navController)
+                        LoginView(loginViewModel,citasViewModel, navController,userNameViewModel)
 
                     }
                     composable("Registro") {
-                        val registroViewModel: RegistroViewModel = hiltViewModel()
-                        Registro(navController = navController, registroViewModel)
+                        Registro(navController = navController, registroViewModel,userNameViewModel,citasViewModel)
                     }
                 }
             }

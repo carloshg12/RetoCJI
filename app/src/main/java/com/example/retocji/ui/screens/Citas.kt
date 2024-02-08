@@ -3,7 +3,6 @@ package com.example.retocji.ui.screens
 import android.annotation.SuppressLint
 import android.app.Application
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -31,7 +30,7 @@ fun Citas(
 ) {
     var expandedAsesores by remember { mutableStateOf(false) }
     var expandedGestiones by remember { mutableStateOf(false) }
-    var gestionDeseada by remember { mutableStateOf("") }
+    //var gestionDeseada by remember { mutableStateOf("") }
     var expandedHour by remember { mutableStateOf(false) }
     //var selectedHour by remember { mutableStateOf("") }
     var showDialog by remember { mutableStateOf(false) }
@@ -45,13 +44,10 @@ fun Citas(
     val citas by citasViewModel.citasPorGestorYDia.observeAsState(initial = emptyList())
     val selectedHour by citasViewModel.selectedHour.collectAsState()
 
+    val gestionDeseada by citasViewModel.tipoCita.collectAsState()
 
-    Log.e("ASESOR", asesorDeseado)
-    Log.e("Gestiones", gestiones.toString())
-    Log.e("Horas", horas.toString())
-    Log.e("Selected Hour",selectedHour)
 
-    Log.e("Citas", citas.toString())
+
 
 
 
@@ -61,7 +57,7 @@ fun Citas(
                 expandedAsesores = mutableStateOf(expandedAsesores),
                 asesorDeseado = asesorDeseado,
                 expandedGestiones = mutableStateOf(expandedGestiones),
-                gestionDeseada = mutableStateOf(gestionDeseada),
+                gestionDeseada = gestionDeseada,
                 expandedHour = mutableStateOf(expandedHour),
                 selectedHour = mutableStateOf(selectedHour),
                 asesores = asesores,
