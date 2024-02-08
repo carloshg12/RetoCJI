@@ -35,11 +35,16 @@ import com.example.retocji.ui.viewmodels.CitasViewModel
 import SeleccionHoras
 import android.util.Log
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.platform.LocalContext
+import com.example.retocji.ui.components.GoogleCalendar.agreagarCitaCalendario
 import java.text.SimpleDateFormat
 import java.time.DayOfWeek
 import java.time.Instant
 import java.time.ZoneId
+import java.util.Calendar
 import java.util.Date
+import java.util.Locale
+import java.util.concurrent.TimeUnit
 
 @SuppressLint("UnrememberedMutableState")
 @RequiresApi(Build.VERSION_CODES.O)
@@ -220,6 +225,8 @@ fun CitaPersonalizada(
             }
         }
 
+        val context = LocalContext.current
+
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -228,6 +235,33 @@ fun CitaPersonalizada(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Button(onClick = {
+                val beginTime = Calendar.getInstance()
+                beginTime[2024, 0,7, 17] = 30
+
+                val endTime = Calendar.getInstance()
+                endTime[2024, 0, 7, 18] = 30
+
+                // Asumiendo que `selectedDate` está en formato "yyyy-MM-dd" y `selectedHour.value` en "HH:mm"
+                /*val format = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
+                val dateTime = format.parse("$selectedDate ${selectedHour.value}") ?: return@Button
+
+                val beginTime = Calendar.getInstance().apply {
+                    timeInMillis = dateTime.time
+                }
+
+                // Asumiendo una duración de 1 hora para la cita
+                val endTime = Calendar.getInstance().apply {
+                    timeInMillis = dateTime.time + TimeUnit.HOURS.toMillis(1)
+                }*/
+
+                agreagarCitaCalendario(
+                    "Cita  $asesorDeseado" ,
+                    "Oficina I&M Asesores",
+                    "Cita I&M Asesores",
+                    beginTime.timeInMillis,
+                    endTime.timeInMillis,
+                    context
+                )
 
                 citasViewModel.crearCita(asesorDeseado, selectedDate, selectedHour.value)
                 Log.e("Dia deseado",selectedDate)
