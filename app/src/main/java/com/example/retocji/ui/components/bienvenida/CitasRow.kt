@@ -12,8 +12,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.retocji.domain.models.citas.CitasDTO
 import com.example.retocji.ui.viewmodels.UserNameViewModel
-import com.itextpdf.kernel.pdf.PdfName.Column
 
 @Composable
 fun CitasRow(userNameViewModel: UserNameViewModel, navController: NavController) {
@@ -30,7 +30,10 @@ fun CitasRow(userNameViewModel: UserNameViewModel, navController: NavController)
         )
         LazyRow {
             val citas = userNameViewModel.citasUsuario.value ?: emptyList()
-            items(citas) { cita ->
+            val citasOrdenadas = citas.sortedWith(compareBy<CitasDTO> { it.horaInicio.split("T")[0] }
+                .thenBy { it.horaInicio.split("T").getOrNull(1) ?: "" })
+
+            items(citasOrdenadas) { cita ->
                 CardCita(cita)
             }
             item {
