@@ -6,7 +6,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 object RetrofitInstance {
     private val retrofit by lazy {
         Retrofit.Builder()
-            .baseUrl("http://10.21.0.140:8080/")
+            .baseUrl("http://imcitas.azurewebsites.net/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
@@ -17,3 +17,4 @@ object RetrofitInstance {
 
 }
 //http://imcitas.azurewebsites.net/
+//http://10.21.0.140:8080/
