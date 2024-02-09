@@ -53,7 +53,7 @@ class MainActivity : ComponentActivity() {
 
                 NavHost(
                     navController = navController,
-                    startDestination = "Citas"
+                    startDestination = "SplashScreen"
                     //startDestination = if(isTokenValid == false) "LogIn" else "GeneralInfo"
                 ) {
                     composable("GeneralInfo") {
