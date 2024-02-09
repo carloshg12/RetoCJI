@@ -52,5 +52,4 @@ fun Bienvenida(navController: NavController, userNameViewModel: UserNameViewMode
             }
         }
     }
-
 }
