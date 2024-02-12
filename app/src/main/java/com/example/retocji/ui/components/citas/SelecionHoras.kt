@@ -8,15 +8,18 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Divider
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.example.retocji.ui.viewmodels.CitasViewModel
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
-import com.example.retocji.ui.viewmodels.CitasViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -36,9 +39,10 @@ fun SeleccionHoras(
             val horaFin = horaFinLocalTime.format(timeFormatter)
 
             val isSelected = selectedHour.value == horaInicio
-            Row(modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.End
             ) {
@@ -53,11 +57,13 @@ fun SeleccionHoras(
                             }
                         }
                         .background(if (isSelected) MaterialTheme.colorScheme.primary else Color.Transparent)
-                        .padding(bottom= 2.dp,top=2.dp,end = 8.dp)
+                        .padding(bottom = 2.dp, top = 2.dp, end = 8.dp)
                 )
             }
-            Divider(modifier = Modifier
-                .padding(start=42.dp,end=16.dp))
+            Divider(
+                modifier = Modifier
+                    .padding(start = 42.dp, end = 16.dp)
+            )
         }
     }
 }

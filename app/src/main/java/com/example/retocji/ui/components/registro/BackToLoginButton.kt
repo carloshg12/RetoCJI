@@ -15,9 +15,10 @@ fun BackToLoginButtonComponent(navController: NavController) {
         onClick = { navController.navigate("LogIn") },
         colors = ButtonDefaults.buttonColors(
             MaterialTheme.colorScheme.primary,
-            MaterialTheme.colorScheme.surface),
+            MaterialTheme.colorScheme.surface
+        ),
 
-    ) {
+        ) {
         Icon(
             imageVector = Icons.Filled.ArrowBack,
             contentDescription = "Ir atrás"

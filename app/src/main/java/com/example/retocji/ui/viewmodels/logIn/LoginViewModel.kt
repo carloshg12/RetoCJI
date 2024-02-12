@@ -13,10 +13,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.retocji.data.sources.remote.ApiService
 import com.example.retocji.domain.models.AuthRequest
-import com.example.retocji.domain.models.citas.CitasDTO
 import com.example.retocji.domain.repositories.SharedPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -40,44 +38,36 @@ class LoginViewModel @Inject constructor(
     private val _loginSuccess = MutableLiveData<Boolean>()
     val loginSuccess: LiveData<Boolean> = _loginSuccess
 
-
-
     fun login(username: String, password: String, onLoginComplete: (Boolean) -> Unit) {
         viewModelScope.launch {
             try {
                 val authRequest = AuthRequest(username, password)
                 val response = apiService.login(authRequest)
                 if (response.isSuccessful) {
-                    _loginSuccess.value = true // Inicio de sesión exitoso
+                    _loginSuccess.value = true
                     val token = response.body()?.token
                     if (token != null) {
                         sharedPreferencesRepository.saveAuthToken(token)
 
-                    } else {
-                        // Manejar el caso de respuesta vacía si es necesario
-                    }
+                    } else {}
                 } else {
-                    _loginSuccess.value = false // Respuesta no exitosa
+                    _loginSuccess.value = false
                     _loginResult.value = "Error: respuesta no exitosa - ${response.code()}"
                 }
-                // Llamar a la función de callback con el resultado
                 onLoginComplete(_loginSuccess.value!!)
             } catch (e: Exception) {
                 Log.e("LoginError", "Error en login", e)
-                _loginSuccess.value = false // Error durante el inicio de sesión
-                // Llamar a la función de callback con el resultado
+                _loginSuccess.value = false
                 onLoginComplete(_loginSuccess.value!!)
             }
         }
     }
 
-
-
     fun userProfile() {
         viewModelScope.launch {
             try {
                 val token = "Bearer ${loginResult.value}"
-                val response = apiService.userProfile(token) // Usando
+                val response = apiService.userProfile(token)
                 if (response.isSuccessful) {
                     Log.e("Exito", response.body()!!.string())
                 } else {
@@ -85,7 +75,6 @@ class LoginViewModel @Inject constructor(
                     if (code == 403) {
                         Log.e("Fracaso", "Acceso prohibido: Token no válido")
                         Log.e("INFO", token)
-                        // Manejar el caso de acceso prohibido aquí, por ejemplo, mostrar un mensaje al usuario
                     } else {
                         val errorResponse = response.errorBody()?.string()
                         Log.e("Fracaso", errorResponse ?: "Error desconocido")

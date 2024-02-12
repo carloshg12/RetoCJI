@@ -1,9 +1,12 @@
 package com.example.retocji.ui.components.navigation
 
-import android.util.Log
-import androidx.compose.material3.*
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.retocji.ui.viewmodels.CitasViewModel
 
@@ -22,7 +25,7 @@ fun NavigationBar(
                 label = { Text(item.text) },
                 selected = currentRoute == item.route,
                 onClick = {
-citasViewModel.obtenerGestores()
+                    citasViewModel.obtenerGestores()
                     if (currentRoute != item.route) {
                         navController.navigate(item.route) {
                             popUpTo(navController.graph.startDestinationId)

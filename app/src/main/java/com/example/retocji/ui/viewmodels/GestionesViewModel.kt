@@ -21,6 +21,7 @@ class GestionesViewModel @Inject constructor(
     init {
         obtenerTipoCitas()
     }
+
     private val _tipoCitas = MutableLiveData<List<TipoCitaDTO>>()
     val tipoCitas: LiveData<List<TipoCitaDTO>> = _tipoCitas
 
@@ -29,6 +30,7 @@ class GestionesViewModel @Inject constructor(
             generarPDFUseCase(context, citasSeleccionadas)
         }
     }
+
     fun obtenerTipoCitas() {
         viewModelScope.launch {
             try {
@@ -37,9 +39,11 @@ class GestionesViewModel @Inject constructor(
                     Log.e("LISTA:", response.body().toString())
                     _tipoCitas.value = response.body() ?: emptyList()
                 } else {
-                    // Manejar el caso de error, por ejemplo, actualizando el LiveData con una lista vacía
                     _tipoCitas.value = emptyList()
-                    Log.e("GestionesViewModel", "Error al obtener tipo de citas: ${response.errorBody()?.string()}")
+                    Log.e(
+                        "GestionesViewModel",
+                        "Error al obtener tipo de citas: ${response.errorBody()?.string()}"
+                    )
                 }
             } catch (e: Exception) {
                 _tipoCitas.value = emptyList()
@@ -48,4 +52,3 @@ class GestionesViewModel @Inject constructor(
         }
     }
 }
-

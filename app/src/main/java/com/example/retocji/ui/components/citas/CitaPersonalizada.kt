@@ -1,5 +1,6 @@
 package com.example.retocji.ui.components.citas
 
+import SeleccionHoras
 import android.annotation.SuppressLint
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -17,26 +18,25 @@ import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.DatePickerState
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import com.example.retocji.ui.viewmodels.CitasViewModel
-import SeleccionHoras
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.retocji.ui.components.GoogleCalendar.agreagarCitaCalendario
+import com.example.retocji.ui.viewmodels.CitasViewModel
 import com.example.retocji.ui.viewmodels.UserViewModel
 import kotlinx.coroutines.delay
 import java.text.SimpleDateFormat
@@ -84,14 +84,18 @@ fun CitaPersonalizada(
         LaunchedEffect(datePickerState.selectedDateMillis) {
             diaDeseado = datePickerState.selectedDateMillis
         }
-        var showAlert by remember { mutableStateOf(false) } // Default value set to false to prevent the alert dialog from showing immediately
+        var showAlert by remember { mutableStateOf(false) }
 
-        // Conditional AlertDialog appearance
         if (showAlert) {
             AlertDialog(
                 onDismissRequest = { showAlert = false },
                 title = { Text("Advertencia", style = MaterialTheme.typography.headlineSmall) },
-                text = { Text("Por favor, selecciona un asesor primero.", style = MaterialTheme.typography.bodyMedium) },
+                text = {
+                    Text(
+                        "Por favor, selecciona un asesor primero.",
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                },
                 confirmButton = {
                     Button(onClick = { showAlert = false }, modifier = Modifier.fillMaxWidth()) {
                         Text("OK", style = MaterialTheme.typography.labelLarge)
@@ -103,7 +107,6 @@ fun CitaPersonalizada(
             )
         }
 
-        //selecion asesor
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -121,8 +124,6 @@ fun CitaPersonalizada(
 
         }
 
-
-        //selecion gestor
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -132,15 +133,15 @@ fun CitaPersonalizada(
         ) {
             Text(text = "Gestion", modifier = Modifier.widthIn(min = 100.dp))
             Spacer(modifier = Modifier.width(8.dp))
-            SelecionGestion(gestiones,
+            SelecionGestion(
+                gestiones,
                 onGestionSelected = { gestion ->
                     //gestionDeseada.value = gestion
                     citasViewModel.setGestionDeseada(gestion)
-                }, asesorDeseado)
+                }, asesorDeseado
+            )
         }
 
-
-        //selecion dia
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -181,7 +182,9 @@ fun CitaPersonalizada(
                     DatePicker(
                         state = datePickerState,
                         dateValidator = { timestamp ->
-                            val selectedDate = Instant.ofEpochMilli(timestamp).atZone(ZoneId.systemDefault()).toLocalDate()
+                            val selectedDate =
+                                Instant.ofEpochMilli(timestamp).atZone(ZoneId.systemDefault())
+                                    .toLocalDate()
                             val today = LocalDate.now(ZoneId.systemDefault())
                             val dayOfWeek = selectedDate.dayOfWeek
 
@@ -192,7 +195,6 @@ fun CitaPersonalizada(
             }
         }
 
-        // Sección para poner hora inicio
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -213,8 +215,6 @@ fun CitaPersonalizada(
             )
         }
 
-
-
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -225,15 +225,15 @@ fun CitaPersonalizada(
             Button(shape = MaterialTheme.shapes.medium,
                 modifier = Modifier.fillMaxWidth(),
                 onClick = {
-                if (asesorDeseado.isEmpty() || selectedHour.value.isEmpty() || selectedDate.isEmpty()) {
-                    validateFields = "false"
-                } else {
-                    citasViewModel.crearCita(asesorDeseado, selectedDate, selectedHour.value)
-                    validateFields = "true"
-                }
+                    if (asesorDeseado.isEmpty() || selectedHour.value.isEmpty() || selectedDate.isEmpty()) {
+                        validateFields = "false"
+                    } else {
+                        citasViewModel.crearCita(asesorDeseado, selectedDate, selectedHour.value)
+                        validateFields = "true"
+                    }
 
 
-            }) {
+                }) {
                 Text("Reservar cita")
             }
 
@@ -243,7 +243,8 @@ fun CitaPersonalizada(
             if (responseMessage == "Cita creada exitosamente") {
                 val format = SimpleDateFormat("yyyy-dd-MM HH:mm", Locale.getDefault())
                 format.timeZone = TimeZone.getDefault()
-                val dateTime = format.parse("$selectedDate ${selectedHour.value}") ?: return@LaunchedEffect
+                val dateTime =
+                    format.parse("$selectedDate ${selectedHour.value}") ?: return@LaunchedEffect
 
                 val beginTime = Calendar.getInstance().apply {
                     timeInMillis = dateTime.time
@@ -271,7 +272,7 @@ fun CitaPersonalizada(
                 style = MaterialTheme.typography.bodyLarge
             )
         } else if (!responseMessage.isNullOrBlank()) {
-            if(responseMessage != "Cita creada exitosamente"){
+            if (responseMessage != "Cita creada exitosamente") {
                 AlertDialog(
                     onDismissRequest = { showMaxCitasDialog = false },
                     title = {

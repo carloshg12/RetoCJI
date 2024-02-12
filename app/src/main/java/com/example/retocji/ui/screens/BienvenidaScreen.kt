@@ -8,7 +8,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.pager.*
 import androidx.navigation.NavController
 import com.example.retocji.R
 import com.example.retocji.domain.models.bienvenida.Noticia
@@ -16,13 +15,13 @@ import com.example.retocji.ui.components.bienvenida.CitasRow
 import com.example.retocji.ui.components.bienvenida.NoticiasCarousel
 import com.example.retocji.ui.components.bienvenida.Saludo
 import com.example.retocji.ui.viewmodels.UserViewModel
+import com.google.accompanist.pager.*
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun Bienvenida(navController: NavController, userViewModel: UserViewModel) {
     val pagerState = rememberPagerState()
     val scrollState = rememberScrollState()
-
 
     val noticiasEjemplo = listOf(
         Noticia(
@@ -42,7 +41,7 @@ fun Bienvenida(navController: NavController, userViewModel: UserViewModel) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(top = 2.dp , bottom = 12.dp , start = 24.dp, end = 24.dp)
+                    .padding(top = 2.dp, bottom = 12.dp, start = 24.dp, end = 24.dp)
             ) {
                 Saludo(userViewModel)
                 Spacer(modifier = Modifier.height(6.dp))

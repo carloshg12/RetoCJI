@@ -1,20 +1,23 @@
 package com.example.retocji.data.sources.local
 
-import android.content.Context
 import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
-import com.itextpdf.kernel.pdf.PdfWriter
 import com.itextpdf.kernel.pdf.PdfDocument
+import com.itextpdf.kernel.pdf.PdfWriter
 import com.itextpdf.layout.Document
 import com.itextpdf.layout.element.Paragraph
 import javax.inject.Inject
 
 class PDFGenerator @Inject constructor() {
-    fun generarPDF(context: Context, citasSeleccionadas: List<Triple<String, String, String>>): Uri? {
+    fun generarPDF(
+        context: Context,
+        citasSeleccionadas: List<Triple<String, String, String>>
+    ): Uri? {
         val contentValues = ContentValues().apply {
             put(MediaStore.MediaColumns.DISPLAY_NAME, "citasSeleccionadas.pdf")
             put(MediaStore.MediaColumns.MIME_TYPE, "application/pdf")

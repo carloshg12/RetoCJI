@@ -34,21 +34,21 @@ class UserViewModel @Inject constructor(
         getUserName()
     }
 
-    fun borrarCitaPorUsuario(fechacita:String){
+    fun borrarCitaPorUsuario(fechacita: String) {
         viewModelScope.launch {
             val token = "Bearer ${sharedPreferencesRepository.getAuthToken()}"
             try {
-                val response = apiService.borrarCita(token,_userName.value?:"", fechacita)
+                val response = apiService.borrarCita(token, _userName.value ?: "", fechacita)
                 if (response.isSuccessful) {
                     citasPorUsuario()
                     cantidadCitas()
-                    Log.e("CitaBorrada","Cita borrada con exito")
+                    Log.e("CitaBorrada", "Cita borrada con exito")
                 } else {
-                    Log.e("ErrorBorrar","Error al borrar la cita")
+                    Log.e("ErrorBorrar", "Error al borrar la cita")
 
                 }
             } catch (e: Exception) {
-                Log.e("Exception",e.message?:"")
+                Log.e("Exception", e.message ?: "")
             }
         }
 
@@ -57,7 +57,7 @@ class UserViewModel @Inject constructor(
     fun citasPorUsuario() {
         viewModelScope.launch {
             try {
-                val response = apiService.obtenerCitasPorUsuario(_userName.value?:"")
+                val response = apiService.obtenerCitasPorUsuario(_userName.value ?: "")
                 if (response.isSuccessful) {
                     _citasUsuario.postValue(response.body())
                 } else {
@@ -74,6 +74,7 @@ class UserViewModel @Inject constructor(
         }
 
     }
+
     fun cantidadCitas() {
         viewModelScope.launch {
             try {
@@ -83,7 +84,7 @@ class UserViewModel @Inject constructor(
                 if (response.isSuccessful) {
                     val cantidad = response.body()
                     _cantidadCitas.postValue(cantidad)
-                    Log.e("Cantidad",cantidad.toString())
+                    Log.e("Cantidad", cantidad.toString())
                     Log.e("CantidadCitas", _cantidadCitas.value.toString())
                 } else {
                     Log.e(
@@ -144,8 +145,6 @@ class UserViewModel @Inject constructor(
     fun setUserName(username: String) {
         _userName.postValue(username)
     }
-
-
 
 
     fun exit() {

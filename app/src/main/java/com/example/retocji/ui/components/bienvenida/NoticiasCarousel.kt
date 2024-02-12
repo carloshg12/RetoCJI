@@ -2,25 +2,35 @@ package com.example.retocji.ui.components.bienvenida
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.layout.ContentScale
-import com.google.accompanist.pager.*
 import com.example.retocji.domain.models.bienvenida.Noticia
+import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.HorizontalPagerIndicator
+import com.google.accompanist.pager.PagerState
 import kotlinx.coroutines.delay
 
 @Composable
 fun NoticiasCarousel(noticiasEjemplo: List<Noticia>, pagerState: PagerState) {
     LaunchedEffect(key1 = true) {
         while (true) {
-            delay(3000) // Cambia cada 3 segundos
+            delay(3000)
             val nextPage = (pagerState.currentPage + 1) % noticiasEjemplo.size
             pagerState.animateScrollToPage(nextPage)
         }

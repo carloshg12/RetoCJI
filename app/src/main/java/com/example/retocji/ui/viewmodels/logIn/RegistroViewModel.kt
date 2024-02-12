@@ -86,9 +86,7 @@ class RegistroViewModel @Inject constructor(
                     val token = response.body()?.token
                     if (token != null) {
                         sharedPreferencesRepository.saveAuthToken(token)
-                    } else {
-                        // Manejar el caso de respuesta vacía si es necesario
-                    }
+                    } else {}
                 }
 
             } catch (e: Exception) {

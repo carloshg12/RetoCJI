@@ -14,17 +14,14 @@ fun ListaCitas(
     citasSeleccionadas: MutableList<Triple<String, String, String>>,
     gestionesViewModel: GestionesViewModel
 ) {
-    // Observa las citas desde el ViewModel. Si es null, usa una lista vacía.
     val citas by gestionesViewModel.tipoCitas.observeAsState(initial = emptyList())
 
-    // Transforma las citas DTO a Triple. No es necesario listOf(gestionesViewModel.obtenerTipoCitas()).
     val citasTransformadas = citas.map { cita ->
         Triple("${cita.nombre}", "${cita.sesiones} sesión(es)", "${cita.precio}€")
     }
 
     LazyColumn(modifier = modifier) {
         items(citasTransformadas) { citaTransformada ->
-            // Ahora pasas correctamente cada cita transformada a ItemCita.
             ItemCita(cita = citaTransformada, citasSeleccionadas = citasSeleccionadas)
         }
     }

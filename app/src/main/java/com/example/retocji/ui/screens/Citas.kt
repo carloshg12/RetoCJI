@@ -18,7 +18,6 @@ import com.example.retocji.ui.components.citas.CitaPersonalizada
 import com.example.retocji.ui.viewmodels.CitasViewModel
 import com.example.retocji.ui.viewmodels.UserViewModel
 
-
 @SuppressLint("UnrememberedMutableState")
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
@@ -29,27 +28,23 @@ fun Citas(
     userViewModel: UserViewModel
 ) {
     var showDialog by remember { mutableStateOf(false) }
-
     val asesorDeseado by citasViewModel.asesorDeseado.collectAsState()
-
     val horas by citasViewModel.horasDisponibles.collectAsState()
     val asesores by citasViewModel.gestoresLiveData.observeAsState(initial = emptyList())
     val gestiones by citasViewModel.nombresTipoCitas.collectAsState()
-
     val selectedHour by citasViewModel.selectedHour.collectAsState()
 
-
     Column {
-
-            CitaPersonalizada(
-                asesorDeseado = asesorDeseado,
-                selectedHour = mutableStateOf(selectedHour),
-                asesores = asesores,
-                gestiones = gestiones,
-                showDialog = mutableStateOf(showDialog),
-                datePickerState = rememberDatePickerState(),
-                citasViewModel,
-                horas,
-                userViewModel)
+        CitaPersonalizada(
+            asesorDeseado = asesorDeseado,
+            selectedHour = mutableStateOf(selectedHour),
+            asesores = asesores,
+            gestiones = gestiones,
+            showDialog = mutableStateOf(showDialog),
+            datePickerState = rememberDatePickerState(),
+            citasViewModel,
+            horas,
+            userViewModel
+        )
     }
 }

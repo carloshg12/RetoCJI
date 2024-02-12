@@ -1,15 +1,19 @@
 package com.example.retocji.ui.screens
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Divider
+import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.retocji.ui.components.gestiones.BotonImprimirInformacion
 import com.example.retocji.ui.components.gestiones.CarritoCitas
 import com.example.retocji.ui.components.gestiones.ListaCitas
 import com.example.retocji.ui.viewmodels.GestionesViewModel
-import androidx.compose.ui.graphics.Color
 
 @Composable
 fun GestionesScreen(gestionesViewModel: GestionesViewModel) {

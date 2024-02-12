@@ -3,7 +3,6 @@ package com.example.retocji.ui.viewmodels
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
-import androidx.compose.runtime.MutableState
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -45,16 +44,14 @@ class CitasViewModel @Inject constructor(
     private val _selectedHour = MutableStateFlow("")
     val selectedHour: StateFlow<String> = _selectedHour.asStateFlow()
 
-    private val _selectedDate= MutableStateFlow("")
+    private val _selectedDate = MutableStateFlow("")
     val selectedDate: StateFlow<String> = _selectedDate.asStateFlow()
 
-    private val _tipoCita= MutableStateFlow("")
+    private val _tipoCita = MutableStateFlow("")
     val tipoCita: StateFlow<String> = _tipoCita.asStateFlow()
 
     private val _responseMessage = MutableStateFlow<String?>(null)
     val responseMessage: StateFlow<String?> = _responseMessage.asStateFlow()
-
-
 
 
     fun setSelectedDate(date: String) {
@@ -64,6 +61,7 @@ class CitasViewModel @Inject constructor(
     init {
         obtenerGestores()
     }
+
     fun setSelectedHour(hour: String) {
         _selectedHour.value = hour
     }
@@ -79,17 +77,21 @@ class CitasViewModel @Inject constructor(
                 val response = apiService.getCitasPorGestorYDia(asesor, fecha)
                 if (response.isSuccessful) {
                     val citas = response.body() ?: emptyList()
-                    Log.e("CitasGestor",citas.toString())
+                    Log.e("CitasGestor", citas.toString())
                     val nuevasHorasDisponibles = calcularHorasDisponibles(citas)
                     _horasDisponibles.value = nuevasHorasDisponibles
                 } else {
-                    Log.e("CitasViewModel", "Error al obtener citas por gestor y día: ${response.errorBody()?.string()}")
+                    Log.e(
+                        "CitasViewModel",
+                        "Error al obtener citas por gestor y día: ${response.errorBody()?.string()}"
+                    )
                 }
             } catch (e: Exception) {
                 Log.e("CitasViewModel", "Excepción al obtener citas por gestor y día", e)
             }
         }
     }
+
     @RequiresApi(Build.VERSION_CODES.O)
     fun crearCita(
         gestor: String,
@@ -124,9 +126,9 @@ class CitasViewModel @Inject constructor(
                     horaFin = fechaHoraFinFormateada,
                     usuario = UsersDTO(name = apiUserName, email = ""),
                     gestor = UsersDTO(name = gestor, email = ""),
-                    tipoCita = TipoCitaDTO(tipoCita.value,0,0f)
+                    tipoCita = TipoCitaDTO(tipoCita.value, 0, 0f)
                 )
-                Log.e("Tipo Cita",tipoCita.value)
+                Log.e("Tipo Cita", tipoCita.value)
                 // Realizar la llamada a la API para crear la cita
                 val response = apiService.crearCita("Bearer $token", nuevaCita)
                 if (response.isSuccessful) {
@@ -148,14 +150,26 @@ class CitasViewModel @Inject constructor(
 
     private fun calcularHorasDisponibles(citas: List<CitasDTO>): List<String> {
 
-        val horasPredeterminadas = listOf("10:00", "11:00", "12:00", "13:00", "14:00", "16:00", "17:00", "18:00", "19:00", "20:00")
+        val horasPredeterminadas = listOf(
+            "10:00",
+            "11:00",
+            "12:00",
+            "13:00",
+            "14:00",
+            "16:00",
+            "17:00",
+            "18:00",
+            "19:00",
+            "20:00"
+        )
 
 
         val horasDisponibles = horasPredeterminadas.toMutableList()
 
 
         for (cita in citas) {
-            val horaCita = cita.horaInicio.substring(11, 16) // Obtener solo "HH:mm" de "2024-02-09T16:00:00"
+            val horaCita =
+                cita.horaInicio.substring(11, 16) // Obtener solo "HH:mm" de "2024-02-09T16:00:00"
             Log.e("Hora Inicio", horaCita)
             if (horasDisponibles.remove(horaCita)) {
                 Log.e("Hora Eliminada", horaCita)
@@ -262,6 +276,4 @@ class CitasViewModel @Inject constructor(
     fun clearResponseMessage() {
         _responseMessage.value = null
     }
-
-
 }

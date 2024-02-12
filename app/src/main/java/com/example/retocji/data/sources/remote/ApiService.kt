@@ -1,10 +1,10 @@
 package com.example.retocji.data.sources.remote
 
 import com.example.retocji.domain.models.AuthRequest
-import com.example.retocji.domain.models.citas.CitasDTO
-import com.example.retocji.domain.models.logIn.RegisterUserDTO
-import com.example.retocji.domain.models.gestiones.TipoCitaDTO
 import com.example.retocji.domain.models.Token
+import com.example.retocji.domain.models.citas.CitasDTO
+import com.example.retocji.domain.models.gestiones.TipoCitaDTO
+import com.example.retocji.domain.models.logIn.RegisterUserDTO
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.Body
@@ -13,7 +13,6 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Query
-import java.util.Optional
 
 interface ApiService {
     @POST("auth/generateToken")
@@ -47,17 +46,21 @@ interface ApiService {
         @Query("dia") dia: String
     ): Response<List<CitasDTO>>
 
-
     @GET("/auth/user/name")
-    suspend fun getUserName(@Header("Authorization") authHeader: String, @Query("token") token: String): Response<ResponseBody>
+    suspend fun getUserName(
+        @Header("Authorization") authHeader: String,
+        @Query("token") token: String
+    ): Response<ResponseBody>
 
     @GET("/citas/citasusuario")
-    suspend fun obtenerCitasPorUsuario(@Query("user") user:String) :Response<List<CitasDTO>>
+    suspend fun obtenerCitasPorUsuario(@Query("user") user: String): Response<List<CitasDTO>>
 
     @GET("/citas/cantidad")
-    suspend fun obtenerCantidadCitas(@Query("userName") user:String) :Response<Int>
+    suspend fun obtenerCantidadCitas(@Query("userName") user: String): Response<Int>
 
     @DELETE("/citas/borrar")
-    suspend fun borrarCita(@Header("Authorization") authHeader: String, @Query("name") name: String,
-                           @Query("fechaCita") fechaCita: String) :Response<ResponseBody>
+    suspend fun borrarCita(
+        @Header("Authorization") authHeader: String, @Query("name") name: String,
+        @Query("fechaCita") fechaCita: String
+    ): Response<ResponseBody>
 }

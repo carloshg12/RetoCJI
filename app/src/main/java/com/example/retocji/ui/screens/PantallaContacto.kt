@@ -14,7 +14,6 @@ import androidx.compose.ui.unit.dp
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun PantallaContacto() {
-    // Estados para almacenar el texto ingresado en los campos de texto
     var asunto by remember { mutableStateOf(TextFieldValue("")) }
     var mensaje by remember { mutableStateOf(TextFieldValue("")) }
 
@@ -32,7 +31,6 @@ fun PantallaContacto() {
                 modifier = Modifier.padding(bottom = 24.dp)
             )
 
-            // Campo para el Asunto
             OutlinedTextField(
                 value = asunto,
                 onValueChange = { asunto = it },
@@ -43,25 +41,21 @@ fun PantallaContacto() {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Campo para el Mensaje
             OutlinedTextField(
                 value = mensaje,
                 onValueChange = { mensaje = it },
                 label = { Text("Mensaje") },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(150.dp), // Altura fija para el campo de mensaje
+                    .height(150.dp),
                 singleLine = false,
-                maxLines = 10 // Permite múltiples líneas
+                maxLines = 10
             )
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Botón para enviar el formulario
             Button(
-                onClick = {
-                    // Aquí manejarías el envío del formulario
-                },
+                onClick = {},
                 modifier = Modifier.align(Alignment.End)
             ) {
                 Text(text = "Enviar")

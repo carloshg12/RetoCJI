@@ -1,4 +1,5 @@
 package com.example.retocji.ui.components.bienvenida
+
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -24,12 +25,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.retocji.domain.models.citas.CitasDTO
 
-
 @Composable
 fun CardCita(cita: CitasDTO) {
 
     val (fechaISO, hora) = cita.horaInicio.split("T").let {
-        it[0] to it.getOrNull(1)?.substringBeforeLast(':') // Remueve los segundos si existen
+        it[0] to it.getOrNull(1)?.substringBeforeLast(':')
     }
 
     val (anio, mes, dia) = fechaISO.split("-").let { Triple(it[0], it[1], it[2]) }
@@ -45,7 +45,7 @@ fun CardCita(cita: CitasDTO) {
     ) {
         Column(
             modifier = Modifier
-                .padding(top = 10.dp , start = 12.dp, end = 16.dp , bottom = 10.dp)
+                .padding(top = 10.dp, start = 12.dp, end = 16.dp, bottom = 10.dp)
                 .fillMaxSize()
         ) {
             Text(

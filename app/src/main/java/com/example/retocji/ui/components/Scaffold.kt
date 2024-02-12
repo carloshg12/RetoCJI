@@ -1,5 +1,7 @@
 package com.example.retocji.ui.components
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -12,6 +14,7 @@ import com.example.retocji.ui.components.navigation.getInfoAbout
 import com.example.retocji.ui.viewmodels.CitasViewModel
 import com.example.retocji.ui.viewmodels.UserViewModel
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun Scaffold(
     navController: NavController,
@@ -22,10 +25,10 @@ fun Scaffold(
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
-            TopBar(navController, "I&M Asesores",userViewModel)
+            TopBar(navController, "I&M Asesores", userViewModel)
         },
         bottomBar = {
-            NavigationBar(navController, getInfoAbout(),citasViewModel)
+            NavigationBar(navController, getInfoAbout(), citasViewModel)
         }
     ) { paddingValues ->
         Box(

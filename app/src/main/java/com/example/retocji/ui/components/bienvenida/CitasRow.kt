@@ -39,8 +39,9 @@ fun CitasRow(userViewModel: UserViewModel, navController: NavController) {
         )
         LazyRow {
             val citas = userViewModel.citasUsuario.value ?: emptyList()
-            val citasOrdenadas = citas.sortedWith(compareBy<CitasDTO> { it.horaInicio.split("T")[0] }
-                .thenBy { it.horaInicio.split("T").getOrNull(1) ?: "" })
+            val citasOrdenadas =
+                citas.sortedWith(compareBy<CitasDTO> { it.horaInicio.split("T")[0] }
+                    .thenBy { it.horaInicio.split("T").getOrNull(1) ?: "" })
 
             items(citasOrdenadas) { cita ->
                 CardCita(cita)

@@ -41,10 +41,11 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.retocji.ui.components.topBar.CustomBadgeBox
 import com.example.retocji.ui.viewmodels.UserViewModel
-import androidx.compose.ui.unit.dp
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -69,7 +70,10 @@ fun TopBar(navController: NavController, title: String, userViewModel: UserViewM
                 IconButton(onClick = {
                     navController.navigateUp()
                 }) {
-                    Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = "Back"
+                    )
                 }
             }
         } else {
@@ -94,7 +98,7 @@ fun TopBar(navController: NavController, title: String, userViewModel: UserViewM
                     modifier = Modifier
                         .clickable { showDialog = true }
 
-                ){
+                ) {
                     Spacer(modifier = Modifier.width(8.dp))
                     Text("   Citas    ")
                     Icon(
@@ -107,8 +111,7 @@ fun TopBar(navController: NavController, title: String, userViewModel: UserViewM
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Row(
-                    verticalAlignment = Alignment.CenterVertically
-                    ,modifier = Modifier.clickable {
+                    verticalAlignment = Alignment.CenterVertically, modifier = Modifier.clickable {
                         navController.navigate("LogIn")
                         userViewModel.exit()
                     }
@@ -169,10 +172,9 @@ fun TopBar(navController: NavController, title: String, userViewModel: UserViewM
                                             }
                                             append("${cita.gestor.name}\n")
                                         })
-                                        //Spacer(modifier = Modifier.width(4.dp))
 
                                         IconButton(onClick = {
-                                            Log.e("FechaFormateada",cita.horaInicio)
+                                            Log.e("FechaFormateada", cita.horaInicio)
                                             userViewModel.borrarCitaPorUsuario(cita.horaInicio)
                                         }) {
                                             Icon(

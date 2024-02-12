@@ -11,12 +11,9 @@ import javax.inject.Inject
 
 val Context.dataStore by preferencesDataStore(name = "app_preferences")
 
-
 class SharedPreferencesManager @Inject constructor(private val application: Application) {
 
-
     private val dataStore = application.applicationContext.dataStore
-
     suspend fun saveAuthToken(token: String) {
         dataStore.edit { preferences ->
             preferences[STRING_PREFERENCE_KEY] = token

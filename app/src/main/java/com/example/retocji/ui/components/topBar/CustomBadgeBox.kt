@@ -1,9 +1,8 @@
-package com.example.retocji.ui.components
+package com.example.retocji.ui.components.topBar
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
@@ -25,7 +24,7 @@ fun CustomBadgeBox(
             Box(
                 modifier = Modifier
                     .align(Alignment.TopEnd)
-                    .offset(x=-3.dp, y = 2.dp)
+                    .offset(x = -3.dp, y = 2.dp)
                     .size(18.dp)
                     .background(Color.Red, CircleShape),
                 contentAlignment = Alignment.Center

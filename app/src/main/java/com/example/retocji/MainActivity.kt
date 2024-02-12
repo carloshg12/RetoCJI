@@ -13,20 +13,20 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.retocji.ui.screens.LoginView
-import com.example.retocji.ui.viewmodels.logIn.LoginViewModel
 import com.example.retocji.ui.components.Scaffold
-import com.example.retocji.ui.viewmodels.CitasViewModel
 import com.example.retocji.ui.screens.Bienvenida
-import com.example.retocji.ui.viewmodels.logIn.RegistroViewModel
 import com.example.retocji.ui.screens.Citas
 import com.example.retocji.ui.screens.GestionesScreen
 import com.example.retocji.ui.screens.Informacion
+import com.example.retocji.ui.screens.LoginView
 import com.example.retocji.ui.screens.PantallaContacto
 import com.example.retocji.ui.screens.logIn.Registro
 import com.example.retocji.ui.theme.RetoCJITheme
+import com.example.retocji.ui.viewmodels.CitasViewModel
 import com.example.retocji.ui.viewmodels.GestionesViewModel
 import com.example.retocji.ui.viewmodels.UserViewModel
+import com.example.retocji.ui.viewmodels.logIn.LoginViewModel
+import com.example.retocji.ui.viewmodels.logIn.RegistroViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -37,7 +37,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             RetoCJITheme {
-
                 val userViewModel: UserViewModel = hiltViewModel()
                 val isTokenValid by userViewModel.isTokenValid.observeAsState()
                 userViewModel.validateToken()
@@ -50,7 +49,6 @@ class MainActivity : ComponentActivity() {
                 NavHost(
                     navController = navController,
                     startDestination = "SplashScreen"
-                    //startDestination = if(isTokenValid == false) "LogIn" else "GeneralInfo"
                 ) {
                     composable("GeneralInfo") {
 
