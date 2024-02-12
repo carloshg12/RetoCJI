@@ -1,7 +1,6 @@
 package com.example.retocji.ui.screens
 
 import android.annotation.SuppressLint
-import android.app.Application
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
@@ -9,7 +8,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.currentCompositionLocalContext
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -18,7 +16,7 @@ import androidx.compose.runtime.setValue
 import androidx.navigation.NavController
 import com.example.retocji.ui.components.citas.CitaPersonalizada
 import com.example.retocji.ui.viewmodels.CitasViewModel
-import com.example.retocji.ui.viewmodels.UserNameViewModel
+import com.example.retocji.ui.viewmodels.UserViewModel
 
 
 @SuppressLint("UnrememberedMutableState")
@@ -28,7 +26,7 @@ import com.example.retocji.ui.viewmodels.UserNameViewModel
 fun Citas(
     citasViewModel: CitasViewModel,
     navController: NavController,
-    userNameViewModel: UserNameViewModel
+    userViewModel: UserViewModel
 ) {
     var showDialog by remember { mutableStateOf(false) }
 
@@ -52,6 +50,6 @@ fun Citas(
                 datePickerState = rememberDatePickerState(),
                 citasViewModel,
                 horas,
-                userNameViewModel)
+                userViewModel)
     }
 }

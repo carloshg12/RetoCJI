@@ -16,14 +16,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.retocji.domain.models.citas.CitasDTO
-import com.example.retocji.ui.viewmodels.UserNameViewModel
+import com.example.retocji.ui.viewmodels.UserViewModel
 
 @Composable
-fun CitasRow(userNameViewModel: UserNameViewModel, navController: NavController) {
-    val currentUser by userNameViewModel.userName.observeAsState()
+fun CitasRow(userViewModel: UserViewModel, navController: NavController) {
+    val currentUser by userViewModel.userName.observeAsState()
 
     LaunchedEffect(currentUser) {
-        userNameViewModel.citasPorUsuario()
+        userViewModel.citasPorUsuario()
     }
 
     Column {
@@ -38,7 +38,7 @@ fun CitasRow(userNameViewModel: UserNameViewModel, navController: NavController)
             modifier = Modifier.padding(vertical = 8.dp)
         )
         LazyRow {
-            val citas = userNameViewModel.citasUsuario.value ?: emptyList()
+            val citas = userViewModel.citasUsuario.value ?: emptyList()
             val citasOrdenadas = citas.sortedWith(compareBy<CitasDTO> { it.horaInicio.split("T")[0] }
                 .thenBy { it.horaInicio.split("T").getOrNull(1) ?: "" })
 

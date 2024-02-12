@@ -1,12 +1,12 @@
 package com.example.retocji
 
+import SplashScreen
 import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -22,13 +22,12 @@ import com.example.retocji.ui.viewmodels.logIn.RegistroViewModel
 import com.example.retocji.ui.screens.Citas
 import com.example.retocji.ui.screens.GestionesScreen
 import com.example.retocji.ui.screens.Informacion
-import com.example.retocji.ui.screens.SplashScreen
+import com.example.retocji.ui.screens.PantallaContacto
 import com.example.retocji.ui.screens.logIn.Registro
 import com.example.retocji.ui.theme.RetoCJITheme
 import com.example.retocji.ui.viewmodels.GestionesViewModel
-import com.example.retocji.ui.viewmodels.UserNameViewModel
+import com.example.retocji.ui.viewmodels.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -39,17 +38,14 @@ class MainActivity : ComponentActivity() {
         setContent {
             RetoCJITheme {
 
-                val userNameViewModel : UserNameViewModel = hiltViewModel()
-                val isTokenValid by userNameViewModel.isTokenValid.observeAsState()
-                userNameViewModel.validateToken()
+                val userViewModel: UserViewModel = hiltViewModel()
+                val isTokenValid by userViewModel.isTokenValid.observeAsState()
+                userViewModel.validateToken()
                 val navController = rememberNavController()
                 val viewModel: GestionesViewModel = hiltViewModel()
                 val citasViewModel: CitasViewModel = hiltViewModel()
                 val loginViewModel: LoginViewModel = hiltViewModel()
                 val registroViewModel: RegistroViewModel = hiltViewModel()
-
-
-
 
                 NavHost(
                     navController = navController,
@@ -58,35 +54,45 @@ class MainActivity : ComponentActivity() {
                 ) {
                     composable("GeneralInfo") {
 
-                        Scaffold(navController = navController,userNameViewModel,citasViewModel) {
-                            Bienvenida(navController, userNameViewModel)
+                        Scaffold(navController = navController, userViewModel, citasViewModel) {
+                            Bienvenida(navController, userViewModel)
                         }
                     }
                     composable("SplashScreen") {
-                        SplashScreen(navController,userNameViewModel)
+                        SplashScreen(navController, userViewModel)
                     }
                     composable("Citas") {
-                        Scaffold(navController = navController, userNameViewModel, citasViewModel) {
-                            Citas(citasViewModel,navController,userNameViewModel)
+                        Scaffold(navController = navController, userViewModel, citasViewModel) {
+                            Citas(citasViewModel, navController, userViewModel)
                         }
                     }
                     composable("Gestiones") {
-                        Scaffold(navController = navController, userNameViewModel, citasViewModel) {
+                        Scaffold(navController = navController, userViewModel, citasViewModel) {
                             GestionesScreen(viewModel)
                         }
                     }
                     composable("SobreNosotros") {
-                        Scaffold(navController = navController, userNameViewModel, citasViewModel) {
-                            Informacion()
+                        Scaffold(navController = navController, userViewModel, citasViewModel) {
+                            Informacion(navController)
                         }
 
                     }
                     composable("LogIn") {
-                        LoginView(loginViewModel,citasViewModel, navController,userNameViewModel)
+                        LoginView(loginViewModel, citasViewModel, navController, userViewModel)
 
                     }
                     composable("Registro") {
-                        Registro(navController = navController, registroViewModel,userNameViewModel,citasViewModel)
+                        Registro(
+                            navController = navController,
+                            registroViewModel,
+                            userViewModel,
+                            citasViewModel
+                        )
+                    }
+                    composable("Contacto") {
+                        Scaffold(navController = navController, userViewModel, citasViewModel) {
+                            PantallaContacto()
+                        }
                     }
                 }
             }

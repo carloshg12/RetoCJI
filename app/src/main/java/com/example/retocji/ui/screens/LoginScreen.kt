@@ -17,7 +17,7 @@ import com.example.retocji.ui.components.logIn.PasswordTextFieldComponent
 import com.example.retocji.ui.components.logIn.RegistrationPromptComponent
 import com.example.retocji.ui.components.logIn.SignInButtonComponent
 import com.example.retocji.ui.components.logIn.UsernameTextFieldComponent
-import com.example.retocji.ui.viewmodels.UserNameViewModel
+import com.example.retocji.ui.viewmodels.UserViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -25,7 +25,7 @@ fun LoginView(
     loginViewModel: LoginViewModel,
     citasViewModel: CitasViewModel,
     navController: NavController,
-    userNameViewModel: UserNameViewModel
+    userViewModel: UserViewModel
 ) {
     val loginResult by loginViewModel.loginResult.observeAsState()
     val email by loginViewModel.email.observeAsState(initial = "")
@@ -60,8 +60,8 @@ fun LoginView(
             loginViewModel.login(email, password) { success ->
                 if (success) {
                     citasViewModel.obtenerGestores()
-                    userNameViewModel.getUserName()
-                    userNameViewModel.citasPorUsuario()
+                    userViewModel.getUserName()
+                    userViewModel.citasPorUsuario()
                     navController.navigate("GeneralInfo")
                 }
             }

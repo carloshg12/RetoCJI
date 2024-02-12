@@ -10,19 +10,19 @@ import androidx.navigation.NavController
 import com.example.retocji.ui.components.navigation.NavigationBar
 import com.example.retocji.ui.components.navigation.getInfoAbout
 import com.example.retocji.ui.viewmodels.CitasViewModel
-import com.example.retocji.ui.viewmodels.UserNameViewModel
+import com.example.retocji.ui.viewmodels.UserViewModel
 
 @Composable
 fun Scaffold(
     navController: NavController,
-    userNameViewModel: UserNameViewModel,
+    userViewModel: UserViewModel,
     citasViewModel: CitasViewModel,
     content: @Composable () -> Unit
 ) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
-            TopBar(navController, "I&M Asesores",userNameViewModel)
+            TopBar(navController, "I&M Asesores",userViewModel)
         },
         bottomBar = {
             NavigationBar(navController, getInfoAbout(),citasViewModel)

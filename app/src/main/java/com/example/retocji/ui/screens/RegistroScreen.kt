@@ -1,9 +1,6 @@
 package com.example.retocji.ui.screens.logIn
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
@@ -18,14 +15,14 @@ import com.example.retocji.ui.components.registro.BackToLoginButtonComponent
 import com.example.retocji.ui.components.registro.RegisterButtonComponent
 import com.example.retocji.ui.components.registro.EmailTextFieldComponent
 import com.example.retocji.ui.viewmodels.CitasViewModel
-import com.example.retocji.ui.viewmodels.UserNameViewModel
+import com.example.retocji.ui.viewmodels.UserViewModel
 import com.example.retocji.ui.viewmodels.logIn.RegistroViewModel
 
 @Composable
 fun Registro(
     navController: NavController,
     viewModel: RegistroViewModel,
-    userNameViewModel: UserNameViewModel,
+    userViewModel: UserViewModel,
     citasViewModel: CitasViewModel
 ) {
     val username by viewModel.username.observeAsState("")
@@ -55,7 +52,7 @@ fun Registro(
                     LaunchedEffect(Unit) {
                         navController.navigate("GeneralInfo")
                         viewModel.onRegistroChanged(false)
-                        userNameViewModel.setUserName(username)
+                        userViewModel.setUserName(username)
                         viewModel.login(username, password)
                     }
                     Text(text = "¡Registrado con éxito!", color = Color.Green)

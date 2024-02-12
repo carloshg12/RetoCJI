@@ -2,6 +2,6 @@ package com.example.retocji.constants
 
 class URLConstants {
     companion object {
-        const val API_URL = "http://192.168.0.11:8080/"
+        const val API_URL = "http://10.21.0.153:8080/"
     }
 }

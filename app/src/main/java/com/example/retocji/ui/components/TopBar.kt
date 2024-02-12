@@ -15,25 +15,19 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.outlined.ArrowBack
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.outlined.AccountBox
 import androidx.compose.material.icons.outlined.CalendarMonth
 import androidx.compose.material.icons.outlined.ExitToApp
-import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarColors
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -49,24 +43,23 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.example.retocji.ui.viewmodels.UserNameViewModel
+import com.example.retocji.ui.viewmodels.UserViewModel
 import androidx.compose.ui.unit.dp
-import com.google.firebase.database.collection.LLRBNode
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBar(navController: NavController, title: String,userNameViewModel: UserNameViewModel) {
+fun TopBar(navController: NavController, title: String, userViewModel: UserViewModel) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
     var showMenu by remember { mutableStateOf(false) }
     var showDialog by remember { mutableStateOf(false) }
-    val listaCitas by userNameViewModel.citasUsuario.observeAsState()
-    val cantidadCitas by userNameViewModel.cantidadCitas.observeAsState()
-    userNameViewModel.citasPorUsuario()
-    userNameViewModel.cantidadCitas()
+    val listaCitas by userViewModel.citasUsuario.observeAsState()
+    val cantidadCitas by userViewModel.cantidadCitas.observeAsState()
+    userViewModel.citasPorUsuario()
+    userViewModel.cantidadCitas()
 
     TopAppBar(
 
@@ -117,7 +110,7 @@ fun TopBar(navController: NavController, title: String,userNameViewModel: UserNa
                     verticalAlignment = Alignment.CenterVertically
                     ,modifier = Modifier.clickable {
                         navController.navigate("LogIn")
-                        userNameViewModel.exit()
+                        userViewModel.exit()
                     }
                 ) {
 
@@ -180,7 +173,7 @@ fun TopBar(navController: NavController, title: String,userNameViewModel: UserNa
 
                                         IconButton(onClick = {
                                             Log.e("FechaFormateada",cita.horaInicio)
-                                            userNameViewModel.borrarCitaPorUsuario(cita.horaInicio)
+                                            userViewModel.borrarCitaPorUsuario(cita.horaInicio)
                                         }) {
                                             Icon(
                                                 Icons.Default.Close,

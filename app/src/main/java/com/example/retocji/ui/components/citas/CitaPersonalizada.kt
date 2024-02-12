@@ -30,17 +30,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.retocji.domain.models.citas.CitasDTO
 import com.example.retocji.ui.viewmodels.CitasViewModel
 import SeleccionHoras
-import android.util.Log
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.sp
 import com.example.retocji.ui.components.GoogleCalendar.agreagarCitaCalendario
-import com.example.retocji.ui.viewmodels.UserNameViewModel
+import com.example.retocji.ui.viewmodels.UserViewModel
 import kotlinx.coroutines.delay
 import java.text.SimpleDateFormat
 import java.time.DayOfWeek
@@ -66,7 +63,7 @@ fun CitaPersonalizada(
     datePickerState: DatePickerState = rememberDatePickerState(),
     citasViewModel: CitasViewModel,
     horas: List<String>?,
-    userNameViewModel: UserNameViewModel
+    userViewModel: UserViewModel
 ) {
     val selectedDate by citasViewModel.selectedDate.collectAsState()
     var validateFields by remember { mutableStateOf("") }
@@ -255,7 +252,7 @@ fun CitaPersonalizada(
                 val endTime = Calendar.getInstance().apply {
                     timeInMillis = dateTime.time + TimeUnit.HOURS.toMillis(1)
                 }
-                userNameViewModel.cantidadCitas()
+                userViewModel.cantidadCitas()
                 agreagarCitaCalendario(
                     "Cita $asesorDeseado",
                     "Oficina I&M Asesores",

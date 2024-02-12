@@ -1,10 +1,8 @@
 package com.example.retocji.data.sources.remote
 
-
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import com.example.retocji.constants.URLConstants.Companion.API_URL
-
 
 object RetrofitInstance {
     private val retrofit by lazy {

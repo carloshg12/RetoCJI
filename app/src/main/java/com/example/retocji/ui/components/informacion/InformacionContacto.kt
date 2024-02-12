@@ -13,9 +13,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 
 @Composable
-fun InformacionContacto(telefono: String, correo: String) {
+fun InformacionContacto(navController: NavController, telefono: String, correo: String) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
@@ -36,7 +37,7 @@ fun InformacionContacto(telefono: String, correo: String) {
             color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.padding(bottom = 4.dp)
         )
-        Button(onClick = { /*TODO*/ }) {
+        Button(onClick = { navController.navigate("Contacto") }) {
             Text(text = "Contactanos")
         }
 

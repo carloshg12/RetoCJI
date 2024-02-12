@@ -15,11 +15,11 @@ import com.example.retocji.domain.models.bienvenida.Noticia
 import com.example.retocji.ui.components.bienvenida.CitasRow
 import com.example.retocji.ui.components.bienvenida.NoticiasCarousel
 import com.example.retocji.ui.components.bienvenida.Saludo
-import com.example.retocji.ui.viewmodels.UserNameViewModel
+import com.example.retocji.ui.viewmodels.UserViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun Bienvenida(navController: NavController, userNameViewModel: UserNameViewModel) {
+fun Bienvenida(navController: NavController, userViewModel: UserViewModel) {
     val pagerState = rememberPagerState()
     val scrollState = rememberScrollState()
 
@@ -44,9 +44,9 @@ fun Bienvenida(navController: NavController, userNameViewModel: UserNameViewMode
                     .fillMaxSize()
                     .padding(top = 2.dp , bottom = 12.dp , start = 24.dp, end = 24.dp)
             ) {
-                Saludo(userNameViewModel)
+                Saludo(userViewModel)
                 Spacer(modifier = Modifier.height(6.dp))
-                CitasRow(userNameViewModel, navController)
+                CitasRow(userViewModel, navController)
                 Spacer(modifier = Modifier.height(24.dp))
                 NoticiasCarousel(noticiasEjemplo, pagerState)
             }

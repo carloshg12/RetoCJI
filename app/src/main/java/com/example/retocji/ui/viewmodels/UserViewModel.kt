@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class UserNameViewModel @Inject constructor(
+class UserViewModel @Inject constructor(
     private val sharedPreferencesRepository: SharedPreferencesRepository,
     private val apiService: ApiService
 ) : ViewModel() {

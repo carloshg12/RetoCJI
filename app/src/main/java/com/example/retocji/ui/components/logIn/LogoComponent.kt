@@ -13,7 +13,7 @@ import com.example.retocji.R
 @Composable
 fun LogoComponent() {
     Image(
-        painter = painterResource(id = R.drawable.ic_launcher_background),
+        painter = painterResource(id = R.drawable.proyecto2),
         contentDescription = "Logo",
         modifier = Modifier
             .size(100.dp)

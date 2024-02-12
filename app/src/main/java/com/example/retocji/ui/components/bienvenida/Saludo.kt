@@ -8,13 +8,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.retocji.ui.viewmodels.UserNameViewModel
+import com.example.retocji.ui.viewmodels.UserViewModel
 import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
-fun Saludo(userNameViewModel: UserNameViewModel = hiltViewModel()) {
+fun Saludo(userViewModel: UserViewModel = hiltViewModel()) {
 
-    val nombreUsuario by userNameViewModel.userName.observeAsState("Cargando...")
+    val nombreUsuario by userViewModel.userName.observeAsState("Cargando...")
 
     Column(
         modifier = Modifier.padding(2.dp)
