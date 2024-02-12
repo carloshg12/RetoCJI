@@ -14,7 +14,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.retocji.data.sources.remote.ApiService
 import com.example.retocji.domain.models.AuthRequest
 import com.example.retocji.domain.models.citas.CitasDTO
-import com.example.retocji.data.sources.remote.RetrofitInstance
 import com.example.retocji.domain.repositories.SharedPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 
@@ -78,7 +77,7 @@ class LoginViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val token = "Bearer ${loginResult.value}"
-                val response = RetrofitInstance.api.userProfile(token)
+                val response = apiService.userProfile(token) // Usando
                 if (response.isSuccessful) {
                     Log.e("Exito", response.body()!!.string())
                 } else {
