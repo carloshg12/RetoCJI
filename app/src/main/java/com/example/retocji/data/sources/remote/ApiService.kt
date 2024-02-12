@@ -8,6 +8,7 @@ import com.example.retocji.domain.models.Token
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
@@ -55,4 +56,8 @@ interface ApiService {
 
     @GET("/citas/cantidad")
     suspend fun obtenerCantidadCitas(@Query("userName") user:String) :Response<Int>
+
+    @DELETE("/citas/borrar")
+    suspend fun borrarCita(@Header("Authorization") authHeader: String, @Query("name") name: String,
+                           @Query("fechaCita") fechaCita: String) :Response<ResponseBody>
 }

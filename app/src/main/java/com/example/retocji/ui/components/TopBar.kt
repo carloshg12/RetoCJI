@@ -1,6 +1,7 @@
 package com.example.retocji.ui.components
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -8,7 +9,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
@@ -17,6 +17,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.outlined.AccountBox
 import androidx.compose.material.icons.outlined.CalendarMonth
 import androidx.compose.material.icons.outlined.ExitToApp
@@ -68,7 +69,7 @@ fun TopBar(navController: NavController, title: String,userNameViewModel: UserNa
     userNameViewModel.cantidadCitas()
 
     TopAppBar(
-        modifier = Modifier.padding(start=10.dp),
+
         title = { Text(text = title) },
         navigationIcon = if (currentDestination?.route != "GeneralInfo") {
             {
@@ -82,8 +83,7 @@ fun TopBar(navController: NavController, title: String,userNameViewModel: UserNa
             {}
         },
         actions = {
-            IconButton(onClick = { showMenu = !showMenu },
-                modifier = Modifier.padding(end=10.dp)) {
+            IconButton(onClick = { showMenu = !showMenu }) {
                 CustomBadgeBox(count = cantidadCitas ?: 0) {
                     Icon(
                         imageVector = Icons.Outlined.AccountBox,
@@ -137,12 +137,27 @@ fun TopBar(navController: NavController, title: String,userNameViewModel: UserNa
                                 val ahora = LocalDateTime.now()
 
                                 listaCitas
-                                    ?.filter { cita -> LocalDateTime.parse(cita.horaInicio, DateTimeFormatter.ISO_LOCAL_DATE_TIME).isAfter(ahora) }
-                                    ?.sortedBy { cita -> LocalDateTime.parse(cita.horaInicio, DateTimeFormatter.ISO_LOCAL_DATE_TIME) }
+                                    ?.filter { cita ->
+                                        LocalDateTime.parse(
+                                            cita.horaInicio,
+                                            DateTimeFormatter.ISO_LOCAL_DATE_TIME
+                                        ).isAfter(ahora)
+                                    }
+                                    ?.sortedBy { cita ->
+                                        LocalDateTime.parse(
+                                            cita.horaInicio,
+                                            DateTimeFormatter.ISO_LOCAL_DATE_TIME
+                                        )
+                                    }
                                     ?.forEach { cita ->
-                                        val fechaHoraObj = LocalDateTime.parse(cita.horaInicio, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
-                                        val fechaFormateada = fechaHoraObj.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
-                                        val horaFormateada = fechaHoraObj.format(DateTimeFormatter.ofPattern("HH:mm"))
+                                        val fechaHoraObj = LocalDateTime.parse(
+                                            cita.horaInicio,
+                                            DateTimeFormatter.ISO_LOCAL_DATE_TIME
+                                        )
+                                        val fechaFormateada =
+                                            fechaHoraObj.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+                                        val horaFormateada =
+                                            fechaHoraObj.format(DateTimeFormatter.ofPattern("HH:mm"))
                                         Text(buildAnnotatedString {
                                             withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
                                                 append("Día: ")
@@ -161,9 +176,21 @@ fun TopBar(navController: NavController, title: String,userNameViewModel: UserNa
                                             }
                                             append("${cita.gestor.name}\n")
                                         })
-                                        Spacer(modifier = Modifier.height(4.dp))
-                                    }
+                                        //Spacer(modifier = Modifier.width(4.dp))
 
+                                        IconButton(onClick = {
+                                            Log.e("FechaFormateada",cita.horaInicio)
+                                            userNameViewModel.borrarCitaPorUsuario(cita.horaInicio)
+                                        }) {
+                                            Icon(
+                                                Icons.Default.Close,
+                                                contentDescription = "Borrar cita",
+                                                tint = Color.Red
+                                            )
+                                        }
+                                    }
+                                Spacer(modifier = Modifier.height(4.dp))
+                                Spacer(modifier = Modifier.height(4.dp))
                             }
                         },
                         confirmButton = {

@@ -34,6 +34,26 @@ class UserNameViewModel @Inject constructor(
         getUserName()
     }
 
+    fun borrarCitaPorUsuario(fechacita:String){
+        viewModelScope.launch {
+            val token = "Bearer ${sharedPreferencesRepository.getAuthToken()}"
+            try {
+                val response = apiService.borrarCita(token,_userName.value?:"", fechacita)
+                if (response.isSuccessful) {
+                    citasPorUsuario()
+                    cantidadCitas()
+                    Log.e("CitaBorrada","Cita borrada con exito")
+                } else {
+                    Log.e("ErrorBorrar","Error al borrar la cita")
+
+                }
+            } catch (e: Exception) {
+                Log.e("Exception",e.message?:"")
+            }
+        }
+
+    }
+
     fun citasPorUsuario() {
         viewModelScope.launch {
             try {
