@@ -16,7 +16,7 @@ fun SignInButtonComponent(onClick: () -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 20.dp),
-        shape = RoundedCornerShape(50)
+        shape = RoundedCornerShape(10)
     ) {
         Text(text = "Iniciar Sesión")
     }

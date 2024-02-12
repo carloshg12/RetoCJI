@@ -67,7 +67,7 @@ class MainActivity : ComponentActivity() {
                     }
                     composable("Citas") {
                         Scaffold(navController = navController, userNameViewModel, citasViewModel) {
-                            Citas(citasViewModel,navController)
+                            Citas(citasViewModel,navController,userNameViewModel)
                         }
                     }
                     composable("Gestiones") {

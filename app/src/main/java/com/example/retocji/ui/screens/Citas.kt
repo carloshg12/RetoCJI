@@ -18,6 +18,7 @@ import androidx.compose.runtime.setValue
 import androidx.navigation.NavController
 import com.example.retocji.ui.components.citas.CitaPersonalizada
 import com.example.retocji.ui.viewmodels.CitasViewModel
+import com.example.retocji.ui.viewmodels.UserNameViewModel
 
 
 @SuppressLint("UnrememberedMutableState")
@@ -26,7 +27,8 @@ import com.example.retocji.ui.viewmodels.CitasViewModel
 @Composable
 fun Citas(
     citasViewModel: CitasViewModel,
-    navController: NavController
+    navController: NavController,
+    userNameViewModel: UserNameViewModel
 ) {
     var showDialog by remember { mutableStateOf(false) }
 
@@ -49,6 +51,7 @@ fun Citas(
                 showDialog = mutableStateOf(showDialog),
                 datePickerState = rememberDatePickerState(),
                 citasViewModel,
-                horas,)
+                horas,
+                userNameViewModel)
     }
 }

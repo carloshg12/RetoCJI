@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
@@ -67,7 +68,7 @@ fun TopBar(navController: NavController, title: String,userNameViewModel: UserNa
     userNameViewModel.cantidadCitas()
 
     TopAppBar(
-
+        modifier = Modifier.padding(start=10.dp),
         title = { Text(text = title) },
         navigationIcon = if (currentDestination?.route != "GeneralInfo") {
             {
@@ -81,7 +82,8 @@ fun TopBar(navController: NavController, title: String,userNameViewModel: UserNa
             {}
         },
         actions = {
-            IconButton(onClick = { showMenu = !showMenu }) {
+            IconButton(onClick = { showMenu = !showMenu },
+                modifier = Modifier.padding(end=10.dp)) {
                 CustomBadgeBox(count = cantidadCitas ?: 0) {
                     Icon(
                         imageVector = Icons.Outlined.AccountBox,

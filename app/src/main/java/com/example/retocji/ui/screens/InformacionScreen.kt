@@ -19,7 +19,7 @@ fun Informacion() {
             Encabezado("Sobre Nosotros")
             Spacer(modifier = Modifier.height(12.dp))
             DescripcionEmpresa("Somos una empresa dedicada a ofrecer servicios de asesorías en diversas áreas, brindando soluciones integrales y personalizadas a nuestros clientes. Nos esforzamos por proporcionar un servicio de calidad y establecer relaciones duraderas basadas en la confianza mutua.")
-            InformacionContacto("+34 645 17 24 50", "ionut@imasesores.com")
+            InformacionContacto("+34 645 17 24 50", "imasesorescji@gmail.com")
             MapaUbicacion(39.9864, -0.0513, "I&M Asesores")
         }
     }

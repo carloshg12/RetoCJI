@@ -59,9 +59,10 @@ fun LoginView(
         SignInButtonComponent(onClick = {
             loginViewModel.login(email, password) { success ->
                 if (success) {
-                    navController.navigate("GeneralInfo")
                     citasViewModel.obtenerGestores()
                     userNameViewModel.getUserName()
+                    userNameViewModel.citasPorUsuario()
+                    navController.navigate("GeneralInfo")
                 }
             }
         })

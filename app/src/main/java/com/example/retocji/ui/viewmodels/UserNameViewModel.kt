@@ -32,15 +32,12 @@ class UserNameViewModel @Inject constructor(
 
     init {
         getUserName()
-
     }
 
     fun citasPorUsuario() {
         viewModelScope.launch {
-
             try {
-                val userNameValue = _userName.value ?: ""
-                val response = apiService.obtenerCitasPorUsuario(userNameValue)
+                val response = apiService.obtenerCitasPorUsuario(_userName.value?:"")
                 if (response.isSuccessful) {
                     _citasUsuario.postValue(response.body())
                 } else {
@@ -127,6 +124,9 @@ class UserNameViewModel @Inject constructor(
     fun setUserName(username: String) {
         _userName.postValue(username)
     }
+
+
+
 
     fun exit() {
         sharedPreferencesRepository.saveAuthToken("")

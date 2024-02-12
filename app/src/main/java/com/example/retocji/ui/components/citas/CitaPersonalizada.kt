@@ -38,7 +38,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.sp
 import com.example.retocji.ui.components.GoogleCalendar.agreagarCitaCalendario
+import com.example.retocji.ui.viewmodels.UserNameViewModel
 import kotlinx.coroutines.delay
 import java.text.SimpleDateFormat
 import java.time.DayOfWeek
@@ -63,11 +65,14 @@ fun CitaPersonalizada(
     showDialog: MutableState<Boolean>,
     datePickerState: DatePickerState = rememberDatePickerState(),
     citasViewModel: CitasViewModel,
-    horas: List<String>?
+    horas: List<String>?,
+    userNameViewModel: UserNameViewModel
 ) {
     val selectedDate by citasViewModel.selectedDate.collectAsState()
     var validateFields by remember { mutableStateOf("") }
     val responseMessage by citasViewModel.responseMessage.collectAsState()
+    var showMaxCitasDialog by remember { mutableStateOf(false) }
+    val context = LocalContext.current
 
 
     Column(
@@ -183,7 +188,6 @@ fun CitaPersonalizada(
                             val today = LocalDate.now(ZoneId.systemDefault())
                             val dayOfWeek = selectedDate.dayOfWeek
 
-                            // Permite seleccionar el día actual y los días futuros, excluyendo sábados y domingos.
                             (selectedDate.isEqual(today) || selectedDate.isAfter(today)) && dayOfWeek != DayOfWeek.SATURDAY && dayOfWeek != DayOfWeek.SUNDAY
                         },
                     )
@@ -199,38 +203,20 @@ fun CitaPersonalizada(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(text = "Hora Inicio", modifier = Modifier.widthIn(min = 100.dp))
+            Text(text = "Hora", modifier = Modifier.widthIn(min = 100.dp))
             Spacer(modifier = Modifier.width(8.dp))
             SeleccionHoras(
-                //expanded = expandedHour,
                 selectedHour = selectedHour,
                 onHourSelected = { hour ->
                     selectedHour.value = hour
                 },
                 asesorDeseado = asesorDeseado,
-                //citas = citas,
-                //diaDeseado = diaDeseado,
                 horas,
                 citasViewModel
             )
         }
 
-        // Sección para poner hora fin
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(text = "Hora Fin", modifier = Modifier.widthIn(min = 100.dp))
-            Spacer(modifier = Modifier.width(8.dp))
 
-            if (selectedHour.value.isNotEmpty()) {
-                val horaFin = selectedHour.value.split(":")[0].toInt() + 1
-                Text(text = String.format("%02d:00", horaFin))
-            }
-        }
 
         Row(
             modifier = Modifier
@@ -239,7 +225,6 @@ fun CitaPersonalizada(
             horizontalArrangement = Arrangement.End,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            val context = LocalContext.current
             Button(shape = MaterialTheme.shapes.medium,
                 modifier = Modifier.fillMaxWidth(),
                 onClick = {
@@ -250,12 +235,18 @@ fun CitaPersonalizada(
                     validateFields = "true"
                 }
 
-                // Asumiendo que `selectedDate` está en formato "yyyy-MM-dd" y `selectedHour.value` en "HH:mm"
-                //val format = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
-                val format = SimpleDateFormat("yyyy-dd-MM HH:mm", Locale.getDefault())
 
-                format.timeZone = TimeZone.getDefault() // Asegúrate de que la zona horaria sea la correcta
-                val dateTime = format.parse("$selectedDate ${selectedHour.value}") ?: return@Button
+            }) {
+                Text("Reservar cita")
+            }
+
+        }
+
+        LaunchedEffect(responseMessage) {
+            if (responseMessage == "Cita creada exitosamente") {
+                val format = SimpleDateFormat("yyyy-dd-MM HH:mm", Locale.getDefault())
+                format.timeZone = TimeZone.getDefault()
+                val dateTime = format.parse("$selectedDate ${selectedHour.value}") ?: return@LaunchedEffect
 
                 val beginTime = Calendar.getInstance().apply {
                     timeInMillis = dateTime.time
@@ -264,7 +255,7 @@ fun CitaPersonalizada(
                 val endTime = Calendar.getInstance().apply {
                     timeInMillis = dateTime.time + TimeUnit.HOURS.toMillis(1)
                 }
-
+                userNameViewModel.cantidadCitas()
                 agreagarCitaCalendario(
                     "Cita $asesorDeseado",
                     "Oficina I&M Asesores",
@@ -273,11 +264,7 @@ fun CitaPersonalizada(
                     endTime.timeInMillis,
                     context
                 )
-
-            }) {
-                Text("Reservar cita")
             }
-
         }
 
         if (validateFields == "false") {
@@ -287,18 +274,36 @@ fun CitaPersonalizada(
                 style = MaterialTheme.typography.bodyLarge
             )
         } else if (!responseMessage.isNullOrBlank()) {
-            Text(
-                text = responseMessage!!,
-                color = if (responseMessage == "Cita creada exitosamente") MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error,
-                style = MaterialTheme.typography.bodyLarge
-            )
+            if(responseMessage != "Cita creada exitosamente"){
+                AlertDialog(
+                    onDismissRequest = { showMaxCitasDialog = false },
+                    title = {
+                        Text(
+                            "Error al solicitar cita",
+                            style = MaterialTheme.typography.headlineSmall.copy(
+                                fontSize = 22.sp
+                            )
+                        )
+                    },
+                    text = {
+                        Text(
+                            responseMessage ?: "ERROR",
+                            style = MaterialTheme.typography.bodyMedium.copy(
+                                fontSize = 16.sp
+                            )
+                        )
+                    },
+                    confirmButton = {}
+
+                )
+
+            }
             citasViewModel.actualizarHorasDisponibles()
             LaunchedEffect(responseMessage) {
-                delay(5000)
+                delay(3500)
                 citasViewModel.clearResponseMessage()
             }
         }
-
 
     }
 }

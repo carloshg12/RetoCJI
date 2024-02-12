@@ -21,7 +21,6 @@ fun CustomBadgeBox(
 ) {
     Box(contentAlignment = Alignment.Center) {
         content()
-
         if (count > 0) {
             Box(
                 modifier = Modifier
@@ -35,7 +34,6 @@ fun CustomBadgeBox(
                     text = count.toString(),
                     color = Color.White,
                     fontSize = 16.sp,
-
                 )
             }
         }
