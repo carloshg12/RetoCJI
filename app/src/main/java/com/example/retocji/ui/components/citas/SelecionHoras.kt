@@ -4,8 +4,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Divider
@@ -32,38 +35,50 @@ fun SeleccionHoras(
 ) {
     val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
 
-    LazyColumn {
-        items(horas ?: emptyList()) { horaInicio ->
-            val horaInicioLocalTime = LocalTime.parse(horaInicio, timeFormatter)
-            val horaFinLocalTime = horaInicioLocalTime.plusHours(1)
-            val horaFin = horaFinLocalTime.format(timeFormatter)
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 16.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(text = "Hora", modifier = Modifier.widthIn(min = 100.dp))
+        Spacer(modifier = Modifier.width(8.dp))
 
-            val isSelected = selectedHour.value == horaInicio
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.End
-            ) {
-                Text(
-                    text = "$horaInicio - $horaFin",
+
+        LazyColumn {
+            items(horas ?: emptyList()) { horaInicio ->
+                val horaInicioLocalTime = LocalTime.parse(horaInicio, timeFormatter)
+                val horaFinLocalTime = horaInicioLocalTime.plusHours(1)
+                val horaFin = horaFinLocalTime.format(timeFormatter)
+
+                val isSelected = selectedHour.value == horaInicio
+                Row(
                     modifier = Modifier
-                        .clickable {
-                            if (!isSelected) {
-                                selectedHour.value = horaInicio
-                                onHourSelected(horaInicio)
-                                citasViewModel.setSelectedHour(horaInicio)
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    Text(
+                        text = "$horaInicio - $horaFin",
+                        modifier = Modifier
+                            .clickable {
+                                if (!isSelected) {
+                                    selectedHour.value = horaInicio
+                                    onHourSelected(horaInicio)
+                                    citasViewModel.setSelectedHour(horaInicio)
+                                }
                             }
-                        }
-                        .background(if (isSelected) MaterialTheme.colorScheme.primary else Color.Transparent)
-                        .padding(bottom = 2.dp, top = 2.dp, end = 8.dp)
+                            .background(if (isSelected) MaterialTheme.colorScheme.primary else Color.Transparent)
+                            .padding(bottom = 2.dp, top = 2.dp, end = 8.dp)
+                    )
+                }
+                Divider(
+                    modifier = Modifier
+                        .padding(start = 42.dp, end = 16.dp)
                 )
             }
-            Divider(
-                modifier = Modifier
-                    .padding(start = 42.dp, end = 16.dp)
-            )
         }
     }
 }
