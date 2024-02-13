@@ -21,6 +21,9 @@ class UserViewModel @Inject constructor(
     private val _userName = MutableLiveData<String>("Cargando...")
     val userName: LiveData<String> = _userName
 
+    private val _userEmail = MutableLiveData<String>()
+    val userEmail: LiveData<String> = _userEmail
+
     private val _isTokenValid: MutableLiveData<Boolean> = MutableLiveData()
     val isTokenValid: LiveData<Boolean> = _isTokenValid
 
@@ -32,6 +35,7 @@ class UserViewModel @Inject constructor(
 
     init {
         getUserName()
+        getUserEmail()
     }
 
     fun borrarCitaPorUsuario(fechacita: String) {
@@ -138,6 +142,31 @@ class UserViewModel @Inject constructor(
                 }
             } else {
                 _userName.value = "Token no encontrado"
+            }
+        }
+    }
+
+    fun getUserEmail() {
+        viewModelScope.launch {
+            val token = sharedPreferencesRepository.getAuthToken()
+            if (token != null) {
+                try {
+                    val response = apiService.getUserEmail("Bearer $token", token)
+                    if (response.isSuccessful) {
+                        val responseBodyString = response.body()?.string() ?: "Respuesta vacía"
+                        _userEmail.value = responseBodyString
+                        Log.e("USER", _userName.value!!)
+                        Log.e("EmailBody",responseBodyString)
+                    } else {
+                        _userEmail.value = "Error al obtener el email de usuario: ${
+                            response.errorBody()?.string()
+                        }"
+                    }
+                } catch (e: Exception) {
+                    _userEmail.value = "Error de conexión: ${e.message}"
+                }
+            } else {
+                _userEmail.value = "Token no encontrado"
             }
         }
     }

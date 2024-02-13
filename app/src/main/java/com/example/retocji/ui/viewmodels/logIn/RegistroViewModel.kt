@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.retocji.data.sources.remote.ApiService
 import com.example.retocji.domain.models.AuthRequest
+import com.example.retocji.domain.models.email.ContactDTO
 import com.example.retocji.domain.models.logIn.RegisterUserDTO
 import com.example.retocji.domain.repositories.SharedPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -96,10 +97,22 @@ class RegistroViewModel @Inject constructor(
         }
     }
 
-    fun obtenerTokenDesdeSharedPreferences(): String? {
-        return sharedPreferencesRepository.getAuthToken()
+    fun sendEmail(email: String, username: String) {
+        viewModelScope.launch {
+            val contact = ContactDTO(email,"Bienvenido", "Hola $username.\nBienvenido a I&M Asesores.\nEsperamos poder ayudarte en todo lo necesario.")
+            try {
+                val authToken = "Bearer " + sharedPreferencesRepository.getAuthToken()
+                val response = apiService.contactEmail(authToken, contact)
+                if (response.isSuccessful) {
+                    Log.d("EmailSuccess", "Correo enviado correctamente")
+                } else {
+                    Log.e("EmailError", "Error al enviar el correo: ${response.errorBody()?.string()}")
+                }
+            } catch (e: Exception) {
+                Log.e("EmailException", "Excepción al enviar el correo: ${e.message}")
+            }
+        }
     }
-
 
     fun onRegistroChanged(registro: Boolean) {
         _registroExitoso.value = registro

@@ -23,6 +23,7 @@ import com.example.retocji.ui.screens.PantallaContacto
 import com.example.retocji.ui.screens.logIn.Registro
 import com.example.retocji.ui.theme.RetoCJITheme
 import com.example.retocji.ui.viewmodels.CitasViewModel
+import com.example.retocji.ui.viewmodels.ContactoViewModel
 import com.example.retocji.ui.viewmodels.GestionesViewModel
 import com.example.retocji.ui.viewmodels.UserViewModel
 import com.example.retocji.ui.viewmodels.logIn.LoginViewModel
@@ -45,6 +46,7 @@ class MainActivity : ComponentActivity() {
                 val citasViewModel: CitasViewModel = hiltViewModel()
                 val loginViewModel: LoginViewModel = hiltViewModel()
                 val registroViewModel: RegistroViewModel = hiltViewModel()
+                val contactoViewModel:ContactoViewModel = hiltViewModel()
 
                 NavHost(
                     navController = navController,
@@ -84,12 +86,12 @@ class MainActivity : ComponentActivity() {
                             navController = navController,
                             registroViewModel,
                             userViewModel,
-                            citasViewModel
+
                         )
                     }
                     composable("Contacto") {
                         Scaffold(navController = navController, userViewModel, citasViewModel) {
-                            PantallaContacto()
+                            PantallaContacto(contactoViewModel,userViewModel)
                         }
                     }
                 }

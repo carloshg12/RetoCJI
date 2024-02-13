@@ -3,6 +3,7 @@ package com.example.retocji.ui.components.citas
 import SeleccionHoras
 import android.annotation.SuppressLint
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -65,7 +66,9 @@ fun CitaPersonalizada(
     horas: List<String>?,
     userViewModel: UserViewModel
 ) {
-    val selectedDate by citasViewModel.selectedDate.collectAsState()
+    val selectedDateTime by citasViewModel.selectedDate.collectAsState()
+    val fechaSeleccionada by citasViewModel.fechaSeleccionada.collectAsState()
+
     var validateFields by remember { mutableStateOf("") }
     val responseMessage by citasViewModel.responseMessage.collectAsState()
     var showMaxCitasDialog by remember { mutableStateOf(false) }
@@ -225,12 +228,13 @@ fun CitaPersonalizada(
             Button(shape = MaterialTheme.shapes.medium,
                 modifier = Modifier.fillMaxWidth(),
                 onClick = {
-                    if (asesorDeseado.isEmpty() || selectedHour.value.isEmpty() || selectedDate.isEmpty()) {
+                    if (asesorDeseado.isEmpty() || selectedHour.value.isEmpty() || selectedDateTime.isEmpty()) {
                         validateFields = "false"
                     } else {
-                        citasViewModel.crearCita(asesorDeseado, selectedDate, selectedHour.value)
+                        citasViewModel.crearCita(asesorDeseado, selectedDateTime, selectedHour.value)
                         validateFields = "true"
                     }
+
 
 
                 }) {
@@ -241,19 +245,22 @@ fun CitaPersonalizada(
 
         LaunchedEffect(responseMessage) {
             if (responseMessage == "Cita creada exitosamente") {
-                val format = SimpleDateFormat("yyyy-dd-MM HH:mm", Locale.getDefault())
+                val format = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
                 format.timeZone = TimeZone.getDefault()
-                val dateTime =
-                    format.parse("$selectedDate ${selectedHour.value}") ?: return@LaunchedEffect
+
+                val dateTime = format.parse("$fechaSeleccionada ${selectedHour.value}") ?: return@LaunchedEffect
 
                 val beginTime = Calendar.getInstance().apply {
                     timeInMillis = dateTime.time
+                    Log.e("BeginTimeInMillis", timeInMillis.toString())
                 }
 
                 val endTime = Calendar.getInstance().apply {
                     timeInMillis = dateTime.time + TimeUnit.HOURS.toMillis(1)
                 }
+
                 userViewModel.cantidadCitas()
+                userViewModel.citasPorUsuario()
                 agreagarCitaCalendario(
                     "Cita $asesorDeseado",
                     "Oficina I&M Asesores",
@@ -263,6 +270,7 @@ fun CitaPersonalizada(
                     context
                 )
             }
+
         }
 
         if (validateFields == "false") {

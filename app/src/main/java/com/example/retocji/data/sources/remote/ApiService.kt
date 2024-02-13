@@ -3,6 +3,7 @@ package com.example.retocji.data.sources.remote
 import com.example.retocji.domain.models.AuthRequest
 import com.example.retocji.domain.models.Token
 import com.example.retocji.domain.models.citas.CitasDTO
+import com.example.retocji.domain.models.email.ContactDTO
 import com.example.retocji.domain.models.gestiones.TipoCitaDTO
 import com.example.retocji.domain.models.logIn.RegisterUserDTO
 import okhttp3.ResponseBody
@@ -52,6 +53,12 @@ interface ApiService {
         @Query("token") token: String
     ): Response<ResponseBody>
 
+    @GET("/auth/user/email")
+    suspend fun getUserEmail(
+        @Header("Authorization") authHeader: String,
+        @Query("token") token: String
+    ): Response<ResponseBody>
+
     @GET("/citas/citasusuario")
     suspend fun obtenerCitasPorUsuario(@Query("user") user: String): Response<List<CitasDTO>>
 
@@ -63,4 +70,17 @@ interface ApiService {
         @Header("Authorization") authHeader: String, @Query("name") name: String,
         @Query("fechaCita") fechaCita: String
     ): Response<ResponseBody>
+
+    @POST("/contact")
+    suspend fun contactEmail(
+        @Header("Authorization") authHeader: String,
+        @Body contactDTO:ContactDTO
+    ):  Response<ResponseBody>
+
+    @POST("/registerMail")
+    suspend fun registerEmail(
+        @Header("Authorization") authHeader: String,
+        @Body contactDTO:ContactDTO
+    ):  Response<ResponseBody>
+
 }

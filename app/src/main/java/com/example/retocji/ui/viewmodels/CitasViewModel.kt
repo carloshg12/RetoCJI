@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
@@ -107,16 +108,17 @@ class CitasViewModel @Inject constructor(
                     val responseBody = responseUser.body()
                     apiUserName = responseBody?.string() ?: ""
                 }
-                Log.e("Username", apiUserName)
 
-                val fechaParseada = LocalDate.parse(fecha)
-                val horaParseada = LocalTime.parse(horaInicio)
 
-                val fechaHoraInicio = fechaParseada.atTime(horaParseada)
+                val horaInicioLocalTime = LocalTime.parse(horaInicio, DateTimeFormatter.ofPattern("HH:mm"))
 
+                val fechaHoraInicio = LocalDateTime.of(_fechaSeleccionada.value, horaInicioLocalTime)
+
+                // Calcular fechaHoraFin sumando una hora a fechaHoraInicio
                 val fechaHoraFin = fechaHoraInicio.plusHours(1)
 
-                val formatter = DateTimeFormatter.ofPattern("yyyy-dd-MM'T'HH:mm:ss")
+                // Formatear fechaHoraInicio y fechaHoraFin para la API
+                val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
                 val fechaHoraInicioFormateada = fechaHoraInicio.format(formatter)
                 val fechaHoraFinFormateada = fechaHoraFin.format(formatter)
 
@@ -160,7 +162,7 @@ class CitasViewModel @Inject constructor(
             "17:00",
             "18:00",
             "19:00",
-            "20:00"
+
         )
 
 
@@ -169,7 +171,7 @@ class CitasViewModel @Inject constructor(
 
         for (cita in citas) {
             val horaCita =
-                cita.horaInicio.substring(11, 16) // Obtener solo "HH:mm" de "2024-02-09T16:00:00"
+                cita.horaInicio.substring(11, 16)
             Log.e("Hora Inicio", horaCita)
             if (horasDisponibles.remove(horaCita)) {
                 Log.e("Hora Eliminada", horaCita)
