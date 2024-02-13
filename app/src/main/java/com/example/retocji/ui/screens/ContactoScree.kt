@@ -31,8 +31,7 @@ fun PantallaContacto(contactoViewModel: ContactoViewModel, userViewModel: UserVi
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp)
-                .background(Color.White),
+                .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
