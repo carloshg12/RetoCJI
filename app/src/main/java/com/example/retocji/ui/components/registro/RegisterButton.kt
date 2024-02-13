@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.retocji.domain.models.logIn.RegisterUserDTO
-import com.example.retocji.ui.viewmodels.logIn.RegistroViewModel
+import com.example.retocji.ui.viewmodels.RegistroViewModel
 
 @Composable
 fun RegisterButtonComponent(

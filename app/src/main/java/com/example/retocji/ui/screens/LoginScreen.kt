@@ -25,8 +25,8 @@ import com.example.retocji.ui.components.logIn.RegistrationPromptComponent
 import com.example.retocji.ui.components.logIn.SignInButtonComponent
 import com.example.retocji.ui.components.logIn.UsernameTextFieldComponent
 import com.example.retocji.ui.viewmodels.CitasViewModel
+import com.example.retocji.ui.viewmodels.LoginViewModel
 import com.example.retocji.ui.viewmodels.UserViewModel
-import com.example.retocji.ui.viewmodels.logIn.LoginViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable

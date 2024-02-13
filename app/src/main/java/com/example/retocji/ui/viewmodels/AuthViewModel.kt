@@ -1,7 +1,7 @@
-package com.example.retocji.ui.viewmodels.logIn
+package com.example.retocji.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
-import com.example.retocji.ui.screens.logIn.SharedPreferencesManager
+import com.example.retocji.data.sources.remote.SharedPreferencesManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

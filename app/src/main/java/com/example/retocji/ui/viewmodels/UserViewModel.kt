@@ -180,4 +180,3 @@ class UserViewModel @Inject constructor(
         sharedPreferencesRepository.saveAuthToken("")
     }
 }
-

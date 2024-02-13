@@ -25,9 +25,9 @@ import com.example.retocji.ui.theme.RetoCJITheme
 import com.example.retocji.ui.viewmodels.CitasViewModel
 import com.example.retocji.ui.viewmodels.ContactoViewModel
 import com.example.retocji.ui.viewmodels.GestionesViewModel
+import com.example.retocji.ui.viewmodels.LoginViewModel
+import com.example.retocji.ui.viewmodels.RegistroViewModel
 import com.example.retocji.ui.viewmodels.UserViewModel
-import com.example.retocji.ui.viewmodels.logIn.LoginViewModel
-import com.example.retocji.ui.viewmodels.logIn.RegistroViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

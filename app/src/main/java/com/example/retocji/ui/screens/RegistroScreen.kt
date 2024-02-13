@@ -26,8 +26,8 @@ import com.example.retocji.ui.components.logIn.UsernameTextFieldComponent
 import com.example.retocji.ui.components.registro.BackToLoginButtonComponent
 import com.example.retocji.ui.components.registro.EmailTextFieldComponent
 import com.example.retocji.ui.components.registro.RegisterButtonComponent
+import com.example.retocji.ui.viewmodels.RegistroViewModel
 import com.example.retocji.ui.viewmodels.UserViewModel
-import com.example.retocji.ui.viewmodels.logIn.RegistroViewModel
 
 @Composable
 fun Registro(
@@ -35,7 +35,7 @@ fun Registro(
     viewModel: RegistroViewModel,
     userViewModel: UserViewModel,
 
-) {
+    ) {
     val username by viewModel.username.observeAsState("")
     val password by viewModel.password.observeAsState("")
     val email by viewModel.email.observeAsState("")

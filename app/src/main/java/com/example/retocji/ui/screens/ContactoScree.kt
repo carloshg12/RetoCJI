@@ -27,8 +27,6 @@ fun PantallaContacto(contactoViewModel: ContactoViewModel, userViewModel: UserVi
     val userEmail by userViewModel.userEmail.observeAsState()
     val userName by userViewModel.userName.observeAsState()
 
-
-
     Scaffold() {
         Column(
             modifier = Modifier

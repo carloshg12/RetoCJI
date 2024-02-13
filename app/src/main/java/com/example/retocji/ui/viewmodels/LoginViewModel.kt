@@ -1,4 +1,4 @@
-package com.example.retocji.ui.viewmodels.logIn
+package com.example.retocji.ui.viewmodels
 
 import android.util.Log
 import android.util.Patterns

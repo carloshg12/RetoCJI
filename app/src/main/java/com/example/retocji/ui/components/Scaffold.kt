@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import com.example.retocji.ui.components.navigation.NavigationBar
 import com.example.retocji.ui.components.navigation.getInfoAbout
+import com.example.retocji.ui.components.topBar.TopBar
 import com.example.retocji.ui.viewmodels.CitasViewModel
 import com.example.retocji.ui.viewmodels.UserViewModel
 
