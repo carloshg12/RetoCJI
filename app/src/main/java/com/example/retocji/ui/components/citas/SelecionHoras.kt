@@ -45,7 +45,6 @@ fun SeleccionHoras(
         Text(text = "Hora", modifier = Modifier.widthIn(min = 100.dp))
         Spacer(modifier = Modifier.width(8.dp))
 
-
         LazyColumn {
             items(horas ?: emptyList()) { horaInicio ->
                 val horaInicioLocalTime = LocalTime.parse(horaInicio, timeFormatter)

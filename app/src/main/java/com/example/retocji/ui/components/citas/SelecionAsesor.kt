@@ -1,5 +1,7 @@
 package com.example.retocji.ui.components.citas
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -21,12 +23,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.retocji.ui.viewmodels.CitasViewModel
+import java.time.LocalDate
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SelecionAsesor(
     options: List<String>,
-    onAsesorSelected: (String) -> Unit
+    onAsesorSelected: (String) -> Unit,
 ) {
 
     var expanded by remember { mutableStateOf(false) }

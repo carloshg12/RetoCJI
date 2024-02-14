@@ -39,7 +39,6 @@ class MainActivity : ComponentActivity() {
         setContent {
             RetoCJITheme {
                 val userViewModel: UserViewModel = hiltViewModel()
-                val isTokenValid by userViewModel.isTokenValid.observeAsState()
                 userViewModel.validateToken()
                 val navController = rememberNavController()
                 val viewModel: GestionesViewModel = hiltViewModel()

@@ -79,7 +79,7 @@ fun CitaPersonalizada(
 
         SelecionAsesor(
             options = asesores,
-            onAsesorSelected = citasViewModel::setAsesorDeseado
+            onAsesorSelected = citasViewModel::setAsesorDeseado,
         )
 
         SelecionGestion(

@@ -109,12 +109,10 @@ class CitasViewModel @Inject constructor(
                     apiUserName = responseBody?.string() ?: ""
                 }
 
-
                 val horaInicioLocalTime = LocalTime.parse(horaInicio, DateTimeFormatter.ofPattern("HH:mm"))
 
                 val fechaHoraInicio = LocalDateTime.of(_fechaSeleccionada.value, horaInicioLocalTime)
 
-                // Calcular fechaHoraFin sumando una hora a fechaHoraInicio
                 val fechaHoraFin = fechaHoraInicio.plusHours(1)
 
                 // Formatear fechaHoraInicio y fechaHoraFin para la API
@@ -130,20 +128,15 @@ class CitasViewModel @Inject constructor(
                     gestor = UsersDTO(name = gestor, email = ""),
                     tipoCita = TipoCitaDTO(tipoCita.value, 0, 0f)
                 )
-                Log.e("Tipo Cita", tipoCita.value)
-                // Realizar la llamada a la API para crear la cita
                 val response = apiService.crearCita("Bearer $token", nuevaCita)
                 if (response.isSuccessful) {
-                    // Si la respuesta es exitosa, capturamos el mensaje directamente del cuerpo.
                     val responseBodyString = response.body()?.string()
                     _responseMessage.value = responseBodyString ?: "Cita creada con éxito"
                 } else {
-                    // En caso de error, intentamos obtener el mensaje de error del cuerpo.
                     val errorBody = response.errorBody()?.string()
                     _responseMessage.value = "Error al crear la cita: $errorBody"
                 }
             } catch (e: Exception) {
-                // Manejar las excepciones generales.
                 _responseMessage.value = "Excepción al crear la cita: ${e.message}"
             }
         }
@@ -157,18 +150,13 @@ class CitasViewModel @Inject constructor(
             "11:00",
             "12:00",
             "13:00",
-            "14:00",
             "16:00",
             "17:00",
             "18:00",
             "19:00",
 
         )
-
-
         val horasDisponibles = horasPredeterminadas.toMutableList()
-
-
         for (cita in citas) {
             val horaCita =
                 cita.horaInicio.substring(11, 16)

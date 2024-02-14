@@ -1,5 +1,6 @@
 package com.example.retocji.ui.screens.logIn
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -46,11 +48,12 @@ fun Registro(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp), contentAlignment = Alignment.Center
+            .background(MaterialTheme.colorScheme.surface), contentAlignment = Alignment.Center
     ) {
         Column(
             verticalArrangement = Arrangement.spacedBy(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.padding(30.dp)
         ) {
             UsernameTextFieldComponent(
                 username = username,
@@ -81,8 +84,7 @@ fun Registro(
                         navController.navigate("GeneralInfo")
                         viewModel.onRegistroChanged(false)
                         userViewModel.setUserName(username)
-                        viewModel.login(username, password)
-                        viewModel.sendEmail(email,username)
+                        viewModel.login(username, password,email)
                     }
                     Text(text = "¡Registrado con éxito!", color = Color.Green)
                 }

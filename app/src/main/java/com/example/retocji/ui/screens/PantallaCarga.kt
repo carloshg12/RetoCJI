@@ -50,7 +50,7 @@ fun SplashScreen(navController: NavController, userViewModel: UserViewModel) {
             LaunchedEffect(key1 = true) {
                 startAnimation = true
                 delay(1000)
-                navController.navigate(if (isTokenValid == false) "LogIn" else "GeneralInfo") {
+                navController.navigate(if (isTokenValid == false || isTokenValid == null) "LogIn" else "GeneralInfo") {
                     popUpTo("SplashScreen") { inclusive = true }
                 }
             }

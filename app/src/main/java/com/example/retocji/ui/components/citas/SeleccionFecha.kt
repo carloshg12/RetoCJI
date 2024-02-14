@@ -82,7 +82,7 @@ fun SeleccionFecha(
                         val today = LocalDate.now(ZoneId.systemDefault())
                         val dayOfWeek = selectedDate.dayOfWeek
 
-                        (selectedDate.isEqual(today) || selectedDate.isAfter(today)) && dayOfWeek != DayOfWeek.SATURDAY && dayOfWeek != DayOfWeek.SUNDAY
+                        selectedDate.isAfter(today) && dayOfWeek != DayOfWeek.SATURDAY && dayOfWeek != DayOfWeek.SUNDAY
                     },
                 )
             }

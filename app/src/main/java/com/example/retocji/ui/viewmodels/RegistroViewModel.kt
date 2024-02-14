@@ -13,6 +13,7 @@ import com.example.retocji.domain.models.email.ContactDTO
 import com.example.retocji.domain.models.logIn.RegisterUserDTO
 import com.example.retocji.domain.repositories.SharedPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -76,20 +77,18 @@ class RegistroViewModel @Inject constructor(
         }
     }
 
-
-    fun login(username: String, password: String) {
+    fun login(username: String, password: String, email: String) {
         viewModelScope.launch {
             try {
                 val authRequest = AuthRequest(username, password)
                 val response = apiService.login(authRequest)
                 if (response.isSuccessful) {
-
                     val token = response.body()?.token
                     if (token != null) {
                         sharedPreferencesRepository.saveAuthToken(token)
+                        sendRegisterEmail(email,username)
                     } else {}
                 }
-
             } catch (e: Exception) {
                 Log.e("LoginError", "Error en login", e)
 
@@ -97,12 +96,13 @@ class RegistroViewModel @Inject constructor(
         }
     }
 
-    fun sendEmail(email: String, username: String) {
+    fun sendRegisterEmail( email: String,userName: String) {
         viewModelScope.launch {
-            val contact = ContactDTO(email,"Bienvenido", "Hola $username.\nBienvenido a I&M Asesores.\nEsperamos poder ayudarte en todo lo necesario.")
+            val contact = ContactDTO(email,"Bienvenido $userName.","Esperamos ser de ayuda")
             try {
                 val authToken = "Bearer " + sharedPreferencesRepository.getAuthToken()
-                val response = apiService.contactEmail(authToken, contact)
+                Log.e("emailToken",authToken)
+                val response = apiService.registerEmail(authToken, contact)
                 if (response.isSuccessful) {
                     Log.d("EmailSuccess", "Correo enviado correctamente")
                 } else {
@@ -141,7 +141,4 @@ class RegistroViewModel @Inject constructor(
         return Patterns.EMAIL_ADDRESS.matcher(_email.value).matches()
     }
 
-    fun changeColor(firstColor: Color, secondColor: Color): Color {
-        return if (validateFields()) firstColor else secondColor
-    }
 }

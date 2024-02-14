@@ -2,6 +2,7 @@ package com.example.retocji.ui.screens
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Divider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -44,55 +46,60 @@ fun LoginView(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(30.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
+            .background(MaterialTheme.colorScheme.surface)
     ) {
-        LogoComponent()
+        Column (modifier = Modifier.fillMaxSize()
+            .padding(30.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,){
 
-        Spacer(modifier = Modifier.height(30.dp))
 
-        UsernameTextFieldComponent(
-            username = email,
-            onUsernameChanged = loginViewModel::onEmailChanged
-        )
+            LogoComponent()
 
-        Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(30.dp))
 
-        PasswordTextFieldComponent(
-            password = password,
-            passwordVisibility = passwordVisibility,
-            onPasswordChanged = { loginViewModel.onPasswordChanged(it) },
-            onTogglePasswordVisibility = { loginViewModel.togglePasswordVisibility() }
-        )
+            UsernameTextFieldComponent(
+                username = email,
+                onUsernameChanged = loginViewModel::onEmailChanged
+            )
 
-        Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
-        SignInButtonComponent(onClick = {
-            loginViewModel.login(email, password) { success ->
-                if (success) {
-                    citasViewModel.obtenerGestores()
-                    userViewModel.getUserName()
-                    userViewModel.citasPorUsuario()
-                    navController.navigate("GeneralInfo")
+            PasswordTextFieldComponent(
+                password = password,
+                passwordVisibility = passwordVisibility,
+                onPasswordChanged = { loginViewModel.onPasswordChanged(it) },
+                onTogglePasswordVisibility = { loginViewModel.togglePasswordVisibility() }
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            SignInButtonComponent(onClick = {
+                loginViewModel.login(email, password) { success ->
+                    if (success) {
+                        citasViewModel.obtenerGestores()
+                        userViewModel.getUserName()
+                        userViewModel.citasPorUsuario()
+                        navController.navigate("GeneralInfo")
+                    }
                 }
+            })
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Divider(modifier = Modifier.weight(1f))
+                Text("<>", modifier = Modifier.padding(horizontal = 8.dp))
+                Divider(modifier = Modifier.weight(1f))
             }
-        })
 
-        Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Divider(modifier = Modifier.weight(1f))
-            Text("<>", modifier = Modifier.padding(horizontal = 8.dp))
-            Divider(modifier = Modifier.weight(1f))
+            RegistrationPromptComponent(onClick = { navController.navigate("Registro") })
         }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        RegistrationPromptComponent(onClick = { navController.navigate("Registro") })
     }
 }

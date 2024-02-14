@@ -108,20 +108,21 @@ class UserViewModel @Inject constructor(
     fun validateToken() {
         viewModelScope.launch {
             val token = sharedPreferencesRepository.getAuthToken()
-            Log.e("TOKEN", token.toString())
-            val response = apiService.validateToken(token.toString())
-            if (response.isSuccessful) {
-                Log.d("ValidateToken", "Response successful: ${response.body()?.toString()}")
-                _isTokenValid.postValue(true)
-            } else {
-                // En caso de error, intentamos obtener el cuerpo del error
-                val errorBody = response.errorBody()?.string()
-                Log.e("ValidateToken", "Error response: $errorBody")
-                _isTokenValid.postValue(false)
-            }
+            /*if(token == null){
+                sharedPreferencesRepository.saveAuthToken("")
+            }else {*/
+                val response = apiService.validateToken(token.toString())
+                if (response.isSuccessful) {
+                    Log.d("ValidateToken", "Response successful: ${response.body()?.toString()}")
+                    _isTokenValid.postValue(true)
+                } else {
+                    // En caso de error, intentamos obtener el cuerpo del error
+                    val errorBody = response.errorBody()?.string()
+                    Log.e("ValidateToken", "Error response: $errorBody")
+                    _isTokenValid.postValue(false)
+                }
         }
     }
-
     fun getUserName() {
         viewModelScope.launch {
             val token = sharedPreferencesRepository.getAuthToken()

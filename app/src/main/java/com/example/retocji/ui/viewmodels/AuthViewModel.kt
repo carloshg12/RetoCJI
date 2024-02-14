@@ -1,7 +1,7 @@
 package com.example.retocji.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
-import com.example.retocji.data.sources.remote.SharedPreferencesManager
+import com.example.retocji.data.sources.local.SharedPreferencesManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
